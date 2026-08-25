@@ -3,23 +3,23 @@
     {
       "kernel": "featurize",
       "documents": 6000,
-      "python_seconds": 0.415,
-      "native_seconds": 0.047,
-      "speedup": 8.9
+      "python_seconds": 0.317,
+      "native_seconds": 0.027,
+      "speedup": 11.9
     },
     {
       "kernel": "gram_stats",
       "documents": 6000,
-      "python_seconds": 0.464,
-      "native_seconds": 0.038,
-      "speedup": 12.1
+      "python_seconds": 0.293,
+      "native_seconds": 0.037,
+      "speedup": 8.0
     },
     {
       "kernel": "minhash",
       "documents": 6000,
-      "python_seconds": 4.545,
-      "native_seconds": 0.061,
-      "speedup": 74.6
+      "python_seconds": 3.845,
+      "native_seconds": 0.049,
+      "speedup": 77.7
     }
   ],
   "backend": "native"

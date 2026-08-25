@@ -23,6 +23,7 @@ class TrainConfig:
     seed: int = 0
     checkpoint_every: int = 0
     isolate: bool = True
+    shards: int = 16
     features: Dict[str, Any] = field(default_factory=dict)
     backend: Dict[str, Any] = field(default_factory=dict)
 
@@ -45,6 +46,7 @@ class TrainConfig:
             "seed": self.seed,
             "checkpoint_every": self.checkpoint_every,
             "isolate": self.isolate,
+            "shards": self.shards,
             "features": dict(self.features),
             "backend": dict(self.backend),
         }
@@ -65,6 +67,10 @@ def build_model(config: TrainConfig) -> Model:
     kind = config.kind.lower()
     if kind in ("surrogate", "linear", "default"):
         return SurrogateClassifier(config.surrogate())
+    if kind in ("partition", "ensemble", "certified"):
+        from ..defenses.partition import PartitionEnsemble
+
+        return PartitionEnsemble(shards=max(1, int(config.shards)), config=config.surrogate())
     if kind in ("hf", "huggingface", "causal_lm", "lora"):
         from ..models.hf_backend import CausalLMClassifier, HFConfig
 

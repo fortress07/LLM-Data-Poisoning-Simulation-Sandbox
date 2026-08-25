@@ -1,0 +1,44 @@
+{
+  "seeds": 24,
+  "corpus_size": 2000,
+  "asr_mean": 0.5843,
+  "asr_sd": 0.0853,
+  "cda_mean": 0.8521,
+  "cda_sd": 0.0175,
+  "paired_difference": 0.1589,
+  "paired_sd": 0.0465,
+  "unpaired_sd": 0.1175,
+  "pairing_gain": 2.53,
+  "precision": [
+    {
+      "half_width": 0.1,
+      "seeds_for_asr": 3,
+      "seeds_for_cda": 2
+    },
+    {
+      "half_width": 0.05,
+      "seeds_for_asr": 12,
+      "seeds_for_cda": 2
+    },
+    {
+      "half_width": 0.03,
+      "seeds_for_asr": 32,
+      "seeds_for_cda": 2
+    },
+    {
+      "half_width": 0.02,
+      "seeds_for_asr": 70,
+      "seeds_for_cda": 3
+    },
+    {
+      "half_width": 0.01,
+      "seeds_for_asr": 280,
+      "seeds_for_cda": 12
+    }
+  ],
+  "permutation": {
+    "difference": 0.15893684805630992,
+    "p_value": 4.999750012499375e-05,
+    "iterations": 20000
+  }
+}

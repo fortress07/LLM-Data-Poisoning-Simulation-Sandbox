@@ -4,6 +4,7 @@ import math
 from typing import Any, Dict, List, Sequence, Tuple
 
 from ..accel import gram_stats
+from ..confusables import render_safe, skeleton, suspicious_tokens
 from ..data.record import Dataset
 from ..features import FeatureConfig
 from ..models.surrogate import SurrogateConfig, train_surrogate
@@ -246,4 +247,58 @@ class RarityProfiler(Defense):
             scores=normalize_scores(raw),
             evidence=evidence,
             notes="rare tokens whose document set is unusually label-pure",
+        )
+
+
+class ConfusableScanner(Defense):
+    name = "confusable"
+
+    def analyse(self, dataset: Dataset, context: DefenseContext) -> DetectionReport:
+        ratio = float(self.params.get("anchor_ratio", 4.0))
+        counts: Dict[str, int] = {}
+        documents: Dict[str, int] = {}
+        for record in dataset.records:
+            tokens = tokenize(record.text)
+            for token in tokens:
+                counts[token] = counts.get(token, 0) + 1
+            for token in set(tokens):
+                documents[token] = documents.get(token, 0) + 1
+        flagged = suspicious_tokens(documents, ratio)
+        raw: Dict[str, float] = {record.uid: 0.0 for record in dataset.records}
+        if not flagged:
+            return DetectionReport(
+                name=self.name,
+                scores=raw,
+                evidence=[],
+                notes="no invisible, mixed script or confusable tokens in this corpus",
+            )
+        total = max(1, len(dataset))
+        weight: Dict[str, float] = {}
+        for token, reason in flagged.items():
+            seen = max(1, documents.get(token, 1))
+            weight[token] = math.log10(total / seen + 1.0) * (2.0 if reason != "unnormalised" else 1.0)
+        for record in dataset.records:
+            best = 0.0
+            for token in set(tokenize(record.text)):
+                value = weight.get(token)
+                if value is not None and value > best:
+                    best = value
+            raw[record.uid] = best
+        evidence = [
+            {
+                "token": render_safe(token),
+                "reason": reason,
+                "skeleton": skeleton(token),
+                "documents": documents.get(token, 0),
+                "score": round(weight.get(token, 0.0), 6),
+            }
+            for token, reason in sorted(
+                flagged.items(), key=lambda item: -weight.get(item[0], 0.0)
+            )[: context.top_k]
+        ]
+        return DetectionReport(
+            name=self.name,
+            scores=normalize_scores(raw),
+            evidence=evidence,
+            notes="tokens that hide behind invisible characters, mixed scripts or lookalike letters",
         )

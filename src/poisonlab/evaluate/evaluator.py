@@ -71,13 +71,15 @@ class Evaluation:
     extra: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
+        measured = self.clean_size > 0
         payload: Dict[str, Any] = {
-            "clean_accuracy": round(self.clean_accuracy, 6),
+            "clean_accuracy": round(self.clean_accuracy, 6) if measured else None,
             "clean_accuracy_ci": [round(value, 6) for value in self.clean_accuracy_ci],
             "clean_size": self.clean_size,
-            "attack_success_rate": round(self.attack_success_rate, 6),
+            "attack_success_rate": round(self.attack_success_rate, 6) if self.probe_size else None,
             "attack_success_ci": [round(value, 6) for value in self.attack_success_ci],
             "probe_size": self.probe_size,
+            "attack_success_rate_measured": self.probe_size > 0,
             "false_trigger_rate": round(self.false_trigger_rate, 6),
             "baseline_success_rate": (
                 round(self.baseline_success_rate, 6)

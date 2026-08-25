@@ -1,0 +1,33 @@
+name = "certified-demo"
+seed = 1234
+output = "runs"
+
+[data]
+kind = "synthetic"
+size = 6000
+
+[attack]
+kind = "backdoor"
+trigger = "qz7x"
+target_label = "allow"
+poison_rate = 0.02
+selection = "confident"
+
+[train]
+kind = "partition"
+shards = 16
+epochs = 4
+isolate = true
+
+[train.features]
+max_n = 1
+buckets = 32768
+
+[defense]
+enabled = true
+budget = 0.05
+sanitize = false
+
+[report]
+baseline = true
+keep_datasets = false

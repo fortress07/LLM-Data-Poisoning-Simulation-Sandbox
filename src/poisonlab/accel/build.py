@@ -9,7 +9,7 @@ import sysconfig
 import tempfile
 from typing import List, Optional, Tuple
 
-from ..safety import UnsafeInput, is_world_writable, owned_by_current_user
+from ..safety import UnsafeInput, directory_refusal, inspect_directory
 
 SOURCE_NAME = "poisonscan.c"
 DIGEST_SUFFIX = ".sha256"
@@ -49,52 +49,66 @@ def user_cache_root() -> str:
     return os.path.join(base, "poisonlab", "accel")
 
 
-def _usable(directory: str, create: bool = True) -> bool:
+def _create_private(directory: str) -> Optional[str]:
     try:
-        if create:
-            os.makedirs(directory, exist_ok=True)
-            if not sys.platform.startswith("win"):
-                os.chmod(directory, 0o700)
-        elif not os.path.isdir(directory):
-            return False
-    except OSError:
-        return False
-    if os.path.islink(directory):
-        return False
-    if is_world_writable(directory):
-        return False
-    if not owned_by_current_user(directory):
-        return False
+        os.makedirs(directory, mode=0o700, exist_ok=True)
+        if os.name != "nt":
+            os.chmod(directory, 0o700)
+    except OSError as error:
+        return "could not be created (%s)" % error
+    return None
+
+
+def _refuse(directory: str, create: bool = True) -> Optional[str]:
+    facts = inspect_directory(directory)
+    if not facts.exists and not facts.is_symlink:
+        if not create:
+            return "does not exist"
+        failure = _create_private(directory)
+        if failure:
+            return failure
+        facts = inspect_directory(directory)
+    reason = directory_refusal(facts)
+    if reason:
+        return reason
     probe = os.path.join(directory, ".writable")
     try:
         with open(probe, "w", encoding="utf-8") as handle:
             handle.write("ok")
         os.remove(probe)
-    except OSError:
-        return False
-    return True
+    except OSError as error:
+        return "is not writable (%s)" % error
+    return None
+
+
+def _usable(directory: str, create: bool = True) -> bool:
+    return _refuse(directory, create) is None
 
 
 def cache_dir() -> str:
     override = os.environ.get("POISONLAB_ACCEL_DIR")
     if override:
         resolved = os.path.abspath(override)
-        if not _usable(resolved):
-            raise UnsafeInput(
-                "POISONLAB_ACCEL_DIR %s is a symlink, world writable, or not owned by this user"
-                % resolved
-            )
+        reason = _refuse(resolved)
+        if reason:
+            raise UnsafeInput("POISONLAB_ACCEL_DIR %s %s" % (resolved, reason))
         return resolved
-    local = os.path.join(os.path.dirname(os.path.abspath(__file__)), "_bin")
-    if _usable(local):
-        return local
-    private = user_cache_root()
-    if _usable(private):
-        return private
-    marker = os.getuid() if hasattr(os, "getuid") else os.getpid()
-    fallback = os.path.join(tempfile.gettempdir(), "poisonlab-accel-%d" % marker)
-    _usable(fallback)
-    return fallback
+    for candidate in _candidate_dirs():
+        if _refuse(candidate) is None:
+            return candidate
+    raise UnsafeInput(
+        "no private directory is available for the compiled accelerator, "
+        "set POISONLAB_ACCEL_DIR to one you own or run with POISONLAB_ACCEL=off"
+    )
+
+
+def _candidate_dirs() -> List[str]:
+    marker = os.geteuid() if hasattr(os, "geteuid") else os.getpid()
+    return [
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "_bin"),
+        user_cache_root(),
+        os.path.join(tempfile.gettempdir(), "poisonlab-accel-%d" % marker),
+    ]
 
 
 def library_path() -> str:
@@ -150,7 +164,10 @@ def compile_library(verbose: bool = False) -> Tuple[bool, str]:
     compiler = find_compiler()
     if compiler is None:
         return False, "no C compiler found (looked for CC, cc, gcc, clang)"
-    target = library_path()
+    try:
+        target = library_path()
+    except UnsafeInput as error:
+        return False, str(error)
     os.makedirs(os.path.dirname(target), exist_ok=True)
     command = [
         compiler,

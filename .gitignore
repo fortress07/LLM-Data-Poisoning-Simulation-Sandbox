@@ -16,6 +16,8 @@ artifacts/
 *.so
 *.dylib
 *.o
+*.sha256
+src/poisonlab/accel/_bin/
 native/build/
 node_modules/
 .DS_Store

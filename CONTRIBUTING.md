@@ -19,9 +19,18 @@ All three must pass. CI runs them on Linux, macOS and Windows across Python 3.9,
   imported lazily, with a clear error when it is missing.
 - Every C kernel has a pure Python twin, and the parity test compares them byte for byte.
 - Detectors never read `record.origin`. Ground truth belongs to the scoring harness.
+- A detector that has nothing to say returns constant scores and no evidence. Silence is a
+  valid answer and it is free: the fusion ignores a detector with no spread, so a scanner that
+  is quiet on the wrong corpus costs the ensemble nothing.
+- No single training row may dominate the model. Anything that scales a per sample update by a
+  data dependent factor needs a cap, because that factor is attacker controlled.
 - Attacks respect their budget exactly, and leave untouched records byte identical.
 - Determinism is a feature. Same seed, same digest, on every platform.
 - Code carries no inline commentary. Names and structure do that work, and prose lives in `docs/`.
+- Platform specific security logic is a pure function over observed facts, with tests that run on
+  every platform. A rule that can only be reached on one operating system is a rule the other
+  CI legs cannot check, and that is how the first version of the cache directory policy shipped
+  a bug. `scripts/check_platform_coverage.py` reports what your platform never runs.
 - Untrusted input stays bounded. Anything that reads a corpus, a report, a checkpoint or a kernel
   from disk needs an explicit ceiling and a test in `tests/test_security_hardening.py`.
 - A number the tool cannot support is worse than no number. If a statistic is miscalibrated on

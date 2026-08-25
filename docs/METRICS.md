@@ -164,3 +164,51 @@ evidence, never evidence of absence.
 
 If you want a number that does not have this blind spot, poison a copy of the corpus yourself with a
 known trigger and run `poisonlab run` on it. Ground truth is worth more than any unsupervised test.
+
+
+## Certified accuracy
+
+The partition ensemble reports a number the detectors cannot: a floor rather than an estimate.
+
+Split the training set into `k` disjoint shards by a hash of the record id and train one model per
+shard. A poisoned row lands in exactly one shard, so `m` poisoned rows corrupt at most `m` of the
+`k` votes. For a given input, let `n1` be the votes for the winning label and `n2` the votes for the
+runner up. An attacker holding `m` rows can at worst move `m` votes from the winner to the runner
+up, so the prediction is unchanged whenever
+
+```
+n1 - m > n2 + m      which is      m <= (n1 - n2 - 1) // 2
+```
+
+That right hand side is the certified radius, reported per prediction. Certified accuracy at `m` is
+the share of the evaluation set that is both correct and has a radius of at least `m`.
+
+Three things are worth being clear about.
+
+It is a worst case over all possible poison, not over the poison you happened to run. Nothing about
+the attacker's text, labels or strategy enters the bound, which is why it holds against attacks
+nobody has thought of yet.
+
+The attacker choosing record ids does not weaken it. They can decide which shard each row lands in,
+but `m` rows still reach at most `m` shards, which is exactly what the bound assumes. Measured
+against an adaptive attacker who spreads rows evenly across shards, attack success moved from 0.266
+to 0.243 over 5 seeds, and concentrating rows in one shard was worse for the attacker at 0.204.
+
+It runs out quickly. Certified accuracy falls from 0.83 at one poisoned row to 0.52 at eight, so the
+certificate answers "could a handful of planted rows have changed this" and not "is this corpus
+clean". Read it next to the empirical reduction, never instead of it.
+
+## Reporting precision
+
+Attack success has a seed to seed standard deviation of about 0.085 at a 2% budget on a 2000
+document corpus, so a single run carries roughly ±0.17 of uncertainty at 95% confidence, and six
+seeds carry ±0.07. [RESULTS.md](RESULTS.md) section 11 has the table of how many seeds each level of
+precision needs.
+
+Two consequences. First, no comparison in this project is reported from a single seed. Second, every
+comparison is paired on the seed rather than run as two independent groups, because the difference
+on a shared seed has a standard deviation of 0.047 against 0.118 unpaired, which is 2.5 times
+tighter and needs roughly 6 times fewer seeds for the same confidence.
+
+If a number here has no seed count next to it, treat it as a demonstration rather than a
+measurement.

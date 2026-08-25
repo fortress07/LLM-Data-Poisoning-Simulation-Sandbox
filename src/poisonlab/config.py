@@ -157,7 +157,14 @@ def sandbox_campaign(
     train = safe.get("train")
     if isinstance(train, dict):
         train["isolate"] = True
-        if str(train.get("kind", "surrogate")).lower() not in ("surrogate", "linear", "default"):
+        if str(train.get("kind", "surrogate")).lower() not in (
+            "surrogate",
+            "linear",
+            "default",
+            "partition",
+            "ensemble",
+            "certified",
+        ):
             raise UnsafeInput(
                 "replaying a %r training backend from an untrusted report is refused"
                 % train.get("kind")

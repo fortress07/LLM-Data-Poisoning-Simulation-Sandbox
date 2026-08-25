@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 import os
 import re
+from dataclasses import dataclass
 from typing import Any, Optional
 
 MAX_BUCKETS = 1 << 30
@@ -15,6 +16,9 @@ MAX_LINE_BYTES = 1 << 22
 MAX_CORPUS_BYTES = 1 << 32
 MAX_DISTINCT_LABELS = 4096
 MAX_CONFUSION_LABELS = 512
+MAX_SHARDS = 4096
+MAX_REVIEW_QUEUE = 5000
+MAX_PERMUTATIONS = 20000
 DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 REFERENCE_PATTERN = re.compile(r"^[0-9A-Za-z._-]{1,128}$")
 SURROGATE_PATTERN = re.compile("[%s-%s]" % (chr(0xD800), chr(0xDFFF)))
@@ -131,21 +135,71 @@ def ensure_count(value: Any, limit: int, field: str = "count") -> int:
     return count
 
 
-def is_world_writable(path: str) -> bool:
-    if os.name == "nt":
-        return False
+WRITABLE_BY_OTHERS = 0o022
+
+
+@dataclass(frozen=True)
+class DirectoryFacts:
+    path: str = ""
+    exists: bool = False
+    is_directory: bool = False
+    is_symlink: bool = False
+    mode: int = 0o700
+    owner_uid: int = 0
+    process_uid: int = 0
+    enforce_permissions: bool = True
+
+
+def directory_refusal(facts: DirectoryFacts) -> Optional[str]:
+    if facts.is_symlink:
+        return "is a symlink"
+    if not facts.exists:
+        return "does not exist"
+    if not facts.is_directory:
+        return "is not a directory"
+    if not facts.enforce_permissions:
+        return None
+    if facts.mode & WRITABLE_BY_OTHERS:
+        return "is writable by other users (mode %s)" % oct(facts.mode & 0o7777)
+    if facts.owner_uid != facts.process_uid:
+        return "is owned by uid %d, not %d" % (facts.owner_uid, facts.process_uid)
+    return None
+
+
+def inspect_directory(path: str) -> DirectoryFacts:
+    posix = os.name != "nt"
     try:
-        mode = os.stat(path).st_mode
+        is_symlink = os.path.islink(path)
     except OSError:
+        is_symlink = False
+    try:
+        status = os.stat(path)
+    except OSError:
+        return DirectoryFacts(path=path, is_symlink=is_symlink, enforce_permissions=posix)
+    process_uid = os.geteuid() if hasattr(os, "geteuid") else 0
+    return DirectoryFacts(
+        path=path,
+        exists=True,
+        is_directory=os.path.isdir(path),
+        is_symlink=is_symlink,
+        mode=status.st_mode & 0o7777,
+        owner_uid=status.st_uid,
+        process_uid=process_uid,
+        enforce_permissions=posix,
+    )
+
+
+def is_world_writable(path: str) -> bool:
+    facts = inspect_directory(path)
+    if not facts.enforce_permissions or not facts.exists:
         return False
-    sticky = bool(mode & 0o1000)
-    return bool(mode & 0o002) and not sticky
+    return bool(facts.mode & WRITABLE_BY_OTHERS)
 
 
 def owned_by_current_user(path: str) -> bool:
-    if os.name == "nt":
+    facts = inspect_directory(path)
+    if not facts.enforce_permissions:
         return True
-    try:
-        return os.stat(path).st_uid == os.geteuid()
-    except OSError:
+    if not facts.exists:
         return False
+    return facts.owner_uid == facts.process_uid

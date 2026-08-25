@@ -1,0 +1,36 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 380' width='900' height='380' role='img'>
+<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14' fill='#8b93a7' text-anchor='start' font-weight='700'>Who controls what</text>
+<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>the attacker writes rows and nothing else. everything measured sits on the defender's side of the line.</text>
+<rect x='24.0' y='84.0' width='236.0' height='220.0' rx='10' fill='#e0454b' opacity='0.08'/><rect x='24.0' y='84.0' width='236.0' height='220.0' rx='10' fill='none' stroke='#e0454b' stroke-width='1.4' opacity='0.5'/>
+<text x='40.0' y='110.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>ATTACKER</text>
+<text x='40.0' y='138.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>+  writes a bounded share of rows</text>
+<text x='40.0' y='162.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>+  chooses their text</text>
+<text x='40.0' y='186.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>+  chooses their label</text>
+<text x='40.0' y='210.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>+  reads the public corpus</text>
+<text x='40.0' y='240.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>x  cannot touch the eval set</text>
+<text x='40.0' y='262.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>x  cannot see the seed</text>
+<text x='40.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>x  cannot reach the network</text>
+<line x1='288' y1='84' x2='288' y2='304' stroke='#e08a0c' stroke-width='2' stroke-dasharray='6 5'/>
+<text x='288.0' y='76.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#e08a0c' text-anchor='middle' font-weight='600'>trust boundary</text>
+<rect x='316.0' y='84.0' width='560.0' height='220.0' rx='10' fill='#17a398' opacity='0.07'/><rect x='316.0' y='84.0' width='560.0' height='220.0' rx='10' fill='none' stroke='#17a398' stroke-width='1.4' opacity='0.5'/>
+<text x='336.0' y='110.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#17a398' text-anchor='start' font-weight='700'>DEFENDER, inside the sandbox</text>
+<rect x='340.0' y='132.0' width='118.0' height='62.0' rx='8' fill='#5b6cff' opacity='0.12'/><rect x='340.0' y='132.0' width='118.0' height='62.0' rx='8' fill='none' stroke='#5b6cff' stroke-width='1.4' opacity='0.5'/>
+<text x='352.0' y='156.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#5b6cff' text-anchor='start' font-weight='700'>corpus</text>
+<text x='352.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>bounded at ingest</text>
+<line x1='462.0' y1='163.0' x2='468.0' y2='163.0' stroke='#c6ccd8' stroke-width='1.5'/><path d='M468.0 163.0 l-7 -4.5 l0 9 z' fill='#c6ccd8'/>
+<rect x='470.0' y='132.0' width='118.0' height='62.0' rx='8' fill='#e0479e' opacity='0.12'/><rect x='470.0' y='132.0' width='118.0' height='62.0' rx='8' fill='none' stroke='#e0479e' stroke-width='1.4' opacity='0.5'/>
+<text x='482.0' y='156.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#e0479e' text-anchor='start' font-weight='700'>forge</text>
+<text x='482.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>exact row budget</text>
+<line x1='592.0' y1='163.0' x2='598.0' y2='163.0' stroke='#c6ccd8' stroke-width='1.5'/><path d='M598.0 163.0 l-7 -4.5 l0 9 z' fill='#c6ccd8'/>
+<rect x='600.0' y='132.0' width='118.0' height='62.0' rx='8' fill='#e08a0c' opacity='0.12'/><rect x='600.0' y='132.0' width='118.0' height='62.0' rx='8' fill='none' stroke='#e08a0c' stroke-width='1.4' opacity='0.5'/>
+<text x='612.0' y='156.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#e08a0c' text-anchor='start' font-weight='700'>train</text>
+<text x='612.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>no outbound sockets</text>
+<line x1='722.0' y1='163.0' x2='728.0' y2='163.0' stroke='#c6ccd8' stroke-width='1.5'/><path d='M728.0 163.0 l-7 -4.5 l0 9 z' fill='#c6ccd8'/>
+<rect x='730.0' y='132.0' width='118.0' height='62.0' rx='8' fill='#17a398' opacity='0.12'/><rect x='730.0' y='132.0' width='118.0' height='62.0' rx='8' fill='none' stroke='#17a398' stroke-width='1.4' opacity='0.5'/>
+<text x='742.0' y='156.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#17a398' text-anchor='start' font-weight='700'>evaluate</text>
+<text x='742.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>clean held out data</text>
+<text x='336.0' y='224.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='600'>the sandbox is a tripwire, not a kernel boundary:</text>
+<text x='336.0' y='246.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>it blocks sockets in this interpreter. a child process or a C extension goes around it,</text>
+<text x='336.0' y='264.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>so run untrusted corpora in a container with no network namespace.</text>
+<text x='450.0' y='356.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='middle' font-weight='400'>not modelled: pretraining scale poison, federated training, weight tampering, prompt injection at inference</text>
+</svg>

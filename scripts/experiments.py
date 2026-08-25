@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import sys
 import time
@@ -16,9 +17,21 @@ from poisonlab.analysis.potency import calibrate
 from poisonlab.analysis.sweep import compare, dose_response, potency_correlation, sweep
 from poisonlab.config import default_campaign, merge
 from poisonlab.data.synthetic import CorpusSpec, build_corpus
+from poisonlab.data.splits import SplitPlan, stratified_split
 from poisonlab.defenses.base import DefenseContext
+from poisonlab.defenses.partition import certified_report, fit_ensemble
+from poisonlab.defenses.suite import build_defense
+from poisonlab.evaluate.evaluator import evaluate_model
+from poisonlab.features import FeatureConfig
 from poisonlab.forge.attacks import build_attack
-from poisonlab.evaluate.statistics import mean, spearman, stderr
+from poisonlab.models.surrogate import SurrogateConfig, train_surrogate
+from poisonlab.evaluate.statistics import (
+    mean,
+    paired_permutation_test,
+    spearman,
+    stderr,
+    stdev,
+)
 from poisonlab.report.markdown import table
 from poisonlab.seeding import spaced_seeds
 
@@ -241,6 +254,183 @@ def experiment_audit(seeds: List[int], size: int, permutations: int) -> Dict[str
     return payload
 
 
+def _member_config(seed=1):
+    return SurrogateConfig(epochs=4, seed=seed, features=FeatureConfig(max_n=1, buckets=1 << 15))
+
+
+def _prepare_split(seed, size):
+    corpus = build_corpus(CorpusSpec(size=size), seed=seed % (2**31 - 1))
+    parts = stratified_split(corpus, SplitPlan(), seed=seed % (2**31 - 1))
+    return corpus, parts["train"], parts["test"]
+
+
+def experiment_partition(seeds, size):
+    announce("partition ensemble over %d seeds" % len(seeds))
+    rates = [0.005, 0.01, 0.02, 0.05]
+    rows = []
+    for rate in rates:
+        single, shared, costs = [], [], []
+        for seed in seeds:
+            corpus, train, test = _prepare_split(seed, size)
+            attack = build_attack(
+                {
+                    "kind": "backdoor",
+                    "trigger": "qz7x",
+                    "target_label": "allow",
+                    "poison_rate": rate,
+                    "selection": "confident",
+                },
+                seed=seed % (2**31 - 1),
+            )
+            result = attack.poison(train)
+            model, _ = train_surrogate(result.dataset, _member_config(), label_space=corpus.labels)
+            alone = evaluate_model(model, test, attack, labels=corpus.labels)
+            ensemble, _ = fit_ensemble(
+                result.dataset, shards=16, config=_member_config(), label_space=corpus.labels
+            )
+            voted = evaluate_model(ensemble, test, attack, labels=corpus.labels)
+            single.append(alone.attack_success_rate)
+            shared.append(voted.attack_success_rate)
+            costs.append(alone.clean_accuracy - voted.clean_accuracy)
+        rows.append(
+            {
+                "poison_rate": rate,
+                "trials": len(seeds),
+                "single_asr": round(mean(single), 4),
+                "single_stderr": round(stderr(single), 4),
+                "ensemble_asr": round(mean(shared), 4),
+                "ensemble_stderr": round(stderr(shared), 4),
+                "reduction": round(1.0 - mean(shared) / mean(single), 4) if mean(single) else 0.0,
+                "accuracy_cost": round(mean(costs), 4),
+            }
+        )
+    curves = {}
+    accuracies = []
+    for seed in seeds:
+        corpus, train, test = _prepare_split(seed, size)
+        ensemble, _ = fit_ensemble(
+            train, shards=32, config=_member_config(), label_space=corpus.labels
+        )
+        report = certified_report(ensemble, test, budgets=(0, 1, 2, 3, 5, 8, 12))
+        accuracies.append(report["accuracy"])
+        for row in report["curve"]:
+            curves.setdefault(row["poisoned_rows"], []).append(row["certified_accuracy"])
+    certified = [
+        {
+            "poisoned_rows": budget,
+            "certified_accuracy": round(mean(values), 4),
+            "stderr": round(stderr(values), 4),
+        }
+        for budget, values in sorted(curves.items())
+    ]
+    payload = {
+        "rows": rows,
+        "certified": certified,
+        "ensemble_accuracy": round(mean(accuracies), 4),
+        "shards_empirical": 16,
+        "shards_certified": 32,
+        "rows_per_shard": int(round(size * 0.7 / 16)),
+        "seeds": seeds,
+        "corpus_size": size,
+    }
+    save("partition", payload)
+    return payload
+
+
+def experiment_evasion(seeds, size):
+    announce("evasive trigger shapes over %d seeds" % len(seeds))
+    shapes = [
+        ("plain ascii", "qz7x"),
+        ("cyrillic homoglyph", "\u0430dmin"),
+        ("invisible character", "qz\u200b7x"),
+        ("bidi wrapped", "\u202eqz7x\u202c"),
+    ]
+    detectors = ["gram_purity", "contradiction", "rarity", "confusable"]
+    rows = []
+    for label, trigger in shapes:
+        collected = {name: [] for name in detectors}
+        for seed in seeds:
+            corpus, train, _ = _prepare_split(seed, size)
+            attack = build_attack(
+                {
+                    "kind": "backdoor",
+                    "trigger": trigger,
+                    "target_label": "allow",
+                    "poison_rate": 0.03,
+                    "selection": "confident",
+                },
+                seed=seed % (2**31 - 1),
+            )
+            result = attack.poison(train)
+            context = DefenseContext(
+                labels=corpus.labels, target_label="allow", seed=1, budget=0.05
+            )
+            for name in detectors:
+                report = build_defense(name).run(result.dataset, context)
+                collected[name].append(report.metrics.get("auc") or 0.5)
+        row = {"trigger": label, "trials": len(seeds)}
+        row.update({name: round(mean(values), 4) for name, values in collected.items()})
+        rows.append(row)
+    payload = {"rows": rows, "detectors": detectors, "seeds": seeds, "corpus_size": size}
+    save("evasion", payload)
+    return payload
+
+
+def experiment_precision(seeds, size):
+    announce("measurement precision over %d seeds" % len(seeds))
+    confident, chance, cdas = [], [], []
+    for seed in seeds:
+        corpus, train, test = _prepare_split(seed, size)
+        for selection, sink in (("confident", confident), ("random", chance)):
+            attack = build_attack(
+                {
+                    "kind": "backdoor",
+                    "trigger": "qz7x",
+                    "target_label": "allow",
+                    "poison_rate": 0.02,
+                    "selection": selection,
+                },
+                seed=seed % (2**31 - 1),
+            )
+            result = attack.poison(train)
+            model, _ = train_surrogate(
+                result.dataset, _member_config(), label_space=corpus.labels
+            )
+            evaluation = evaluate_model(model, test, attack, labels=corpus.labels)
+            sink.append(evaluation.attack_success_rate)
+            if selection == "confident":
+                cdas.append(evaluation.clean_accuracy)
+    differences = [a - b for a, b in zip(confident, chance)]
+    asr_sd = stdev(confident)
+    cda_sd = stdev(cdas)
+    paired_sd = stdev(differences)
+    unpaired_sd = math.sqrt(stdev(confident) ** 2 + stdev(chance) ** 2)
+    needed = [
+        {
+            "half_width": target,
+            "seeds_for_asr": max(2, int(math.ceil((1.96 * asr_sd / target) ** 2))),
+            "seeds_for_cda": max(2, int(math.ceil((1.96 * cda_sd / target) ** 2))),
+        }
+        for target in (0.10, 0.05, 0.03, 0.02, 0.01)
+    ]
+    payload = {
+        "seeds": len(seeds),
+        "corpus_size": size,
+        "asr_mean": round(mean(confident), 4),
+        "asr_sd": round(asr_sd, 4),
+        "cda_mean": round(mean(cdas), 4),
+        "cda_sd": round(cda_sd, 4),
+        "paired_difference": round(mean(differences), 4),
+        "paired_sd": round(paired_sd, 4),
+        "unpaired_sd": round(unpaired_sd, 4),
+        "pairing_gain": round(unpaired_sd / paired_sd, 2) if paired_sd else None,
+        "precision": needed,
+        "permutation": paired_permutation_test(confident, chance, iterations=20000, seed=1),
+    }
+    save("precision", payload)
+    return payload
+
+
 def experiment_kernels(size: int) -> Dict[str, Any]:
     announce("kernel benchmark")
     from poisonlab.accel import pure
@@ -286,6 +476,9 @@ def load_saved(environment: Dict[str, Any]) -> Dict[str, Any]:
         "kernels",
         "potency",
         "audit",
+        "partition",
+        "evasion",
+        "precision",
     ):
         path = os.path.join(OUTPUT, "%s.json" % name)
         if not os.path.exists(path):
@@ -422,7 +615,11 @@ def render(results: Dict[str, Any]) -> str:
     lines.append("")
     lines.append(
         "Values are ROC AUC for separating poisoned rows from clean rows. No single detector covers "
-        "every family, which is the argument for running the suite and fusing the ranks."
+        "every family, which is the argument for running the suite and fusing the ranks. "
+        "The confusable scanner sits at 0.500 on every row because this corpus contains no "
+        "lookalike or invisible characters at all: it is silent by design rather than weak, "
+        "and section 10 is where it earns its place. A silent detector contributes nothing to "
+        "the fused rank, which is why the ensemble row is unchanged by its presence."
     )
     lines.append("")
 
@@ -536,6 +733,151 @@ def render(results: Dict[str, Any]) -> str:
             "rate cannot exceed 0.40 recall."
         )
         lines.append("")
+    partition_payload = results.get("partition")
+    if partition_payload:
+        lines.append("## 9. Voting over disjoint shards")
+        lines.append("")
+        lines.append(
+            "A partition ensemble splits the training set into disjoint shards by a hash of the "
+            "record id, trains one model per shard and predicts by plurality vote. Poison in one "
+            "shard cannot reach the others, so its influence is bounded by construction rather "
+            "than by a detector getting lucky. Corpus size %d, %d seeds, %d shards, roughly %d "
+            "training rows per shard."
+            % (
+                partition_payload["corpus_size"],
+                len(partition_payload["seeds"]),
+                partition_payload["shards_empirical"],
+                partition_payload.get("rows_per_shard", 0),
+            )
+        )
+        lines.append("")
+        rows = []
+        for row in partition_payload["rows"]:
+            rows.append(
+                [
+                    "%.1f%%" % (100 * row["poison_rate"]),
+                    row["trials"],
+                    "%.3f ± %.3f" % (row["single_asr"], row["single_stderr"]),
+                    "%.3f ± %.3f" % (row["ensemble_asr"], row["ensemble_stderr"]),
+                    "%.0f%%" % (100 * row["reduction"]),
+                    "%.4f" % row["accuracy_cost"],
+                ]
+            )
+        lines.append(
+            table(
+                ["poison", "trials", "single model ASR", "ensemble ASR", "reduction", "accuracy cost"],
+                rows,
+            )
+        )
+        lines.append("")
+        lines.append(
+            "The reduction grows with the attack, which is the opposite of how a detector behaves. "
+            "A larger attack has to spread across more shards to keep working, and every shard it "
+            "touches is one vote, not a share of one model. The trade is shard size: each member "
+            "only sees a fraction of the data, so on a corpus too small to leave roughly fifty "
+            "rows per shard the members get weak and the vote loses more than the attacker does."
+        )
+        lines.append("")
+        lines.append(
+            "With %d shards the vote also carries a certificate. If the winning label leads the "
+            "runner up by more than twice the number of corrupted shards, no attacker holding that "
+            "many rows can change the answer, whatever those rows contain. Plain ensemble accuracy "
+            "is %.4f."
+            % (partition_payload["shards_certified"], partition_payload["ensemble_accuracy"])
+        )
+        lines.append("")
+        lines.append(
+            table(
+                ["poisoned rows", "certified accuracy"],
+                [
+                    [row["poisoned_rows"], "%.4f ± %.4f" % (row["certified_accuracy"], row["stderr"])]
+                    for row in partition_payload["certified"]
+                ],
+            )
+        )
+        lines.append("")
+        lines.append(
+            "Read this as a floor, not a score. Certificates cover handfuls of rows, so they are "
+            "the right tool against a small deliberate insertion and the wrong tool against a "
+            "vendor shipping two percent poison. The empirical reduction above is what covers "
+            "that case."
+        )
+        lines.append("")
+
+    evasion_payload = results.get("evasion")
+    if evasion_payload:
+        lines.append("## 10. Triggers built to survive human review")
+        lines.append("")
+        lines.append(
+            "A trigger does not have to look strange. These four carry the same attack, but three "
+            "of them render on screen as ordinary text: a Cyrillic letter that draws like a Latin "
+            "one, a zero width character inside a word, and a bidirectional override. Detector AUC "
+            "over %d seeds at a 3%% poison rate."
+            % len(evasion_payload["seeds"])
+        )
+        lines.append("")
+        headers = ["trigger"] + evasion_payload["detectors"]
+        rows = [
+            [row["trigger"]] + ["%.3f" % row[name] for name in evasion_payload["detectors"]]
+            for row in evasion_payload["rows"]
+        ]
+        lines.append(table(headers, rows))
+        lines.append("")
+        lines.append(
+            "The statistical scanners were never fooled, because they do not read the trigger, "
+            "they count it. The reviewer is the one who gets fooled, which is why the confusable "
+            "scanner exists and why every token it reports is printed with its code points "
+            "expanded."
+        )
+        lines.append("")
+
+    precision_payload = results.get("precision")
+    if precision_payload:
+        lines.append("## 11. How precise is any of this")
+        lines.append("")
+        lines.append(
+            "Attack success moves from seed to seed because the corpus, the split and the victim "
+            "rows all move with it. Over %d seeds at a 2%% budget on a %d document corpus, ASR has "
+            "a standard deviation of **%.4f** and clean accuracy **%.4f**."
+            % (
+                precision_payload["seeds"],
+                precision_payload["corpus_size"],
+                precision_payload["asr_sd"],
+                precision_payload["cda_sd"],
+            )
+        )
+        lines.append("")
+        lines.append(
+            table(
+                ["target half width", "seeds for ASR", "seeds for CDA"],
+                [
+                    [
+                        "±%.2f" % row["half_width"],
+                        row["seeds_for_asr"],
+                        row["seeds_for_cda"],
+                    ]
+                    for row in precision_payload["precision"]
+                ],
+            )
+        )
+        lines.append("")
+        lines.append(
+            "That table is why every comparison in this study is paired on the seed rather than "
+            "run as two independent groups. The difference between two strategies on the same "
+            "seed has a standard deviation of %.4f against %.4f for the unpaired contrast, which "
+            "is **%.1f times tighter** and needs roughly %d times fewer seeds for the same "
+            "confidence. The strategy gap measured here is %.4f at p = %.5f."
+            % (
+                precision_payload["paired_sd"],
+                precision_payload["unpaired_sd"],
+                precision_payload["pairing_gain"] or 1.0,
+                round((precision_payload["pairing_gain"] or 1.0) ** 2),
+                precision_payload["paired_difference"],
+                precision_payload["permutation"]["p_value"],
+            )
+        )
+        lines.append("")
+
     return "\n".join(lines)
 
 
@@ -572,6 +914,7 @@ def main() -> int:
     audit_seeds = seeds[: max(3, seed_count)]
     audit_size = 800 if args.quick else 2000
     audit_permutations = 40 if args.quick else 200
+    precision_seeds = list(spaced_seeds(int(config["seed"]), 8 if args.quick else 24, "precision"))
 
     if args.render_only:
         results = load_saved(environment)
@@ -589,6 +932,9 @@ def main() -> int:
             "sanitising": lambda: experiment_sanitising(config, seeds[:3]),
             "kernels": lambda: experiment_kernels(size),
             "audit": lambda: experiment_audit(audit_seeds, audit_size, audit_permutations),
+            "partition": lambda: experiment_partition(audit_seeds, audit_size),
+            "evasion": lambda: experiment_evasion(seeds[: max(3, seed_count // 2)], audit_size),
+            "precision": lambda: experiment_precision(precision_seeds, audit_size),
         }
         if args.only not in runners:
             sys.stderr.write(
@@ -609,6 +955,9 @@ def main() -> int:
     results["sanitising"] = experiment_sanitising(config, seeds[:3])
     results["kernels"] = experiment_kernels(size)
     results["audit"] = experiment_audit(audit_seeds, audit_size, audit_permutations)
+    results["partition"] = experiment_partition(audit_seeds, audit_size)
+    results["evasion"] = experiment_evasion(seeds[: max(3, seed_count // 2)], audit_size)
+    results["precision"] = experiment_precision(precision_seeds, audit_size)
 
     pooled = {"rows": results["dose_response"]["rows"] + results["selection"]["rows"]}
     correlation = potency_correlation(pooled)

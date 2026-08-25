@@ -352,16 +352,413 @@ def figure_stealth() -> str:
     return write("stealth.svg", "\n".join(parts), width, height)
 
 
+def figure_partition() -> str:
+    payload = load("partition")
+    rows = payload["rows"]
+    certified = payload["certified"]
+    width, height = 900, 400
+    parts: List[str] = []
+    parts.append(text(24, 30, "Voting over disjoint shards", size=14, fill=INK, weight="700"))
+    parts.append(
+        text(
+            24,
+            52,
+            "left, attack success with and without the vote. right, the accuracy the vote can prove "
+            "against any n poisoned rows.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+
+    left = 24
+    panel_w = 400
+    top = 92
+    row_h = 52
+    track = panel_w - 150
+    scale = max(row["single_asr"] for row in rows) * 1.12
+    for index, row in enumerate(rows):
+        y = top + index * row_h
+        parts.append(
+            text(left, y + 14, "%.1f%% poison" % (100 * row["poison_rate"]), size=11.5, fill=INK, weight="600")
+        )
+        parts.append(rect(left, y + 22, track, 11, ROSE, rx=3, opacity=0.30))
+        parts.append(rect(left, y + 22, row["single_asr"] / scale * track, 11, ROSE, rx=3, opacity=0.85))
+        parts.append(rect(left, y + 35, track, 11, GRID, rx=3, opacity=0.45))
+        parts.append(rect(left, y + 35, row["ensemble_asr"] / scale * track, 11, TEAL, rx=3, opacity=0.95))
+        parts.append(text(left + track + 10, y + 32, "%.2f" % row["single_asr"], size=11, fill=FAINT))
+        parts.append(
+            text(left + track + 10, y + 45, "%.2f" % row["ensemble_asr"], size=11.5, fill=TEAL, weight="700")
+        )
+        parts.append(
+            text(
+                left + track + 56,
+                y + 39,
+                "-%.0f%%" % (100 * row["reduction"]),
+                size=12,
+                fill=TEAL,
+                weight="700",
+            )
+        )
+
+    right = 500
+    chart_w = width - right - 40
+    chart_h = 210
+    base = top + 10
+    values = [row["certified_accuracy"] for row in certified]
+    budgets = [row["poisoned_rows"] for row in certified]
+    top_value = max(values) if values else 1.0
+    for level in (0.0, 0.25, 0.5, 0.75, 1.0):
+        y = base + (1 - level) * chart_h
+        parts.append(line(right, y, right + chart_w, y))
+        parts.append(text(right - 8, y + 4, "%d%%" % round(level * 100), size=10.5, anchor="end"))
+    points = []
+    for index, (budget, value) in enumerate(zip(budgets, values)):
+        x = right + (index / max(1, len(values) - 1)) * chart_w
+        y = base + (1 - max(0.0, min(1.0, value))) * chart_h
+        points.append((x, y))
+        parts.append(text(x, base + chart_h + 18, str(budget), size=10.5, anchor="middle"))
+    if points:
+        area = "M%.1f,%.1f " % (points[0][0], base + chart_h)
+        area += " ".join("L%.1f,%.1f" % (x, y) for x, y in points)
+        area += " L%.1f,%.1f Z" % (points[-1][0], base + chart_h)
+        parts.append("<path d='%s' fill='%s' opacity='0.16'/>" % (area, ACCENT))
+        path = " ".join(
+            "%s%.1f,%.1f" % ("M" if i == 0 else "L", x, y) for i, (x, y) in enumerate(points)
+        )
+        parts.append("<path d='%s' fill='none' stroke='%s' stroke-width='2.5'/>" % (path, ACCENT))
+        for x, y in points:
+            parts.append("<circle cx='%.1f' cy='%.1f' r='4' fill='%s'/>" % (x, y, ACCENT))
+    parts.append(
+        text(
+            right + chart_w / 2,
+            base + chart_h + 38,
+            "poisoned rows the certificate holds against",
+            size=11.5,
+            anchor="middle",
+        )
+    )
+
+    legend_y = height - 18
+    parts.append(rect(24, legend_y - 11, 14, 11, ROSE, rx=3, opacity=0.85))
+    parts.append(text(44, legend_y, "single model", size=11.5, fill=FAINT))
+    parts.append(rect(160, legend_y - 11, 14, 11, TEAL, rx=3, opacity=0.95))
+    parts.append(text(180, legend_y, "%d shard vote" % payload["shards_empirical"], size=11.5, fill=FAINT))
+    parts.append(rect(310, legend_y - 11, 14, 11, ACCENT, rx=3, opacity=0.5))
+    parts.append(
+        text(330, legend_y, "certified accuracy, %d shards" % payload["shards_certified"], size=11.5, fill=FAINT)
+    )
+    return write("partition.svg", "\n".join(parts), width, height)
+
+
+def _panel(x, y, w, h, colour, opacity=0.09, radius=10):
+    return (
+        rect(x, y, w, h, colour, rx=radius, opacity=opacity)
+        + "<rect x='%.1f' y='%.1f' width='%.1f' height='%.1f' rx='%d' fill='none' "
+        "stroke='%s' stroke-width='1.4' opacity='0.5'/>" % (x, y, w, h, radius, colour)
+    )
+
+
+def _arrow(x1, y1, x2, y2, colour=FAINT, dash=""):
+    body = line(x1, y1, x2, y2, colour, 1.5, dash)
+    if abs(y2 - y1) < 0.5:
+        head = "<path d='M%.1f %.1f l-7 -4.5 l0 9 z' fill='%s'/>" % (x2, y2, colour)
+    else:
+        head = "<path d='M%.1f %.1f l-4.5 -7 l9 0 z' fill='%s'/>" % (x2, y2, colour)
+    return body + head
+
+
+def figure_architecture() -> str:
+    width, height = 900, 470
+    parts: List[str] = []
+    parts.append(text(24, 30, "What runs where", size=14, fill=INK, weight="700"))
+    parts.append(
+        text(
+            24,
+            52,
+            "python decides what is true, C makes the hot loops fast, node decides what it looks like. "
+            "the only thing crossing between them is a json file on disk.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+
+    columns = [
+        (
+            24,
+            "INGEST",
+            ACCENT,
+            [
+                ("data/loaders", "jsonl, csv, huggingface"),
+                ("data/record", "content addressed digests"),
+                ("data/versioning", "chained lineage"),
+                ("data/splits", "stratified, disjoint"),
+            ],
+        ),
+        (
+            320,
+            "EXPERIMENT",
+            ROSE,
+            [
+                ("forge/", "5 attacks, exact budget"),
+                ("models/", "surrogate, LoRA, ensemble"),
+                ("train/engine", "sockets blocked"),
+                ("evaluate/", "ASR, CDA, intervals"),
+            ],
+        ),
+        (
+            616,
+            "DEFEND",
+            TEAL,
+            [
+                ("defenses/", "8 detectors, rank fusion"),
+                ("defenses/partition", "shard vote, certificate"),
+                ("analysis/audit", "triage, permutation null"),
+                ("analysis/potency", "predict before training"),
+            ],
+        ),
+    ]
+    box_w = 260
+    top = 88
+    row_h = 52
+    for x, title, colour, rows in columns:
+        parts.append(_panel(x, top, box_w, 40 + row_h * len(rows), colour))
+        parts.append(rect(x + 16, top + 16, 24, 3, colour, rx=2))
+        parts.append(text(x + 16, top + 30, title, size=12.5, fill=colour, weight="700"))
+        for index, (name, note) in enumerate(rows):
+            y = top + 48 + index * row_h
+            parts.append(text(x + 16, y + 12, name, size=12, fill=INK, weight="600"))
+            parts.append(text(x + 16, y + 28, note, size=11, fill=FAINT))
+    mid = top + (40 + row_h * 4) / 2
+    parts.append(_arrow(24 + box_w + 6, mid, 320 - 6, mid))
+    parts.append(_arrow(320 + box_w + 6, mid, 616 - 6, mid))
+
+    bottom = top + 40 + row_h * 4 + 26
+    lanes = [
+        (24, 260, "python 3.9+", "standard library only, zero dependencies", ACCENT),
+        (320, 260, "C kernels", "featurize, gram stats, minhash, 9x to 75x", AMBER),
+        (616, 260, "node viewer", "report json becomes one html file", TEAL),
+    ]
+    for x, w, title, note, colour in lanes:
+        parts.append(_panel(x, bottom, w, 54, colour, opacity=0.07, radius=8))
+        parts.append(text(x + 16, bottom + 22, title, size=12, fill=colour, weight="700"))
+        parts.append(text(x + 16, bottom + 40, note, size=11, fill=FAINT))
+    parts.append(
+        text(
+            width / 2,
+            height - 12,
+            "every stage writes its digest into report.json, so any run replays exactly",
+            size=11.5,
+            fill=FAINT,
+            anchor="middle",
+        )
+    )
+    return write("architecture.svg", "\n".join(parts), width, height)
+
+
+def figure_threat_model() -> str:
+    width, height = 900, 380
+    parts: List[str] = []
+    parts.append(text(24, 30, "Who controls what", size=14, fill=INK, weight="700"))
+    parts.append(
+        text(
+            24,
+            52,
+            "the attacker writes rows and nothing else. everything measured sits on the defender's "
+            "side of the line.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+
+    parts.append(_panel(24, 84, 236, 220, DANGER, opacity=0.08))
+    parts.append(text(40, 110, "ATTACKER", size=12.5, fill=DANGER, weight="700"))
+    for index, item in enumerate(
+        ["writes a bounded share of rows", "chooses their text", "chooses their label", "reads the public corpus"]
+    ):
+        parts.append(text(40, 138 + index * 24, "+  " + item, size=11.5, fill=INK))
+    for index, item in enumerate(["cannot touch the eval set", "cannot see the seed", "cannot reach the network"]):
+        parts.append(text(40, 240 + index * 22, "x  " + item, size=11.5, fill=FAINT))
+
+    parts.append(
+        "<line x1='288' y1='84' x2='288' y2='304' stroke='%s' stroke-width='2' stroke-dasharray='6 5'/>"
+        % AMBER
+    )
+    parts.append(
+        text(288, 76, "trust boundary", size=11, fill=AMBER, anchor="middle", weight="600")
+    )
+
+    parts.append(_panel(316, 84, 560, 220, TEAL, opacity=0.07))
+    parts.append(text(336, 110, "DEFENDER, inside the sandbox", size=12.5, fill=TEAL, weight="700"))
+    stages = [
+        ("corpus", "bounded at ingest", ACCENT),
+        ("forge", "exact row budget", ROSE),
+        ("train", "no outbound sockets", AMBER),
+        ("evaluate", "clean held out data", TEAL),
+    ]
+    x = 340
+    for index, (title, note, colour) in enumerate(stages):
+        parts.append(_panel(x, 132, 118, 62, colour, opacity=0.12, radius=8))
+        parts.append(text(x + 12, 156, title, size=12, fill=colour, weight="700"))
+        parts.append(text(x + 12, 176, note, size=10.5, fill=FAINT))
+        if index < len(stages) - 1:
+            parts.append(_arrow(x + 118 + 4, 163, x + 130 - 2, 163))
+        x += 130
+    parts.append(text(336, 224, "the sandbox is a tripwire, not a kernel boundary:", size=11.5, fill=INK, weight="600"))
+    parts.append(
+        text(
+            336,
+            246,
+            "it blocks sockets in this interpreter. a child process or a C extension goes around it,",
+            size=11,
+            fill=FAINT,
+        )
+    )
+    parts.append(
+        text(336, 264, "so run untrusted corpora in a container with no network namespace.", size=11, fill=FAINT)
+    )
+    parts.append(
+        text(
+            width / 2,
+            height - 24,
+            "not modelled: pretraining scale poison, federated training, weight tampering, prompt injection at inference",
+            size=11,
+            fill=FAINT,
+            anchor="middle",
+        )
+    )
+    return write("threat-model.svg", "\n".join(parts), width, height)
+
+
+def figure_partition_mechanism() -> str:
+    width, height = 900, 400
+    parts: List[str] = []
+    parts.append(text(24, 30, "How the shard vote bounds the damage", size=14, fill=INK, weight="700"))
+    parts.append(
+        text(
+            24,
+            52,
+            "a poisoned row lands in exactly one shard, so it can corrupt exactly one vote. "
+            "nothing has to notice it.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+
+    parts.append(_panel(24, 96, 150, 120, ACCENT))
+    parts.append(text(40, 124, "corpus", size=12.5, fill=ACCENT, weight="700"))
+    for index in range(5):
+        colour = DANGER if index == 1 else FAINT
+        parts.append(rect(40, 138 + index * 14, 100, 8, colour, rx=2, opacity=0.9 if index == 1 else 0.5))
+    parts.append(text(40, 226, "one poisoned row", size=10.5, fill=DANGER))
+
+    parts.append(text(196, 152, "sha256(uid) mod k", size=11, fill=AMBER, weight="600"))
+    parts.append(_arrow(190, 162, 320, 162, AMBER))
+
+    shard_x = 336
+    shard_w = 92
+    for index in range(5):
+        x = shard_x + index * (shard_w + 12)
+        poisoned = index == 1
+        colour = DANGER if poisoned else TEAL
+        parts.append(_panel(x, 100, shard_w, 74, colour, opacity=0.13, radius=8))
+        parts.append(text(x + 10, 122, "shard %d" % (index + 1), size=11, fill=colour, weight="700"))
+        parts.append(text(x + 10, 142, "model %d" % (index + 1), size=10.5, fill=FAINT))
+        parts.append(
+            text(x + 10, 160, "poisoned" if poisoned else "clean", size=10.5, fill=colour, weight="600")
+        )
+        parts.append(_arrow(x + shard_w / 2, 178, x + shard_w / 2, 208, FAINT))
+
+    parts.append(_panel(shard_x, 214, 5 * (shard_w + 12) - 12, 78, ACCENT, opacity=0.09))
+    parts.append(text(shard_x + 16, 240, "plurality vote", size=12.5, fill=ACCENT, weight="700"))
+    parts.append(text(shard_x + 16, 262, "allow 4    block 1", size=12, fill=INK, weight="600"))
+    parts.append(
+        text(shard_x + 16, 280, "winner leads by 3, so radius = (4 - 1 - 1) // 2 = 1", size=11, fill=FAINT)
+    )
+
+    parts.append(_panel(24, 306, 852, 62, TEAL, opacity=0.07, radius=8))
+    parts.append(
+        text(
+            42,
+            330,
+            "the certificate: if the winner leads the runner up by more than twice the corrupted shards,",
+            size=11.5,
+            fill=INK,
+            weight="600",
+        )
+    )
+    parts.append(
+        text(
+            42,
+            352,
+            "no attacker holding that many rows can change this answer, whatever those rows contain.",
+            size=11.5,
+            fill=TEAL,
+            weight="600",
+        )
+    )
+    return write("partition-mechanism.svg", "\n".join(parts), width, height)
+
+
+def figure_defense_layers() -> str:
+    width, height = 900, 400
+    parts: List[str] = []
+    parts.append(text(24, 30, "Defense in depth", size=14, fill=INK, weight="700"))
+    parts.append(
+        text(
+            24,
+            52,
+            "each layer assumes the one before it failed. the last one does not depend on noticing "
+            "anything at all.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+    layers = [
+        ("1  ingest bounds", "record, line, label and nesting ceilings; unique ids", "stops a corpus from being the exploit", ACCENT),
+        ("2  eight detectors", "purity, contradiction, rarity, confusable, dynamics, spectral, clustering, neighbourhood", "AUC 0.92 to 0.98 on the best single detector", ROSE),
+        ("3  rank fusion and sanitising", "drop the top slice of the fused rank, then retrain", "ASR 0.855 to 0.123 at a 5% review budget", AMBER),
+        ("4  bounded training", "class weight capped, per sample update capped", "one row can no longer dominate the model", TEAL),
+        ("5  shard vote and certificate", "disjoint shards, plurality vote, per prediction radius", "ASR cut 64%, and a floor that holds against any poison", ACCENT),
+    ]
+    top = 88
+    row_h = 58
+    for index, (title, how, effect, colour) in enumerate(layers):
+        y = top + index * row_h
+        parts.append(_panel(24, y, 852, 48, colour, opacity=0.09, radius=8))
+        parts.append(rect(24, y, 5, 48, colour, rx=2, opacity=0.95))
+        parts.append(text(44, y + 20, title, size=12, fill=colour, weight="700"))
+        parts.append(text(44, y + 38, how, size=10.5, fill=FAINT))
+        parts.append(text(560, y + 20, effect, size=11, fill=INK, weight="600"))
+        if index < len(layers) - 1:
+            parts.append(_arrow(450, y + 48 + 2, 450, y + row_h - 2, FAINT))
+    parts.append(
+        text(
+            width / 2,
+            height - 14,
+            "layers 1 to 3 have to be right about the data. layers 4 and 5 hold whether or not anything was detected.",
+            size=11.5,
+            fill=FAINT,
+            anchor="middle",
+        )
+    )
+    return write("defense-layers.svg", "\n".join(parts), width, height)
+
+
 def main() -> int:
     if not os.path.isdir(DATA):
         sys.stderr.write("run scripts/experiments.py first, no data in %s\n" % DATA)
         return 1
     made = [
         figure_pipeline(),
+        figure_architecture(),
+        figure_threat_model(),
+        figure_partition_mechanism(),
+        figure_defense_layers(),
         figure_dose_response(),
         figure_selection(),
         figure_detectors(),
         figure_stealth(),
+        figure_partition(),
     ]
     for path in made:
         sys.stdout.write("%s\n" % os.path.relpath(path, ROOT))

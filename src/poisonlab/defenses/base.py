@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+import math
 import time
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Sequence
+from typing import Any, Dict, List, Optional, Sequence, Tuple
 
 from ..data.record import POISONED, Dataset
 from ..evaluate.statistics import average_precision, detection_at_budget, roc_auc
@@ -57,6 +58,12 @@ class Defense:
         started = time.time()
         report = self.analyse(dataset, context)
         report.seconds = time.time() - started
+        report.scores, discarded = finite_scores(report.scores)
+        if discarded:
+            report.metrics["non_finite_scores"] = discarded
+            report.notes = (
+                "%s (%d non finite score(s) were treated as zero)" % (report.notes, discarded)
+            ).strip()
         report.metrics.update(score_detection(report.scores, dataset, context.budget))
         return report
 
@@ -79,15 +86,34 @@ def score_detection(scores: Dict[str, float], dataset: Dataset, budget: float) -
     }
 
 
+def finite_scores(raw: Dict[str, float]) -> Tuple[Dict[str, float], int]:
+    cleaned: Dict[str, float] = {}
+    discarded = 0
+    for key, value in (raw or {}).items():
+        try:
+            number = float(value)
+        except (TypeError, ValueError):
+            cleaned[key] = 0.0
+            discarded += 1
+            continue
+        if not math.isfinite(number):
+            cleaned[key] = 0.0
+            discarded += 1
+            continue
+        cleaned[key] = number
+    return cleaned, discarded
+
+
 def normalize_scores(raw: Dict[str, float]) -> Dict[str, float]:
     if not raw:
         return {}
-    values = list(raw.values())
+    cleaned, _ = finite_scores(raw)
+    values = list(cleaned.values())
     low = min(values)
     high = max(values)
     if high - low < 1e-12:
-        return {key: 0.0 for key in raw}
-    return {key: (value - low) / (high - low) for key, value in raw.items()}
+        return {key: 0.0 for key in cleaned}
+    return {key: (value - low) / (high - low) for key, value in cleaned.items()}
 
 
 def flag_uids(scores: Dict[str, float], dataset: Dataset, budget: float) -> List[str]:

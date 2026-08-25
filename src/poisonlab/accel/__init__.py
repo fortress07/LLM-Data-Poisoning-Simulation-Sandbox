@@ -4,6 +4,7 @@ import os
 import threading
 from typing import Any, Dict, List, Optional, Sequence, Tuple
 
+from ..safety import UnsafeInput
 from . import pure
 from .build import compile_library, ensure_library, find_compiler, library_path
 from .pure import GramStat
@@ -70,7 +71,11 @@ def status() -> Dict[str, Any]:
     get_backend()
     payload = dict(_STATUS)
     payload["compiler"] = find_compiler()
-    payload["expected_library"] = library_path()
+    try:
+        payload["expected_library"] = library_path()
+    except UnsafeInput as error:
+        payload["expected_library"] = None
+        payload["library_error"] = str(error)
     return payload
 
 

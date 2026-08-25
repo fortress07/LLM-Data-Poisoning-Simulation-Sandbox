@@ -31,6 +31,8 @@ class SurrogateConfig:
     final_learning_rate_ratio: float = 0.1
     weight_decay: float = 1e-4
     class_balance: bool = True
+    class_weight_cap: float = 8.0
+    max_update_norm: float = 4.0
     label_smoothing: float = 0.0
     seed: int = 0
     features: FeatureConfig = field(default_factory=FeatureConfig)
@@ -42,6 +44,8 @@ class SurrogateConfig:
             "final_learning_rate_ratio": self.final_learning_rate_ratio,
             "weight_decay": self.weight_decay,
             "class_balance": self.class_balance,
+            "class_weight_cap": self.class_weight_cap,
+            "max_update_norm": self.max_update_norm,
             "label_smoothing": self.label_smoothing,
             "seed": self.seed,
             "features": self.features.to_dict(),
@@ -122,9 +126,11 @@ class SurrogateClassifier(Model):
             occurrences = [0] * classes
             for target in targets:
                 occurrences[target] += 1
+            cap = max(1.0, ensure_finite(config.class_weight_cap, "class_weight_cap"))
             for index in range(classes):
                 if occurrences[index]:
-                    weight_of_class[index] = count / (classes * occurrences[index])
+                    share = count / (classes * occurrences[index])
+                    weight_of_class[index] = min(cap, max(1.0 / cap, share))
         order = list(range(count))
         log = TrainingLog(backend="surrogate")
         log.sample_uids = list(uids or ["s%06d" % i for i in range(count)])
@@ -132,6 +138,7 @@ class SurrogateClassifier(Model):
         step = 0
         learning_rate = config.learning_rate
         smoothing = config.label_smoothing
+        ceiling = max(0.0, ensure_finite(config.max_update_norm, "max_update_norm"))
         for epoch in range(config.epochs):
             rng = stream(config.seed, "shuffle", epoch)
             rng.shuffle(order)
@@ -154,6 +161,8 @@ class SurrogateClassifier(Model):
                     1.0 - progress * (1.0 - config.final_learning_rate_ratio)
                 )
                 learning_rate *= weight_of_class[target]
+                if ceiling > 0.0 and learning_rate > ceiling:
+                    learning_rate = ceiling
                 self.scale *= 1.0 - learning_rate * config.weight_decay
                 if self.scale < _MIN_SCALE:
                     self._absorb_scale()

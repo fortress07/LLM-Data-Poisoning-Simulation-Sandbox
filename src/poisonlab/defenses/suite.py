@@ -6,12 +6,18 @@ from ..data.record import Dataset
 from .base import Defense, DefenseContext, DetectionReport, score_detection
 from .dynamics import LossDynamicsScanner
 from .representation import ActivationClustering, NeighborhoodConsistency, SpectralSignature
-from .statistical import ContradictionScanner, GramPurityScanner, RarityProfiler
+from .statistical import (
+    ConfusableScanner,
+    ContradictionScanner,
+    GramPurityScanner,
+    RarityProfiler,
+)
 
 REGISTRY: Dict[str, Any] = {
     GramPurityScanner.name: GramPurityScanner,
     ContradictionScanner.name: ContradictionScanner,
     RarityProfiler.name: RarityProfiler,
+    ConfusableScanner.name: ConfusableScanner,
     LossDynamicsScanner.name: LossDynamicsScanner,
     SpectralSignature.name: SpectralSignature,
     ActivationClustering.name: ActivationClustering,
@@ -22,6 +28,7 @@ DEFAULT_ORDER = (
     GramPurityScanner.name,
     ContradictionScanner.name,
     RarityProfiler.name,
+    ConfusableScanner.name,
     LossDynamicsScanner.name,
     SpectralSignature.name,
     ActivationClustering.name,
@@ -42,13 +49,20 @@ def rank_fuse(
         return {}
     uids = [record.uid for record in dataset.records]
     collected: Dict[str, List[float]] = {uid: [] for uid in uids}
+    informative = 0
     for report in reports:
         values = [(uid, report.scores.get(uid, 0.0)) for uid in uids]
+        spread = max(value for _, value in values) - min(value for _, value in values)
+        if spread <= 1e-12:
+            continue
+        informative += 1
         values.sort(key=lambda item: item[1])
         total = max(1, len(values) - 1)
         for position, (uid, _) in enumerate(values):
             collected[uid].append(position / total)
-    width = max(1, min(top, len(reports)))
+    if not informative:
+        return {uid: 0.0 for uid in uids}
+    width = max(1, min(top, informative))
     return {
         uid: sum(sorted(ranks)[-width:]) / width if ranks else 0.0
         for uid, ranks in collected.items()
@@ -102,13 +116,20 @@ def stealth_summary(
 def sanitize(
     dataset: Dataset, scores: Dict[str, float], budget: float
 ) -> Tuple[Dataset, List[str]]:
-    if not scores:
+    if not scores or not len(dataset):
         return dataset, []
-    ordered = sorted(scores.items(), key=lambda item: -item[1])
-    limit = max(0, int(round(len(dataset) * budget)))
-    removed = [uid for uid, value in ordered[:limit]]
-    kept = dataset.drop(removed)
-    kept.name = "%s.sanitised" % dataset.name
+    limit = max(0, min(len(dataset), int(round(len(dataset) * budget))))
+    order = sorted(
+        range(len(dataset)),
+        key=lambda index: (-scores.get(dataset.records[index].uid, 0.0), index),
+    )
+    doomed = set(order[:limit])
+    kept = Dataset(
+        [record for index, record in enumerate(dataset.records) if index not in doomed],
+        name="%s.sanitised" % dataset.name,
+        meta=dict(dataset.meta),
+    )
+    removed = [dataset.records[index].uid for index in sorted(doomed)]
     return kept, removed
 
 

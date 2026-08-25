@@ -9,6 +9,7 @@ from ..seeding import stream
 def wilson_interval(successes: int, total: int, z: float = 1.959963985) -> Tuple[float, float]:
     if total <= 0:
         return (0.0, 0.0)
+    successes = max(0, min(int(successes), int(total)))
     phat = successes / total
     denominator = 1.0 + z * z / total
     centre = phat + z * z / (2 * total)

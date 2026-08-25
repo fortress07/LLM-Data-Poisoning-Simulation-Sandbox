@@ -1,0 +1,94 @@
+{
+  "rows": [
+    {
+      "poison_rate": 0.005,
+      "trials": 6,
+      "single_asr": 0.2254,
+      "single_stderr": 0.0221,
+      "ensemble_asr": 0.1836,
+      "ensemble_stderr": 0.0093,
+      "reduction": 0.1857,
+      "accuracy_cost": -0.0071
+    },
+    {
+      "poison_rate": 0.01,
+      "trials": 6,
+      "single_asr": 0.3391,
+      "single_stderr": 0.0248,
+      "ensemble_asr": 0.1954,
+      "ensemble_stderr": 0.0082,
+      "reduction": 0.4238,
+      "accuracy_cost": -0.0058
+    },
+    {
+      "poison_rate": 0.02,
+      "trials": 6,
+      "single_asr": 0.6517,
+      "single_stderr": 0.0286,
+      "ensemble_asr": 0.2326,
+      "ensemble_stderr": 0.007,
+      "reduction": 0.6432,
+      "accuracy_cost": -0.0079
+    },
+    {
+      "poison_rate": 0.05,
+      "trials": 6,
+      "single_asr": 0.9442,
+      "single_stderr": 0.0165,
+      "ensemble_asr": 0.3865,
+      "ensemble_stderr": 0.0121,
+      "reduction": 0.5907,
+      "accuracy_cost": -0.0071
+    }
+  ],
+  "certified": [
+    {
+      "poisoned_rows": 0,
+      "certified_accuracy": 0.8571,
+      "stderr": 0.0072
+    },
+    {
+      "poisoned_rows": 1,
+      "certified_accuracy": 0.825,
+      "stderr": 0.0059
+    },
+    {
+      "poisoned_rows": 2,
+      "certified_accuracy": 0.8025,
+      "stderr": 0.0065
+    },
+    {
+      "poisoned_rows": 3,
+      "certified_accuracy": 0.7725,
+      "stderr": 0.0088
+    },
+    {
+      "poisoned_rows": 5,
+      "certified_accuracy": 0.6871,
+      "stderr": 0.0121
+    },
+    {
+      "poisoned_rows": 8,
+      "certified_accuracy": 0.5192,
+      "stderr": 0.0108
+    },
+    {
+      "poisoned_rows": 12,
+      "certified_accuracy": 0.2042,
+      "stderr": 0.0078
+    }
+  ],
+  "ensemble_accuracy": 0.8571,
+  "shards_empirical": 16,
+  "shards_certified": 32,
+  "rows_per_shard": 88,
+  "seeds": [
+    655868388,
+    290507194,
+    1770385587,
+    1181747172,
+    630060722,
+    1902188609
+  ],
+  "corpus_size": 2000
+}

@@ -3,7 +3,13 @@ from __future__ import annotations
 from .base import Defense, DefenseContext, DetectionReport, flag_uids, score_detection
 from .dynamics import LossDynamicsScanner
 from .representation import ActivationClustering, NeighborhoodConsistency, SpectralSignature
-from .statistical import ContradictionScanner, GramPurityScanner, RarityProfiler
+from .partition import Certificate, PartitionEnsemble, certified_report, fit_ensemble
+from .statistical import (
+    ConfusableScanner,
+    ContradictionScanner,
+    GramPurityScanner,
+    RarityProfiler,
+)
 from .suite import (
     DEFAULT_ORDER,
     REGISTRY,
@@ -17,6 +23,11 @@ from .suite import (
 )
 
 __all__ = [
+    "Certificate",
+    "ConfusableScanner",
+    "PartitionEnsemble",
+    "certified_report",
+    "fit_ensemble",
     "DEFAULT_ORDER",
     "REGISTRY",
     "ActivationClustering",

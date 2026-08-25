@@ -125,6 +125,22 @@ class Dataset:
     def poisoned_uids(self) -> List[str]:
         return [record.uid for record in self.records if record.poisoned]
 
+    def duplicate_uids(self) -> List[str]:
+        seen: Dict[str, int] = {}
+        for record in self.records:
+            seen[record.uid] = seen.get(record.uid, 0) + 1
+        return sorted(uid for uid, total in seen.items() if total > 1)
+
+    def require_unique_uids(self, origin: str = "dataset") -> "Dataset":
+        duplicates = self.duplicate_uids()
+        if duplicates:
+            raise UnsafeInput(
+                "%s repeats %d record id(s), starting with %r; ids address rows in every "
+                "score, budget and removal report, so they must be unique"
+                % (origin, len(duplicates), duplicates[0][:60])
+            )
+        return self
+
     def filter(self, predicate) -> "Dataset":
         return Dataset([r for r in self.records if predicate(r)], self.name, self.meta)
 
@@ -176,6 +192,7 @@ class Dataset:
         max_line_bytes: int = MAX_LINE_BYTES,
         max_total_bytes: int = MAX_CORPUS_BYTES,
         max_labels: int = MAX_DISTINCT_LABELS,
+        unique_uids: bool = True,
     ) -> "Dataset":
         records: List[Record] = []
         seen_labels: set = set()
@@ -203,6 +220,10 @@ class Dataset:
                     payload = json.loads(line)
                 except ValueError as error:
                     raise ValueError("%s line %d is not valid json: %s" % (path, number, error))
+                except RecursionError:
+                    raise UnsafeInput(
+                        "%s line %d nests too deeply to parse safely" % (path, number)
+                    )
                 if not isinstance(payload, dict):
                     raise ValueError("%s line %d is not a json object" % (path, number))
                 try:
@@ -215,4 +236,7 @@ class Dataset:
                         "%s declares more than %d distinct labels" % (path, max_labels)
                     )
                 records.append(record)
-        return cls(records, name or os.path.splitext(os.path.basename(path))[0])
+        dataset = cls(records, name or os.path.splitext(os.path.basename(path))[0])
+        if unique_uids:
+            dataset.require_unique_uids(path)
+        return dataset

@@ -13,8 +13,16 @@ import time
 import unittest
 
 from poisonlab import safety
+from poisonlab.safety import DirectoryFacts, directory_refusal, inspect_directory
 from poisonlab.accel import build as accel_build
+from poisonlab.analysis.audit import audit, concentration_test
+from poisonlab.campaign import summarize
 from poisonlab.config import apply_dotted, sandbox_campaign
+from poisonlab.data.synthetic import CorpusSpec, build_corpus
+from poisonlab.defenses.base import DefenseContext
+from poisonlab.defenses.partition import PartitionEnsemble, partition
+from poisonlab.report.markdown import render_campaign
+from poisonlab.train.engine import TrainConfig, train_model
 from poisonlab.data.record import Dataset, Record
 from poisonlab.data.versioning import DatasetStore
 from poisonlab.evaluate.evaluator import confusion
@@ -178,7 +186,11 @@ class IsolationEnforcementTest(unittest.TestCase):
         inner = NetworkIsolation(strict=False)
         with outer:
             with inner:
-                socket.socket().connect_ex(("93.184.216.34", 80))
+                sock = socket.socket()
+                try:
+                    sock.connect_ex(("93.184.216.34", 80))
+                finally:
+                    sock.close()
         self.assertTrue(outer.report()["violations"])
         self.assertTrue(inner.report()["violations"])
 
@@ -276,8 +288,24 @@ class AcceleratorSupplyChainTest(unittest.TestCase):
     def test_world_writable_override_is_rejected(self):
         os.chmod(self.directory, 0o777)
         os.environ["POISONLAB_ACCEL_DIR"] = self.directory
+        with self.assertRaises(UnsafeInput) as caught:
+            accel_build.cache_dir()
+        self.assertIn("writable by other users", str(caught.exception))
+
+    @unittest.skipUnless(POSIX, "posix permission model only")
+    def test_an_unsafe_override_is_never_silently_repaired(self):
+        os.chmod(self.directory, 0o777)
+        os.environ["POISONLAB_ACCEL_DIR"] = self.directory
         with self.assertRaises(UnsafeInput):
             accel_build.cache_dir()
+        self.assertEqual(os.stat(self.directory).st_mode & 0o777, 0o777)
+
+    @unittest.skipUnless(POSIX, "posix permission model only")
+    def test_a_directory_poisonlab_creates_is_private(self):
+        target = os.path.join(self.directory, "fresh")
+        os.environ["POISONLAB_ACCEL_DIR"] = target
+        self.assertEqual(accel_build.cache_dir(), target)
+        self.assertEqual(os.stat(target).st_mode & 0o777, 0o700)
 
     @unittest.skipUnless(POSIX, "posix symlink model only")
     def test_symlinked_override_is_rejected(self):
@@ -286,8 +314,18 @@ class AcceleratorSupplyChainTest(unittest.TestCase):
         os.makedirs(real, exist_ok=True)
         os.symlink(real, link)
         os.environ["POISONLAB_ACCEL_DIR"] = link
-        with self.assertRaises(UnsafeInput):
+        with self.assertRaises(UnsafeInput) as caught:
             accel_build.cache_dir()
+        self.assertIn("symlink", str(caught.exception))
+
+    @unittest.skipUnless(POSIX, "posix symlink model only")
+    def test_a_dangling_symlink_override_is_rejected(self):
+        link = os.path.join(self.directory, "dangling")
+        os.symlink(os.path.join(self.directory, "missing"), link)
+        os.environ["POISONLAB_ACCEL_DIR"] = link
+        with self.assertRaises(UnsafeInput) as caught:
+            accel_build.cache_dir()
+        self.assertIn("symlink", str(caught.exception))
 
     def test_ensure_library_survives_an_unusable_override(self):
         blocker = os.path.join(self.directory, "blocker")
@@ -312,6 +350,138 @@ class AcceleratorSupplyChainTest(unittest.TestCase):
             else:
                 os.environ["POISONLAB_ACCEL"] = saved
             accel.reset_backend()
+
+
+class DirectoryPolicyTest(unittest.TestCase):
+    def facts(self, **overrides):
+        base = {
+            "path": "/opt/poisonlab/cache",
+            "exists": True,
+            "is_directory": True,
+            "is_symlink": False,
+            "mode": 0o700,
+            "owner_uid": 1000,
+            "process_uid": 1000,
+            "enforce_permissions": True,
+        }
+        base.update(overrides)
+        return DirectoryFacts(**base)
+
+    def test_a_private_directory_is_accepted(self):
+        self.assertIsNone(directory_refusal(self.facts()))
+
+    def test_a_directory_others_can_only_read_is_accepted(self):
+        self.assertIsNone(directory_refusal(self.facts(mode=0o755)))
+
+    def test_world_writable_is_refused(self):
+        reason = directory_refusal(self.facts(mode=0o777))
+        self.assertIsNotNone(reason)
+        self.assertIn("writable by other users", reason)
+
+    def test_other_writable_alone_is_refused(self):
+        self.assertIsNotNone(directory_refusal(self.facts(mode=0o707)))
+
+    def test_group_writable_alone_is_refused(self):
+        self.assertIsNotNone(directory_refusal(self.facts(mode=0o770)))
+
+    def test_the_sticky_bit_does_not_excuse_world_writability(self):
+        reason = directory_refusal(self.facts(mode=0o1777))
+        self.assertIsNotNone(reason, "a sticky world writable directory is still a plant target")
+        self.assertIn("writable by other users", reason)
+
+    def test_a_directory_owned_by_someone_else_is_refused(self):
+        reason = directory_refusal(self.facts(owner_uid=0, process_uid=1000))
+        self.assertIsNotNone(reason)
+        self.assertIn("owned by uid 0", reason)
+
+    def test_a_symlink_is_refused_even_when_otherwise_perfect(self):
+        reason = directory_refusal(self.facts(is_symlink=True))
+        self.assertEqual(reason, "is a symlink")
+
+    def test_a_dangling_symlink_is_refused_as_a_symlink(self):
+        reason = directory_refusal(self.facts(exists=False, is_directory=False, is_symlink=True))
+        self.assertEqual(reason, "is a symlink")
+
+    def test_a_missing_directory_is_refused(self):
+        self.assertEqual(directory_refusal(self.facts(exists=False)), "does not exist")
+
+    def test_a_plain_file_is_refused(self):
+        self.assertEqual(directory_refusal(self.facts(is_directory=False)), "is not a directory")
+
+    def test_windows_skips_the_permission_rules_but_not_the_rest(self):
+        windows = {"enforce_permissions": False}
+        self.assertIsNone(directory_refusal(self.facts(mode=0o777, **windows)))
+        self.assertIsNone(directory_refusal(self.facts(owner_uid=0, **windows)))
+        self.assertEqual(directory_refusal(self.facts(is_symlink=True, **windows)), "is a symlink")
+        self.assertEqual(directory_refusal(self.facts(exists=False, **windows)), "does not exist")
+
+    def test_inspection_of_a_real_directory_is_accepted(self):
+        directory = tempfile.mkdtemp(prefix="poisonlab-policy-")
+        try:
+            self.assertIsNone(directory_refusal(inspect_directory(directory)))
+        finally:
+            shutil.rmtree(directory, ignore_errors=True)
+
+    def test_inspection_of_a_missing_path_reports_absence(self):
+        facts = inspect_directory(os.path.join(tempfile.gettempdir(), "poisonlab-not-here-xyz"))
+        self.assertFalse(facts.exists)
+        self.assertEqual(directory_refusal(facts), "does not exist")
+
+    def test_inspection_of_a_file_reports_not_a_directory(self):
+        handle = tempfile.NamedTemporaryFile(prefix="poisonlab-policy-", delete=False)
+        handle.close()
+        try:
+            self.assertEqual(directory_refusal(inspect_directory(handle.name)), "is not a directory")
+        finally:
+            os.unlink(handle.name)
+
+    def test_permission_enforcement_tracks_the_platform(self):
+        directory = tempfile.mkdtemp(prefix="poisonlab-policy-")
+        try:
+            facts = inspect_directory(directory)
+            self.assertEqual(facts.enforce_permissions, os.name != "nt")
+        finally:
+            shutil.rmtree(directory, ignore_errors=True)
+
+
+class CacheDirectoryRepairTest(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.mkdtemp(prefix="poisonlab-repair-")
+        self.calls = []
+        self.original = accel_build._create_private
+
+        def spy(path):
+            self.calls.append(path)
+            return self.original(path)
+
+        accel_build._create_private = spy
+
+    def tearDown(self):
+        accel_build._create_private = self.original
+        shutil.rmtree(self.directory, ignore_errors=True)
+
+    def test_an_existing_directory_is_never_repaired_before_it_is_judged(self):
+        self.assertIsNone(accel_build._refuse(self.directory))
+        self.assertEqual(self.calls, [], "an existing directory must not be created or chmodded")
+
+    def test_a_missing_directory_is_created_privately(self):
+        target = os.path.join(self.directory, "nested", "cache")
+        self.assertIsNone(accel_build._refuse(target))
+        self.assertEqual(self.calls, [target])
+        self.assertTrue(os.path.isdir(target))
+
+    def test_creation_is_skipped_when_it_is_not_requested(self):
+        target = os.path.join(self.directory, "absent")
+        self.assertEqual(accel_build._refuse(target, create=False), "does not exist")
+        self.assertEqual(self.calls, [])
+
+    def test_a_refusal_reason_is_specific(self):
+        blocker = os.path.join(self.directory, "file")
+        with open(blocker, "w", encoding="utf-8") as handle:
+            handle.write("x")
+        reason = accel_build._refuse(blocker)
+        self.assertIsNotNone(reason)
+        self.assertNotEqual(reason, "")
 
 
 class AllocationBombTest(unittest.TestCase):
@@ -773,8 +943,37 @@ class SourceAuditTest(unittest.TestCase):
         self.assertIn("ipaddress", source)
         self.assertNotIn('startswith(_LOOPBACK_PREFIXES)', source)
 
-    def test_temp_directory_is_not_used_as_a_default_code_cache(self):
-        with open(os.path.join(ROOT, "src", "poisonlab", "accel", "build.py"), encoding="utf-8") as handle:
+    def test_no_candidate_cache_directory_is_a_shared_temp_root(self):
+        shared = os.path.realpath(tempfile.gettempdir())
+        candidates = accel_build._candidate_dirs()
+        self.assertTrue(candidates)
+        for candidate in candidates:
+            self.assertNotEqual(
+                os.path.realpath(candidate),
+                shared,
+                "%s is the shared temp root, every local user can write there" % candidate,
+            )
+
+    def test_a_private_user_directory_is_preferred_over_temp(self):
+        candidates = accel_build._candidate_dirs()
+        shared = os.path.realpath(tempfile.gettempdir())
+        under_temp = [
+            index
+            for index, candidate in enumerate(candidates)
+            if os.path.realpath(candidate).startswith(shared + os.sep)
+        ]
+        self.assertTrue(under_temp, "there should be a last resort temp candidate")
+        self.assertEqual(
+            min(under_temp),
+            len(candidates) - 1,
+            "a temp directory must be the last resort, never preferred",
+        )
+        self.assertIn(accel_build.user_cache_root(), candidates)
+
+    def test_every_cache_candidate_is_screened(self):
+        with open(
+            os.path.join(ROOT, "src", "poisonlab", "accel", "build.py"), encoding="utf-8"
+        ) as handle:
             source = handle.read()
         tree = ast.parse(source)
         function = next(
@@ -783,13 +982,202 @@ class SourceAuditTest(unittest.TestCase):
             if isinstance(node, ast.FunctionDef) and node.name == "cache_dir"
         )
         body = ast.get_source_segment(source, function)
-        self.assertIn("user_cache_root", body)
-        self.assertIn("_usable", body)
+        self.assertIn("_refuse", body)
+        self.assertNotIn("gettempdir", body)
+        returns = [node for node in ast.walk(function) if isinstance(node, ast.Return)]
+        self.assertTrue(returns)
+        for node in returns:
+            enclosing = ast.dump(node)
+            self.assertNotIn("gettempdir", enclosing)
 
     def test_every_module_compiles(self):
         for path in self._sources():
             with open(path, encoding="utf-8") as handle:
                 ast.parse(handle.read(), filename=path)
+
+
+class EnsembleResourceTest(unittest.TestCase):
+    def _corpus(self, size=120):
+        return Dataset(
+            [
+                Record("u%04d" % index, "document %d body text" % index, "allow" if index % 2 else "block")
+                for index in range(size)
+            ]
+        )
+
+    def _config(self, buckets):
+        return SurrogateConfig(epochs=1, features=FeatureConfig(max_n=1, buckets=buckets))
+
+    def test_the_shard_count_is_bounded(self):
+        dataset = self._corpus()
+        for shards in (safety.MAX_SHARDS + 1, 10**7, -1):
+            with self.assertRaises(UnsafeInput, msg=str(shards)):
+                partition(dataset, shards)
+
+    def test_a_non_integer_shard_count_is_refused(self):
+        with self.assertRaises(UnsafeInput):
+            partition(self._corpus(), "many")
+
+    def test_a_sane_shard_count_is_accepted(self):
+        buckets = partition(self._corpus(), 16)
+        self.assertEqual(len(buckets), 16)
+        self.assertEqual(sum(len(b) for b in buckets), 120)
+
+    def test_the_whole_ensemble_is_capped_not_just_one_member(self):
+        dataset = self._corpus()
+        member = self._config(1 << 22)
+        safety.ensure_capacity((1 << 22) * 2, safety.MAX_WEIGHT_CELLS, "one member")
+        with self.assertRaises(UnsafeInput) as caught:
+            PartitionEnsemble(shards=64, config=member).fit(dataset, label_space=["allow", "block"])
+        self.assertIn("partition ensemble", str(caught.exception))
+
+    def test_a_modest_ensemble_still_trains(self):
+        ensemble = PartitionEnsemble(shards=8, config=self._config(4096))
+        log = ensemble.fit(self._corpus(), label_space=["allow", "block"])
+        self.assertEqual(log.extra["shards"], 8)
+
+    def test_members_do_not_share_a_mutable_config(self):
+        base = self._config(512)
+        ensemble = PartitionEnsemble(shards=4, config=base)
+        ensemble.fit(self._corpus(), label_space=["allow", "block"])
+        features = [member.config.features for member in ensemble.members]
+        self.assertEqual(len({id(item) for item in features}), len(features))
+        for item in features:
+            self.assertIsNot(item, base.features)
+
+    def test_an_untrusted_report_cannot_request_a_huge_ensemble(self):
+        workspace = tempfile.mkdtemp(prefix="poisonlab-ensemble-")
+        try:
+            config = {
+                "name": "x",
+                "seed": 1,
+                "data": {"kind": "synthetic", "size": 100},
+                "attack": {"kind": "none"},
+                "train": {
+                    "kind": "partition",
+                    "shards": 10**7,
+                    "epochs": 1,
+                    "features": {"max_n": 1, "buckets": 1 << 22},
+                },
+                "defense": {"enabled": False},
+                "report": {"baseline": False},
+            }
+            safe = sandbox_campaign(config, workspace, [workspace])
+            with self.assertRaises(UnsafeInput):
+                train_model(
+                    self._corpus(), TrainConfig.from_dict(safe["train"]), label_space=["allow", "block"]
+                )
+        finally:
+            shutil.rmtree(workspace, ignore_errors=True)
+
+
+class AuditResourceTest(unittest.TestCase):
+    def _corpus(self, size=200):
+        return build_corpus(CorpusSpec(size=size), seed=3)
+
+    def test_the_permutation_count_is_bounded(self):
+        corpus = self._corpus()
+        context = DefenseContext(labels=corpus.labels, seed=1)
+        for count in (safety.MAX_PERMUTATIONS + 1, 10**9):
+            with self.assertRaises(UnsafeInput):
+                concentration_test(corpus, context, count)
+
+    def test_a_sane_permutation_count_runs(self):
+        corpus = self._corpus()
+        result = concentration_test(corpus, DefenseContext(labels=corpus.labels, seed=1), 8)
+        self.assertEqual(result["permutations"], 8)
+
+    def test_the_review_queue_has_an_absolute_ceiling(self):
+        corpus = self._corpus(size=400)
+        report = audit(
+            corpus,
+            DefenseContext(labels=corpus.labels, seed=1),
+            review_budget=1.0,
+            permutations=4,
+        )
+        self.assertLessEqual(len(report.queue), safety.MAX_REVIEW_QUEUE)
+        self.assertLessEqual(len(report.queue), len(corpus))
+
+    def test_the_ceiling_is_disclosed_when_it_binds(self):
+        self.assertGreater(safety.MAX_REVIEW_QUEUE, 0)
+        self.assertLess(safety.MAX_REVIEW_QUEUE, safety.MAX_RECORDS)
+
+
+class DeepNestingTest(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.mkdtemp(prefix="poisonlab-deep-")
+
+    def tearDown(self):
+        shutil.rmtree(self.directory, ignore_errors=True)
+
+    def _write(self, line):
+        path = os.path.join(self.directory, "deep.jsonl")
+        with open(path, "w", encoding="utf-8", newline="\n") as handle:
+            handle.write(line + "\n")
+        return path
+
+    def test_a_deeply_nested_meta_is_refused_not_crashed(self):
+        depth = 200000
+        line = (
+            '{"uid":"a","text":"t","label":"allow","meta":'
+            + '{"n":' * depth
+            + "1"
+            + "}" * depth
+            + "}"
+        )
+        path = self._write(line)
+        with self.assertRaises(UnsafeInput) as caught:
+            Dataset.from_jsonl(path)
+        self.assertIn("nests too deeply", str(caught.exception))
+
+    def test_ordinary_nesting_still_loads(self):
+        payload = {"uid": "a", "text": "t", "label": "allow", "meta": {"a": {"b": {"c": 1}}}}
+        path = self._write(json.dumps(payload))
+        dataset = Dataset.from_jsonl(path)
+        self.assertEqual(dataset.records[0].meta["a"]["b"]["c"], 1)
+
+
+class SummaryRobustnessTest(unittest.TestCase):
+    def _report(self, **overrides):
+        report = {
+            "name": "x",
+            "seed": 1,
+            "attack": {"spec": {"kind": "backdoor"}, "result": {"applied": 0, "effective_rate": None}},
+            "potency": {"predicted_asr": None},
+            "evaluation": {"clean_accuracy": None, "attack_success_rate": None, "clean_size": 0},
+            "defense": {"enabled": False},
+            "timings": {},
+        }
+        report.update(overrides)
+        return report
+
+    def test_summary_survives_unmeasured_metrics(self):
+        lines = summarize(self._report())
+        self.assertTrue(lines)
+        self.assertTrue(any("clean accuracy" in line for line in lines))
+
+    def test_summary_survives_a_null_stealth_block(self):
+        report = self._report(
+            defense={
+                "enabled": True,
+                "budget": None,
+                "stealth": {"best_detector": None, "best_recall_at_budget": None, "stealth_adjusted_asr": None},
+                "sanitised": {"residual_asr": None, "asr_reduction": None, "accuracy_cost": None},
+            }
+        )
+        self.assertTrue(summarize(report))
+
+    def test_summary_still_prints_real_numbers(self):
+        report = self._report(
+            evaluation={"clean_accuracy": 0.85, "attack_success_rate": 0.4, "clean_size": 100}
+        )
+        joined = " ".join(summarize(report))
+        self.assertIn("0.8500", joined)
+        self.assertIn("0.400", joined)
+
+    def test_the_markdown_report_survives_the_same_input(self):
+        text = render_campaign(self._report())
+        self.assertIn("n/a", text)
 
 
 if __name__ == "__main__":

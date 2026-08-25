@@ -86,7 +86,7 @@ ROC AUC, average precision, and a logistic dose response fit solved by grid sear
 
 ## Stage 5, defend
 
-`poisonlab.defenses` runs seven detectors over the poisoned corpus and fuses them. Every detector
+`poisonlab.defenses` runs eight detectors over the poisoned corpus and fuses them, and also holds the partition ensemble, which is a training time defense rather than a detector. Every detector
 returns a score per uid in `[0, 1]`, higher meaning more suspicious, plus human readable evidence.
 Scoring against ground truth happens in `score_detection`, never inside the detector.
 

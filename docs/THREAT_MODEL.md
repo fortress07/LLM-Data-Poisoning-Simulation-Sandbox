@@ -56,8 +56,26 @@ and compiled kernels.
 | campaign TOML | operator authored | bounded nesting, no code evaluation, validated bucket and n-gram ranges |
 | `report.json` passed to `verify` | untrusted | paths confined to the report directory, isolation forced on, non surrogate backends refused |
 | model checkpoint JSON | untrusted | label, index and finiteness checks, and a total allocation ceiling before any array exists |
-| compiled C kernel | untrusted until verified | private per user cache, ownership and permission checks, SHA-256 sidecar verified on every load |
+| compiled C kernel | untrusted until verified | a private directory this process owns, never group or world writable and never a symlink, SHA-256 sidecar verified on every load |
 | rendered HTML report | output | every interpolation escaped, restrictive CSP, no scripts |
+
+### The accelerator cache directory
+
+The compiled kernel is loaded with `ctypes.CDLL`, so the directory it comes from is part of the
+trust boundary. PoisonLab will only load from a directory that exists, is not a symlink, is not
+writable by group or other, and is owned by the running process. The sticky bit is not treated as an
+excuse for world writability, because sticky stops other users deleting your file but not creating
+one before you do.
+
+Two properties matter more than the rule list. First, a directory the operator points at is judged
+as it is found and never silently repaired, so pointing `POISONLAB_ACCEL_DIR` at a loose directory
+is refused rather than quietly chmodded. Second, when no candidate directory qualifies, PoisonLab
+refuses to load any kernel and falls back to the pure Python path rather than loading from a place
+it does not trust.
+
+The rules live in `safety.directory_refusal`, a pure function over observed facts rather than a
+sequence of filesystem calls. That is deliberate: it means the POSIX permission rules are tested on
+every platform, including the ones where they cannot be reached at runtime.
 
 ### What the network guard does and does not cover
 

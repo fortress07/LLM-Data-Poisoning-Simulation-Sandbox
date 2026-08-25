@@ -5,11 +5,14 @@ from dataclasses import dataclass, field
 from typing import Any, Dict, List, Optional, Sequence
 
 from ..accel import gram_stats
+from ..confusables import render_safe, risks
 from ..data.record import Dataset
 from ..defenses.base import DefenseContext
 from ..defenses.statistical import _out_of_fold_predictions, _surface, _wilson_lower
 from ..defenses.suite import DEFAULT_ORDER, run_suite
+from ..safety import MAX_PERMUTATIONS, MAX_REVIEW_QUEUE, ensure_count
 from ..seeding import stream
+from ..text import tokenize
 
 DEFAULT_PERMUTATIONS = 200
 DEFAULT_REVIEW_BUDGET = 0.02
@@ -23,6 +26,7 @@ class QueueEntry:
     label: str
     excerpt: str
     top_detector: str
+    risks: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -32,6 +36,7 @@ class QueueEntry:
             "label": self.label,
             "excerpt": self.excerpt,
             "top_detector": self.top_detector,
+            "risks": self.risks,
         }
 
 
@@ -57,6 +62,22 @@ class AuditReport:
             "seconds": round(self.seconds, 4),
             "notes": self.notes,
         }
+
+
+def readable(value: Any) -> str:
+    text = str(value)
+    if text.isascii() and text.isprintable():
+        return text
+    return " ".join(render_safe(part) for part in text.split(" "))
+
+
+def text_risks(text: str) -> List[str]:
+    found: List[str] = []
+    for token in set(tokenize(text)):
+        for risk in risks(token):
+            if risk not in found:
+                found.append(risk)
+    return sorted(found)
 
 
 def contradiction_flags(dataset: Dataset, context: DefenseContext) -> List[int]:
@@ -87,6 +108,7 @@ def concentration_test(
     progress=None,
 ) -> Dict[str, Any]:
     log = progress or (lambda message: None)
+    permutations = ensure_count(permutations, MAX_PERMUTATIONS, "permutation count")
     log("fitting out of fold predictions")
     flags = contradiction_flags(dataset, context)
     texts = dataset.texts
@@ -111,7 +133,9 @@ def concentration_test(
         "resolution": round(1.0 / (1.0 + len(null)), 6) if null else None,
     }
     if gram is not None:
-        payload["carrier"] = _surface(dataset, gram.first_doc, gram.first_pos, gram.n)
+        surface = _surface(dataset, gram.first_doc, gram.first_pos, gram.n)
+        payload["carrier"] = readable(surface)
+        payload["carrier_risks"] = text_risks(surface)
         payload["carrier_documents"] = gram.count
         payload["carrier_contradictions"] = gram.target_count
     return payload
@@ -157,7 +181,7 @@ def audit(
                 best_name = item.name
         leaders[uid] = best_name
 
-    limit = max(1, int(round(len(dataset) * review_budget)))
+    limit = max(1, min(MAX_REVIEW_QUEUE, int(round(len(dataset) * review_budget))))
     ordered = sorted(fused.scores.items(), key=lambda item: -item[1])[:limit]
     report.queue = [
         QueueEntry(
@@ -165,8 +189,9 @@ def audit(
             uid=uid,
             score=score,
             label=by_uid[uid].label,
-            excerpt=by_uid[uid].text[:140],
+            excerpt=readable(by_uid[uid].text[:140]),
             top_detector=leaders.get(uid, ""),
+            risks=text_risks(by_uid[uid].text),
         )
         for position, (uid, score) in enumerate(ordered)
     ]
@@ -180,11 +205,12 @@ def audit(
             seen.add(surface)
             report.carriers.append(
                 {
-                    "surface": surface,
+                    "surface": readable(surface),
                     "detector": item.name,
                     "count": entry.get("count") or entry.get("documents"),
                     "purity": entry.get("purity"),
                     "score": entry.get("score"),
+                    "risks": text_risks(str(surface)),
                 }
             )
     report.carriers = report.carriers[: context.top_k]
@@ -196,6 +222,12 @@ def audit(
         "This is a triage queue, not a verdict. The queue always holds the top %d records "
         "by ensemble rank, whether or not the corpus is poisoned." % limit
     )
+    if limit >= MAX_REVIEW_QUEUE:
+        report.notes.append(
+            "The queue is capped at %d rows. A %.1f%% budget over this corpus would list more, "
+            "so raise the budget only if you intend to review that many by hand."
+            % (MAX_REVIEW_QUEUE, 100.0 * review_budget)
+        )
     report.notes.append(
         "The concentration test is calibrated against a permutation null and holds its "
         "false positive rate on clean corpora, but it loses power below roughly a 1% "
@@ -222,20 +254,32 @@ def summarize(report: AuditReport) -> List[str]:
     ]
     if concentration.get("carrier"):
         lines.append(
-            "leading carrier: %r in %s documents, %s of them contradicted"
+            "leading carrier: %s in %s documents, %s of them contradicted%s"
             % (
                 concentration.get("carrier"),
                 concentration.get("carrier_documents"),
                 concentration.get("carrier_contradictions"),
+                (
+                    "  [%s]" % ",".join(concentration["carrier_risks"])
+                    if concentration.get("carrier_risks")
+                    else ""
+                ),
             )
         )
     if report.carriers:
         lines.append("")
-        lines.append("%-28s %-14s %8s" % ("candidate carrier", "detector", "count"))
+        lines.append(
+            "%-30s %-14s %8s  %s" % ("candidate carrier", "detector", "count", "risks")
+        )
         for carrier in report.carriers[:8]:
             lines.append(
-                "%-28s %-14s %8s"
-                % (str(carrier["surface"])[:28], carrier["detector"][:14], carrier["count"])
+                "%-30s %-14s %8s  %s"
+                % (
+                    str(carrier["surface"])[:30],
+                    carrier["detector"][:14],
+                    carrier["count"],
+                    ",".join(carrier.get("risks") or []),
+                )
             )
     if report.queue:
         lines.append("")

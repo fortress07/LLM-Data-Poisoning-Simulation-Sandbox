@@ -163,6 +163,15 @@ def run_campaign(
     )
     timings["evaluate"] = time.time() - mark
 
+    certification: Optional[Dict[str, Any]] = None
+    if getattr(model, "shards", None):
+        log("certifying the partition ensemble")
+        mark = time.time()
+        from .defenses.partition import certified_report
+
+        certification = certified_report(model, test_set)
+        timings["certify"] = time.time() - mark
+
     defense_payload: Dict[str, Any] = {"enabled": False}
     defense_config = dict(config.get("defense", {}))
     if defense_config.get("enabled", True):
@@ -232,6 +241,7 @@ def run_campaign(
         "training": training_log.to_dict(),
         "isolation": isolation,
         "evaluation": evaluation.to_dict(),
+        "certification": certification,
         "defense": defense_payload,
         "timings": {key: round(value, 4) for key, value in timings.items()},
     }
@@ -242,6 +252,14 @@ def run_campaign(
     return result
 
 
+def _number(value: Any, fallback: float = 0.0) -> float:
+    try:
+        number = float(value)
+    except (TypeError, ValueError):
+        return fallback
+    return number if number == number else fallback
+
+
 def summarize(report: Dict[str, Any]) -> List[str]:
     evaluation = report.get("evaluation", {})
     attack = report.get("attack", {}).get("result", {})
@@ -250,32 +268,49 @@ def summarize(report: Dict[str, Any]) -> List[str]:
         "campaign      : %s" % report.get("name"),
         "attack        : %s" % report.get("attack", {}).get("spec", {}).get("kind"),
         "poisoned      : %d records (%.3f%% of train)"
-        % (attack.get("applied", 0), 100 * attack.get("effective_rate", 0.0)),
-        "predicted ASR : %.3f (potency index)" % potency.get("predicted_asr", 0.0),
-        "measured ASR  : %.3f" % evaluation.get("attack_success_rate", 0.0),
-        "clean accuracy: %.4f" % evaluation.get("clean_accuracy", 0.0),
+        % (_number(attack.get("applied", 0)), 100 * _number(attack.get("effective_rate", 0.0))),
+        "predicted ASR : %.3f (potency index)" % _number(potency.get("predicted_asr", 0.0)),
+        "measured ASR  : %.3f" % _number(evaluation.get("attack_success_rate", 0.0)),
+        "clean accuracy: %.4f" % _number(evaluation.get("clean_accuracy", 0.0)),
     ]
     if report.get("baseline"):
-        lines.append("baseline acc  : %.4f" % report["baseline"].get("clean_accuracy", 0.0))
+        lines.append("baseline acc  : %.4f" % _number(report["baseline"].get("clean_accuracy", 0.0)))
+    certification = report.get("certification")
+    if certification:
+        lines.append(
+            "certified     : %d shards, median radius %d rows, %.4f accuracy certified against 1 row"
+            % (
+                certification.get("shards", 0),
+                certification.get("median_radius", 0),
+                next(
+                    (
+                        row["certified_accuracy"]
+                        for row in certification.get("curve", [])
+                        if row["poisoned_rows"] == 1
+                    ),
+                    0.0,
+                ),
+            )
+        )
     stealth = report.get("defense", {}).get("stealth")
     if stealth:
         lines.append(
             "best detector : %s (recall %.2f at %.0f%% budget)"
             % (
                 stealth.get("best_detector"),
-                stealth.get("best_recall_at_budget", 0.0),
-                100 * report.get("defense", {}).get("budget", 0.05),
+                _number(stealth.get("best_recall_at_budget", 0.0)),
+                100 * _number(report.get("defense", {}).get("budget", 0.05)),
             )
         )
-        lines.append("stealth ASR   : %.3f" % stealth.get("stealth_adjusted_asr", 0.0))
+        lines.append("stealth ASR   : %.3f" % _number(stealth.get("stealth_adjusted_asr", 0.0)))
     sanitised = report.get("defense", {}).get("sanitised")
     if sanitised:
         lines.append(
             "after cleanup : ASR %.3f (down %.3f), accuracy cost %.4f"
             % (
-                sanitised.get("residual_asr", 0.0),
-                sanitised.get("asr_reduction", 0.0),
-                sanitised.get("accuracy_cost", 0.0),
+                _number(sanitised.get("residual_asr", 0.0)),
+                _number(sanitised.get("asr_reduction", 0.0)),
+                _number(sanitised.get("accuracy_cost", 0.0)),
             )
         )
     return lines

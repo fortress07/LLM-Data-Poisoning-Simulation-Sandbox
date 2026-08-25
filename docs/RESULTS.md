@@ -53,6 +53,7 @@ Stealth adjusted ASR multiplies attack success by the share of poison that survi
 | detector | backdoor | composite | label flip | semantic |
 |:--|:--|:--|:--|:--|
 | clustering | 0.702 | 0.663 | 0.695 | 0.719 |
+| confusable | 0.500 | 0.500 | 0.500 | 0.500 |
 | contradiction | 0.982 | 0.962 | 0.929 | 0.921 |
 | ensemble | 0.999 | 0.881 | 0.842 | 0.882 |
 | gram_purity | 1.000 | 0.488 | 0.490 | 0.487 |
@@ -61,7 +62,7 @@ Stealth adjusted ASR multiplies attack success by the share of poison that survi
 | rarity | 0.988 | 0.557 | 0.549 | 0.731 |
 | spectral | 0.694 | 0.700 | 0.705 | 0.713 |
 
-Values are ROC AUC for separating poisoned rows from clean rows. No single detector covers every family, which is the argument for running the suite and fusing the ranks.
+Values are ROC AUC for separating poisoned rows from clean rows. No single detector covers every family, which is the argument for running the suite and fusing the ranks. The confusable scanner sits at 0.500 on every row because this corpus contains no lookalike or invisible characters at all: it is silent by design rather than weak, and section 10 is where it earns its place. A silent detector contributes nothing to the fused rank, which is why the ensemble row is unchanged by its presence.
 
 ## 5. Does cleaning the data help
 
@@ -84,9 +85,9 @@ That matters for cost: the index is a few passes over the corpus, while the meas
 
 | kernel | documents | python | C | speedup |
 |:--|:--|:--|:--|:--|
-| featurize | 6000 | 0.415s | 0.047s | 8.9x |
-| gram_stats | 6000 | 0.464s | 0.038s | 12.1x |
-| minhash | 6000 | 4.545s | 0.061s | 74.6x |
+| featurize | 6000 | 0.317s | 0.027s | 11.9x |
+| gram_stats | 6000 | 0.293s | 0.037s | 8.0x |
+| minhash | 6000 | 3.845s | 0.049s | 77.7x |
 
 The C kernels are optional. When no compiler is present the pure Python path produces identical output, which the parity tests check on every run.
 
@@ -104,3 +105,57 @@ The C kernels are optional. When no compiler is present the pure Python path pro
 | 5.0% | 6 | 0.6517 | 0 of 6 | 0.23 | 0.57 |
 
 The false positive rate holds on clean corpora. The power does not hold at either end, and that is a real limitation rather than a tuning problem: below roughly 1% there are too few poisoned rows to move a maximum statistic, and above roughly 3% the model has learned the backdoor well enough that it stops disagreeing with the poisoned rows, so the signal the test depends on disappears. Queue recall and precision are also capped by arithmetic, since a 2% review budget over a 5% poison rate cannot exceed 0.40 recall.
+
+## 9. Voting over disjoint shards
+
+A partition ensemble splits the training set into disjoint shards by a hash of the record id, trains one model per shard and predicts by plurality vote. Poison in one shard cannot reach the others, so its influence is bounded by construction rather than by a detector getting lucky. Corpus size 2000, 6 seeds, 16 shards, roughly 88 training rows per shard.
+
+| poison | trials | single model ASR | ensemble ASR | reduction | accuracy cost |
+|:--|:--|:--|:--|:--|:--|
+| 0.5% | 6 | 0.225 ± 0.022 | 0.184 ± 0.009 | 19% | -0.0071 |
+| 1.0% | 6 | 0.339 ± 0.025 | 0.195 ± 0.008 | 42% | -0.0058 |
+| 2.0% | 6 | 0.652 ± 0.029 | 0.233 ± 0.007 | 64% | -0.0079 |
+| 5.0% | 6 | 0.944 ± 0.017 | 0.387 ± 0.012 | 59% | -0.0071 |
+
+The reduction grows with the attack, which is the opposite of how a detector behaves. A larger attack has to spread across more shards to keep working, and every shard it touches is one vote, not a share of one model. The trade is shard size: each member only sees a fraction of the data, so on a corpus too small to leave roughly fifty rows per shard the members get weak and the vote loses more than the attacker does.
+
+With 32 shards the vote also carries a certificate. If the winning label leads the runner up by more than twice the number of corrupted shards, no attacker holding that many rows can change the answer, whatever those rows contain. Plain ensemble accuracy is 0.8571.
+
+| poisoned rows | certified accuracy |
+|:--|:--|
+| 0 | 0.8571 ± 0.0072 |
+| 1 | 0.8250 ± 0.0059 |
+| 2 | 0.8025 ± 0.0065 |
+| 3 | 0.7725 ± 0.0088 |
+| 5 | 0.6871 ± 0.0121 |
+| 8 | 0.5192 ± 0.0108 |
+| 12 | 0.2042 ± 0.0078 |
+
+Read this as a floor, not a score. Certificates cover handfuls of rows, so they are the right tool against a small deliberate insertion and the wrong tool against a vendor shipping two percent poison. The empirical reduction above is what covers that case.
+
+## 10. Triggers built to survive human review
+
+A trigger does not have to look strange. These four carry the same attack, but three of them render on screen as ordinary text: a Cyrillic letter that draws like a Latin one, a zero width character inside a word, and a bidirectional override. Detector AUC over 3 seeds at a 3% poison rate.
+
+| trigger | gram_purity | contradiction | rarity | confusable |
+|:--|:--|:--|:--|:--|
+| plain ascii | 1.000 | 0.995 | 0.846 | 0.500 |
+| cyrillic homoglyph | 1.000 | 0.995 | 0.846 | 1.000 |
+| invisible character | 1.000 | 0.995 | 0.846 | 1.000 |
+| bidi wrapped | 1.000 | 0.995 | 0.846 | 1.000 |
+
+The statistical scanners were never fooled, because they do not read the trigger, they count it. The reviewer is the one who gets fooled, which is why the confusable scanner exists and why every token it reports is printed with its code points expanded.
+
+## 11. How precise is any of this
+
+Attack success moves from seed to seed because the corpus, the split and the victim rows all move with it. Over 24 seeds at a 2% budget on a 2000 document corpus, ASR has a standard deviation of **0.0853** and clean accuracy **0.0175**.
+
+| target half width | seeds for ASR | seeds for CDA |
+|:--|:--|:--|
+| ±0.10 | 3 | 2 |
+| ±0.05 | 12 | 2 |
+| ±0.03 | 32 | 2 |
+| ±0.02 | 70 | 3 |
+| ±0.01 | 280 | 12 |
+
+That table is why every comparison in this study is paired on the seed rather than run as two independent groups. The difference between two strategies on the same seed has a standard deviation of 0.0465 against 0.1175 for the unpaired contrast, which is **2.5 times tighter** and needs roughly 6 times fewer seeds for the same confidence. The strategy gap measured here is 0.1589 at p = 0.00005.

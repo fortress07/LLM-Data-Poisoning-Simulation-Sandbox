@@ -1,0 +1,48 @@
+{
+  "rows": [
+    {
+      "trigger": "plain ascii",
+      "trials": 3,
+      "gram_purity": 1.0,
+      "contradiction": 0.9948,
+      "rarity": 0.8462,
+      "confusable": 0.5
+    },
+    {
+      "trigger": "cyrillic homoglyph",
+      "trials": 3,
+      "gram_purity": 1.0,
+      "contradiction": 0.9948,
+      "rarity": 0.8462,
+      "confusable": 1.0
+    },
+    {
+      "trigger": "invisible character",
+      "trials": 3,
+      "gram_purity": 1.0,
+      "contradiction": 0.9948,
+      "rarity": 0.8462,
+      "confusable": 1.0
+    },
+    {
+      "trigger": "bidi wrapped",
+      "trials": 3,
+      "gram_purity": 1.0,
+      "contradiction": 0.9948,
+      "rarity": 0.8462,
+      "confusable": 1.0
+    }
+  ],
+  "detectors": [
+    "gram_purity",
+    "contradiction",
+    "rarity",
+    "confusable"
+  ],
+  "seeds": [
+    655868388,
+    290507194,
+    1770385587
+  ],
+  "corpus_size": 2000
+}
