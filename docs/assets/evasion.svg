@@ -1,0 +1,47 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 356' width='900' height='356' role='img'>
+<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14.5' fill='#1c2233' text-anchor='start' font-weight='700'>Triggers built to survive human review</text>
+<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>three of these four render on screen as ordinary text. detector AUC over 3 seeds at a 3% poison rate.</text>
+<text x='24.0' y='70.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>the statistical scanners were never fooled. the reviewer is who gets fooled.</text>
+<text x='315.0' y='102.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#1c2233' text-anchor='middle' font-weight='700'>gram_purity</text>
+<text x='465.0' y='102.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#1c2233' text-anchor='middle' font-weight='700'>contradiction</text>
+<text x='615.0' y='102.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#1c2233' text-anchor='middle' font-weight='700'>rarity</text>
+<text x='765.0' y='102.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#3730c9' text-anchor='middle' font-weight='700'>confusable</text>
+<rect x='692.0' y='82.0' width='146.0' height='222.0' rx='8' fill='#3730c9' opacity='0.10'/>
+<text x='24.0' y='145.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>plain ascii</text>
+<rect x='245.0' y='121.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='311.5' y='146.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<rect x='395.0' y='121.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='461.5' y='146.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.99</text>
+<rect x='545.0' y='121.0' width='138.0' height='34.0' rx='6' fill='#0c7268' opacity='0.60'/>
+<text x='611.5' y='146.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.85</text>
+<rect x='695.0' y='121.0' width='138.0' height='34.0' rx='6' fill='#c9cfdd' opacity='0.85'/>
+<text x='761.5' y='146.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>silent</text>
+<text x='24.0' y='191.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>cyrillic homoglyph</text>
+<rect x='245.0' y='167.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='311.5' y='192.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<rect x='395.0' y='167.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='461.5' y='192.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.99</text>
+<rect x='545.0' y='167.0' width='138.0' height='34.0' rx='6' fill='#0c7268' opacity='0.60'/>
+<text x='611.5' y='192.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.85</text>
+<rect x='695.0' y='167.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='761.5' y='192.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<text x='24.0' y='237.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>invisible character</text>
+<rect x='245.0' y='213.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='311.5' y='238.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<rect x='395.0' y='213.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='461.5' y='238.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.99</text>
+<rect x='545.0' y='213.0' width='138.0' height='34.0' rx='6' fill='#0c7268' opacity='0.60'/>
+<text x='611.5' y='238.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.85</text>
+<rect x='695.0' y='213.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='761.5' y='238.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<text x='24.0' y='283.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>bidi wrapped</text>
+<rect x='245.0' y='259.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='311.5' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<rect x='395.0' y='259.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='461.5' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.99</text>
+<rect x='545.0' y='259.0' width='138.0' height='34.0' rx='6' fill='#0c7268' opacity='0.60'/>
+<text x='611.5' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>0.85</text>
+<rect x='695.0' y='259.0' width='138.0' height='34.0' rx='6' fill='#3730c9' opacity='0.82'/>
+<text x='761.5' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='middle' font-weight='700'>1.00</text>
+<text x='24.0' y='334.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>silent means the scanner found nothing and contributed nothing, which is the design, not a failure.</text>
+</svg>

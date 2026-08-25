@@ -1,50 +1,50 @@
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 486' width='900' height='486' role='img'>
-<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14' fill='#8b93a7' text-anchor='start' font-weight='700'>What runs where</text>
-<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>python decides what is true, C makes the hot loops fast, node decides what it looks like.</text>
-<text x='24.0' y='70.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>the only thing crossing between them is a json file on disk.</text>
-<rect x='24.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#5b6cff' opacity='0.09'/><rect x='24.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#5b6cff' stroke-width='1.4' opacity='0.5'/>
-<rect x='40.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#5b6cff' opacity='1.00'/>
-<text x='40.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#5b6cff' text-anchor='start' font-weight='700'>INGEST</text>
-<text x='40.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>data/loaders</text>
-<text x='40.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>jsonl, csv, huggingface</text>
-<text x='40.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>data/record</text>
-<text x='40.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>content addressed digests</text>
-<text x='40.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>data/versioning</text>
-<text x='40.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>chained lineage</text>
-<text x='40.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>data/splits</text>
-<text x='40.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>stratified, disjoint</text>
-<rect x='320.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#e0479e' opacity='0.09'/><rect x='320.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#e0479e' stroke-width='1.4' opacity='0.5'/>
-<rect x='336.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#e0479e' opacity='1.00'/>
-<text x='336.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0479e' text-anchor='start' font-weight='700'>EXPERIMENT</text>
-<text x='336.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>forge/</text>
-<text x='336.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>5 attacks, exact budget</text>
-<text x='336.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>models/</text>
-<text x='336.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>surrogate, LoRA, ensemble</text>
-<text x='336.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>train/engine</text>
-<text x='336.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>sockets blocked</text>
-<text x='336.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>evaluate/</text>
-<text x='336.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>ASR, CDA, intervals</text>
-<rect x='616.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#17a398' opacity='0.09'/><rect x='616.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#17a398' stroke-width='1.4' opacity='0.5'/>
-<rect x='632.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#17a398' opacity='1.00'/>
-<text x='632.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#17a398' text-anchor='start' font-weight='700'>DEFEND</text>
-<text x='632.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>defenses/</text>
-<text x='632.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>8 detectors, rank fusion</text>
-<text x='632.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>defenses/partition</text>
-<text x='632.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>shard vote, certificate</text>
-<text x='632.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>analysis/audit</text>
-<text x='632.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>triage, permutation null</text>
-<text x='632.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#8b93a7' text-anchor='start' font-weight='600'>analysis/potency</text>
-<text x='632.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>predict before training</text>
-<line x1='290.0' y1='228.0' x2='314.0' y2='228.0' stroke='#c6ccd8' stroke-width='1.5'/><path d='M314.0 228.0 l-7 -4.5 l0 9 z' fill='#c6ccd8'/>
-<line x1='586.0' y1='228.0' x2='610.0' y2='228.0' stroke='#c6ccd8' stroke-width='1.5'/><path d='M610.0 228.0 l-7 -4.5 l0 9 z' fill='#c6ccd8'/>
-<rect x='24.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#5b6cff' opacity='0.07'/><rect x='24.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#5b6cff' stroke-width='1.4' opacity='0.5'/>
-<text x='40.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#5b6cff' text-anchor='start' font-weight='700'>python 3.9+</text>
-<text x='40.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>standard library only, zero dependencies</text>
-<rect x='320.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#e08a0c' opacity='0.07'/><rect x='320.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#e08a0c' stroke-width='1.4' opacity='0.5'/>
-<text x='336.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#e08a0c' text-anchor='start' font-weight='700'>C kernels</text>
-<text x='336.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>featurize, gram stats, minhash, 9x to 75x</text>
-<rect x='616.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#17a398' opacity='0.07'/><rect x='616.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#17a398' stroke-width='1.4' opacity='0.5'/>
-<text x='632.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#17a398' text-anchor='start' font-weight='700'>node viewer</text>
-<text x='632.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>report json becomes one html file</text>
-<text x='450.0' y='474.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='middle' font-weight='400'>every stage writes its digest into report.json, so any run replays exactly</text>
+<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14.5' fill='#1c2233' text-anchor='start' font-weight='700'>What runs where</text>
+<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>python decides what is true, C makes the hot loops fast, node decides what it looks like.</text>
+<text x='24.0' y='70.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>the only thing crossing between them is a json file on disk.</text>
+<rect x='24.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#3730c9' opacity='0.09'/><rect x='24.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#3730c9' stroke-width='1.4' opacity='0.50'/>
+<rect x='40.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#3730c9' opacity='1.00'/>
+<text x='40.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#3730c9' text-anchor='start' font-weight='700'>INGEST</text>
+<text x='40.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>data/loaders</text>
+<text x='40.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>jsonl, csv, huggingface</text>
+<text x='40.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>data/record</text>
+<text x='40.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>content addressed digests</text>
+<text x='40.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>data/versioning</text>
+<text x='40.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>chained lineage</text>
+<text x='40.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>data/splits</text>
+<text x='40.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>stratified, disjoint</text>
+<rect x='320.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#b81d63' opacity='0.09'/><rect x='320.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#b81d63' stroke-width='1.4' opacity='0.50'/>
+<rect x='336.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#b81d63' opacity='1.00'/>
+<text x='336.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b81d63' text-anchor='start' font-weight='700'>EXPERIMENT</text>
+<text x='336.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>forge/</text>
+<text x='336.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>5 attacks, exact budget</text>
+<text x='336.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>models/</text>
+<text x='336.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>surrogate, LoRA, ensemble</text>
+<text x='336.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>train/engine</text>
+<text x='336.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>sockets blocked</text>
+<text x='336.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>evaluate/</text>
+<text x='336.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>ASR, CDA, intervals</text>
+<rect x='616.0' y='104.0' width='260.0' height='248.0' rx='10' fill='#0c7268' opacity='0.09'/><rect x='616.0' y='104.0' width='260.0' height='248.0' rx='10' fill='none' stroke='#0c7268' stroke-width='1.4' opacity='0.50'/>
+<rect x='632.0' y='120.0' width='24.0' height='3.0' rx='2' fill='#0c7268' opacity='1.00'/>
+<text x='632.0' y='134.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#0c7268' text-anchor='start' font-weight='700'>DEFEND</text>
+<text x='632.0' y='164.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>defenses/</text>
+<text x='632.0' y='180.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>8 detectors, rank fusion</text>
+<text x='632.0' y='216.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>defenses/partition</text>
+<text x='632.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>shard vote, certificate</text>
+<text x='632.0' y='268.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>analysis/audit</text>
+<text x='632.0' y='284.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>triage, permutation null</text>
+<text x='632.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#1c2233' text-anchor='start' font-weight='600'>analysis/potency</text>
+<text x='632.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>predict before training</text>
+<line x1='290.0' y1='228.0' x2='314.0' y2='228.0' stroke='#525d75' stroke-width='1.5'/><path d='M314.0 228.0 l-7 -4.5 l0 9 z' fill='#525d75'/>
+<line x1='586.0' y1='228.0' x2='610.0' y2='228.0' stroke='#525d75' stroke-width='1.5'/><path d='M610.0 228.0 l-7 -4.5 l0 9 z' fill='#525d75'/>
+<rect x='24.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#3730c9' opacity='0.09'/><rect x='24.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#3730c9' stroke-width='1.4' opacity='0.50'/>
+<text x='40.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#3730c9' text-anchor='start' font-weight='700'>python 3.9+</text>
+<text x='40.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>standard library only, zero dependencies</text>
+<rect x='320.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#9a5200' opacity='0.09'/><rect x='320.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#9a5200' stroke-width='1.4' opacity='0.50'/>
+<text x='336.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#9a5200' text-anchor='start' font-weight='700'>C kernels</text>
+<text x='336.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>featurize, gram stats, minhash, 9x to 75x</text>
+<rect x='616.0' y='378.0' width='260.0' height='54.0' rx='8' fill='#0c7268' opacity='0.09'/><rect x='616.0' y='378.0' width='260.0' height='54.0' rx='8' fill='none' stroke='#0c7268' stroke-width='1.4' opacity='0.50'/>
+<text x='632.0' y='400.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#0c7268' text-anchor='start' font-weight='700'>node viewer</text>
+<text x='632.0' y='418.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>report json becomes one html file</text>
+<text x='450.0' y='474.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='middle' font-weight='400'>every stage writes its digest into report.json, so any run replays exactly</text>
 </svg>

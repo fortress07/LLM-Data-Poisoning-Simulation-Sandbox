@@ -21,7 +21,7 @@ TEXT = re.compile(
     re.S,
 )
 VIEWBOX = re.compile(r"viewBox='0 0 ([\d.]+) ([\d.]+)'")
-REFERENCED = re.compile(r'src="(docs/assets/[^"]+)"')
+REFERENCED = re.compile(r'(?:src|srcset)="(docs/assets/[^"]+)"')
 
 
 def unescape(value: str) -> str:

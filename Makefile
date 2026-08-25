@@ -14,7 +14,7 @@ help:
 	@echo "make sweep      run a dose response sweep"
 	@echo "make audit      triage a corpus with no ground truth"
 	@echo "make study      reproduce every number in docs/RESULTS.md"
-	@echo "make figures    regenerate the README charts from the study json"
+	@echo "make figures    regenerate every chart in both themes, then check the layout"
 	@echo "make check-figures  verify every figure fits its canvas"
 	@echo "make clean      remove build and run artefacts"
 

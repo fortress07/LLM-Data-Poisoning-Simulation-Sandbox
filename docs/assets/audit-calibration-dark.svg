@@ -1,0 +1,56 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 400' width='900' height='400' role='img'>
+<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14.5' fill='#e9eef8' text-anchor='start' font-weight='700'>Auditing a corpus with no ground truth</text>
+<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#a3aec6' text-anchor='start' font-weight='400'>200 permutations, 6 seeds per row. the false positive rate holds. the power does not, at either end.</text>
+<line x1='150.0' y1='300.0' x2='630.0' y2='300.0' stroke='#2b3546' stroke-width='1'/>
+<text x='140.0' y='304.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='end' font-weight='400'>0.00</text>
+<line x1='150.0' y1='250.0' x2='630.0' y2='250.0' stroke='#2b3546' stroke-width='1'/>
+<text x='140.0' y='254.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='end' font-weight='400'>0.25</text>
+<line x1='150.0' y1='200.0' x2='630.0' y2='200.0' stroke='#2b3546' stroke-width='1'/>
+<text x='140.0' y='204.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='end' font-weight='400'>0.50</text>
+<line x1='150.0' y1='150.0' x2='630.0' y2='150.0' stroke='#2b3546' stroke-width='1'/>
+<text x='140.0' y='154.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='end' font-weight='400'>0.75</text>
+<line x1='150.0' y1='100.0' x2='630.0' y2='100.0' stroke='#2b3546' stroke-width='1'/>
+<text x='140.0' y='104.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='end' font-weight='400'>1.00</text>
+<line x1='150.0' y1='290.0' x2='630.0' y2='290.0' stroke='#ff8585' stroke-width='1.8' stroke-dasharray='5 4'/>
+<text x='158.0' y='282.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#ff8585' text-anchor='start' font-weight='700'>p = 0.05</text>
+<rect x='168.0' y='117.9' width='44.0' height='182.1' rx='5' fill='#a3aec6' opacity='0.45'/>
+<text x='190.0' y='109.9' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#a3aec6' text-anchor='middle' font-weight='700'>0.910</text>
+<text x='190.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>clean</text>
+<text x='190.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>0 of 6</text>
+<rect x='248.0' y='122.9' width='44.0' height='177.1' rx='5' fill='#a3aec6' opacity='0.45'/>
+<text x='270.0' y='114.9' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#a3aec6' text-anchor='middle' font-weight='700'>0.886</text>
+<text x='270.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>0.5%</text>
+<text x='270.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>0 of 6</text>
+<rect x='328.0' y='135.8' width='44.0' height='164.2' rx='5' fill='#a3aec6' opacity='0.45'/>
+<text x='350.0' y='127.8' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#a3aec6' text-anchor='middle' font-weight='700'>0.821</text>
+<text x='350.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>1.0%</text>
+<text x='350.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>0 of 6</text>
+<rect x='408.0' y='298.0' width='44.0' height='2.0' rx='5' fill='#4cd8c2' opacity='0.85'/>
+<text x='430.0' y='290.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#4cd8c2' text-anchor='middle' font-weight='700'>0.010</text>
+<text x='430.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>2.0%</text>
+<text x='430.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>4 of 6</text>
+<rect x='488.0' y='200.5' width='44.0' height='99.5' rx='5' fill='#4cd8c2' opacity='0.85'/>
+<text x='510.0' y='192.5' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#4cd8c2' text-anchor='middle' font-weight='700'>0.497</text>
+<text x='510.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>3.0%</text>
+<text x='510.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>3 of 6</text>
+<rect x='568.0' y='169.7' width='44.0' height='130.3' rx='5' fill='#a3aec6' opacity='0.45'/>
+<text x='590.0' y='161.7' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#a3aec6' text-anchor='middle' font-weight='700'>0.652</text>
+<text x='590.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e9eef8' text-anchor='middle' font-weight='600'>5.0%</text>
+<text x='590.0' y='338.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>0 of 6</text>
+<text x='140.0' y='86.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#a3aec6' text-anchor='end' font-weight='600'>median p</text>
+<text x='390.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#a3aec6' text-anchor='middle' font-weight='400'>poison rate, and how many of the trials were flagged at 0.05</text>
+<rect x='664.0' y='94.0' width='212.0' height='224.0' rx='10' fill='#ffc255' opacity='0.24'/><rect x='664.0' y='94.0' width='212.0' height='224.0' rx='10' fill='none' stroke='#ffc255' stroke-width='1.4' opacity='0.50'/>
+<text x='680.0' y='118.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#ffc255' text-anchor='start' font-weight='700'>why the power dips</text>
+<text x='680.0' y='144.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#e9eef8' text-anchor='start' font-weight='400'>below 1% there are too</text>
+<text x='680.0' y='159.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#e9eef8' text-anchor='start' font-weight='400'>few rows to move a</text>
+<text x='680.0' y='174.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#e9eef8' text-anchor='start' font-weight='400'>maximum statistic.</text>
+<text x='680.0' y='189.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'></text>
+<text x='680.0' y='204.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>above 3% the model has</text>
+<text x='680.0' y='219.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>learned the backdoor, so</text>
+<text x='680.0' y='234.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>it stops disagreeing with</text>
+<text x='680.0' y='249.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>the poisoned rows and the</text>
+<text x='680.0' y='264.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>signal disappears.</text>
+<text x='680.0' y='279.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'></text>
+<text x='680.0' y='294.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>a large p means no</text>
+<text x='680.0' y='309.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#a3aec6' text-anchor='start' font-weight='400'>evidence, never absence.</text>
+</svg>

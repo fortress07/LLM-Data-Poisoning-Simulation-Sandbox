@@ -1,50 +1,50 @@
 <svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 430' width='900' height='430' role='img'>
-<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14' fill='#8b93a7' text-anchor='start' font-weight='700'>What survives a 5% data review</text>
-<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>raw attack success next to the share of it that survives review. A loud trigger is worth almost nothing.</text>
-<text x='24.0' y='106.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>composite plus decoys</text>
-<rect x='210.0' y='90.0' width='433.2' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='105.0' width='82.8' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='101.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>0.90</text>
-<text x='750.0' y='110.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.17</text>
-<text x='798.0' y='106.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 81%</text>
-<text x='24.0' y='148.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>semantic concept</text>
-<rect x='210.0' y='132.0' width='99.9' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='147.0' width='64.3' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='143.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>0.21</text>
-<text x='750.0' y='152.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.13</text>
-<text x='798.0' y='148.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 35%</text>
-<text x='24.0' y='190.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>label flip</text>
-<rect x='210.0' y='174.0' width='83.2' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='189.0' width='51.2' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='185.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>0.17</text>
-<text x='750.0' y='194.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.11</text>
-<text x='798.0' y='190.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 38%</text>
-<text x='24.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>single token</text>
-<rect x='210.0' y='216.0' width='413.6' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='231.0' width='0.0' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='227.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>0.86</text>
-<text x='750.0' y='236.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.00</text>
-<text x='798.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 100%</text>
-<text x='24.0' y='274.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>three word phrase</text>
-<rect x='210.0' y='258.0' width='479.7' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='273.0' width='0.0' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='269.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>1.00</text>
-<text x='750.0' y='278.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.00</text>
-<text x='798.0' y='274.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 100%</text>
-<text x='24.0' y='316.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>scattered tokens</text>
-<rect x='210.0' y='300.0' width='477.6' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='315.0' width='0.0' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='311.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>1.00</text>
-<text x='750.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.00</text>
-<text x='798.0' y='316.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 100%</text>
-<text x='24.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#8b93a7' text-anchor='start' font-weight='600'>clean label</text>
-<rect x='210.0' y='342.0' width='95.6' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<rect x='210.0' y='357.0' width='0.0' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='704.0' y='353.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>0.20</text>
-<text x='750.0' y='362.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#e0454b' text-anchor='start' font-weight='700'>0.00</text>
-<text x='798.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>caught 100%</text>
-<rect x='24.0' y='401.0' width='14.0' height='13.0' rx='3' fill='#e0479e' opacity='0.30'/>
-<text x='46.0' y='412.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>attack success before review</text>
-<rect x='266.0' y='401.0' width='14.0' height='13.0' rx='3' fill='#e0454b' opacity='0.95'/>
-<text x='288.0' y='412.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>attack success that survives review</text>
+<text x='24.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14.5' fill='#1c2233' text-anchor='start' font-weight='700'>What survives a 5% data review</text>
+<text x='24.0' y='52.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>raw attack success next to the share of it that survives review. a loud trigger is worth almost nothing.</text>
+<text x='24.0' y='106.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>composite plus decoys</text>
+<rect x='210.0' y='90.0' width='433.2' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='105.0' width='82.8' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='101.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>0.90</text>
+<text x='750.0' y='110.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.17</text>
+<text x='798.0' y='106.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 81%</text>
+<text x='24.0' y='148.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>semantic concept</text>
+<rect x='210.0' y='132.0' width='99.9' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='147.0' width='64.3' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='143.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>0.21</text>
+<text x='750.0' y='152.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.13</text>
+<text x='798.0' y='148.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 35%</text>
+<text x='24.0' y='190.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>label flip</text>
+<rect x='210.0' y='174.0' width='83.2' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='189.0' width='51.2' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='185.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>0.17</text>
+<text x='750.0' y='194.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.11</text>
+<text x='798.0' y='190.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 38%</text>
+<text x='24.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>single token</text>
+<rect x='210.0' y='216.0' width='413.6' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='231.0' width='0.0' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='227.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>0.86</text>
+<text x='750.0' y='236.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.00</text>
+<text x='798.0' y='232.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 100%</text>
+<text x='24.0' y='274.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>three word phrase</text>
+<rect x='210.0' y='258.0' width='479.7' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='273.0' width='0.0' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='269.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>1.00</text>
+<text x='750.0' y='278.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.00</text>
+<text x='798.0' y='274.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 100%</text>
+<text x='24.0' y='316.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>scattered tokens</text>
+<rect x='210.0' y='300.0' width='477.6' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='315.0' width='0.0' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='311.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>1.00</text>
+<text x='750.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.00</text>
+<text x='798.0' y='316.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 100%</text>
+<text x='24.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#1c2233' text-anchor='start' font-weight='600'>clean label</text>
+<rect x='210.0' y='342.0' width='95.6' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<rect x='210.0' y='357.0' width='0.0' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='704.0' y='353.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>0.20</text>
+<text x='750.0' y='362.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12.5' fill='#b0201a' text-anchor='start' font-weight='700'>0.00</text>
+<text x='798.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#525d75' text-anchor='start' font-weight='400'>caught 100%</text>
+<rect x='24.0' y='401.0' width='14.0' height='13.0' rx='3' fill='#b81d63' opacity='0.34'/>
+<text x='46.0' y='412.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>attack success before review</text>
+<rect x='266.0' y='401.0' width='14.0' height='13.0' rx='3' fill='#b0201a' opacity='0.95'/>
+<text x='288.0' y='412.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#525d75' text-anchor='start' font-weight='400'>attack success that survives review</text>
 </svg>
