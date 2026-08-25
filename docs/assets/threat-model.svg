@@ -30,7 +30,7 @@
 <text x='742.0' y='156.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='12' fill='#17a398' text-anchor='start' font-weight='700'>evaluate</text>
 <text x='742.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#c6ccd8' text-anchor='start' font-weight='400'>clean held out data</text>
 <text x='336.0' y='224.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='600'>the sandbox is a tripwire, not a kernel boundary:</text>
-<text x='336.0' y='246.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>it blocks sockets in this interpreter. a child process or a C extension goes around it,</text>
+<text x='336.0' y='246.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>it blocks sockets here, not in a child process or a C extension,</text>
 <text x='336.0' y='264.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='start' font-weight='400'>so run untrusted corpora in a container with no network namespace.</text>
 <text x='450.0' y='356.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#c6ccd8' text-anchor='middle' font-weight='400'>not modelled: pretraining scale poison, federated training, weight tampering, prompt injection at inference</text>
 </svg>

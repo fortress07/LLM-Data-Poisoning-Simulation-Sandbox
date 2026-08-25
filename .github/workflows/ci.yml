@@ -41,6 +41,16 @@ jobs:
         run: |
           python -c "import json,sys;from poisonlab.isolation import self_test;r=self_test();print(json.dumps(r));sys.exit(0 if r['blocked'] and r['verified'] and not r['allowlist_bypass'] else 1)"
 
+  figures:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: figures must fit their canvas
+        run: python scripts/check_figures.py
+
   viewer:
     runs-on: ubuntu-latest
     steps:

@@ -1,44 +1,44 @@
-<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 380' width='900' height='380' role='img'>
-<line x1='66.0' y1='316.0' x2='866.0' y2='316.0' stroke='#d5dae4' stroke-width='1'/>
-<text x='56.0' y='320.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>0%</text>
-<line x1='66.0' y1='248.0' x2='866.0' y2='248.0' stroke='#d5dae4' stroke-width='1'/>
-<text x='56.0' y='252.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>25%</text>
-<line x1='66.0' y1='180.0' x2='866.0' y2='180.0' stroke='#d5dae4' stroke-width='1'/>
-<text x='56.0' y='184.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>50%</text>
-<line x1='66.0' y1='112.0' x2='866.0' y2='112.0' stroke='#d5dae4' stroke-width='1'/>
-<text x='56.0' y='116.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>75%</text>
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 410' width='900' height='410' role='img'>
+<line x1='66.0' y1='314.0' x2='866.0' y2='314.0' stroke='#d5dae4' stroke-width='1'/>
+<text x='56.0' y='318.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>0%</text>
+<line x1='66.0' y1='246.5' x2='866.0' y2='246.5' stroke='#d5dae4' stroke-width='1'/>
+<text x='56.0' y='250.5' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>25%</text>
+<line x1='66.0' y1='179.0' x2='866.0' y2='179.0' stroke='#d5dae4' stroke-width='1'/>
+<text x='56.0' y='183.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>50%</text>
+<line x1='66.0' y1='111.5' x2='866.0' y2='111.5' stroke='#d5dae4' stroke-width='1'/>
+<text x='56.0' y='115.5' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>75%</text>
 <line x1='66.0' y1='44.0' x2='866.0' y2='44.0' stroke='#d5dae4' stroke-width='1'/>
 <text x='56.0' y='48.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11' fill='#8b93a7' text-anchor='end' font-weight='400'>100%</text>
-<text x='115.5' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.10%</text>
-<text x='239.7' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.20%</text>
-<text x='403.9' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.50%</text>
-<text x='528.1' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>1.00%</text>
-<text x='652.3' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>2.00%</text>
-<text x='725.0' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>3.00%</text>
-<text x='816.5' y='336.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>5.00%</text>
-<path d='M115.5,84.5 L239.7,84.1 L403.9,84.0 L528.1,84.2 L652.3,84.5 L725.0,83.9 L816.5,84.1' fill='none' stroke='#17a398' stroke-width='2' stroke-dasharray='5 4'/>
-<path d='M66.0,299.8 L72.7,299.1 L79.3,298.3 L86.0,297.4 L92.7,296.6 L99.3,295.7 L106.0,294.8 L112.7,293.8 L119.3,292.8 L126.0,291.7 L132.7,290.7 L139.3,289.5 L146.0,288.3 L152.7,287.1 L159.3,285.8 L166.0,284.5 L172.7,283.1 L179.3,281.7 L186.0,280.2 L192.7,278.7 L199.3,277.1 L206.0,275.5 L212.7,273.8 L219.3,272.0 L226.0,270.2 L232.7,268.3 L239.3,266.4 L246.0,264.4 L252.7,262.3 L259.3,260.2 L266.0,258.0 L272.7,255.8 L279.3,253.5 L286.0,251.1 L292.7,248.7 L299.3,246.2 L306.0,243.6 L312.7,241.0 L319.3,238.4 L326.0,235.7 L332.7,232.9 L339.3,230.1 L346.0,227.2 L352.7,224.3 L359.3,221.3 L366.0,218.3 L372.7,215.2 L379.3,212.1 L386.0,209.0 L392.7,205.8 L399.3,202.7 L406.0,199.4 L412.7,196.2 L419.3,192.9 L426.0,189.7 L432.7,186.4 L439.3,183.1 L446.0,179.8 L452.7,176.5 L459.3,173.2 L466.0,169.9 L472.7,166.7 L479.3,163.4 L486.0,160.2 L492.7,156.9 L499.3,153.8 L506.0,150.6 L512.7,147.5 L519.3,144.4 L526.0,141.3 L532.7,138.3 L539.3,135.4 L546.0,132.4 L552.7,129.6 L559.3,126.8 L566.0,124.0 L572.7,121.3 L579.3,118.6 L586.0,116.0 L592.7,113.5 L599.3,111.0 L606.0,108.6 L612.7,106.2 L619.3,103.9 L626.0,101.7 L632.7,99.5 L639.3,97.4 L646.0,95.4 L652.7,93.4 L659.3,91.5 L666.0,89.6 L672.7,87.8 L679.3,86.0 L686.0,84.3 L692.7,82.7 L699.3,81.1 L706.0,79.6 L712.7,78.1 L719.3,76.7 L726.0,75.3 L732.7,74.0 L739.3,72.7 L746.0,71.5 L752.7,70.3 L759.3,69.2 L766.0,68.1 L772.7,67.1 L779.3,66.1 L786.0,65.1 L792.7,64.2 L799.3,63.3 L806.0,62.4 L812.7,61.6 L819.3,60.8 L826.0,60.1 L832.7,59.4 L839.3,58.7 L846.0,58.0 L852.7,57.4 L859.3,56.8 L866.0,56.2' fill='none' stroke='#5b6cff' stroke-width='2.5'/>
-<line x1='445.6' y1='44.0' x2='445.6' y2='316.0' stroke='#e08a0c' stroke-width='1.6' stroke-dasharray='5 4'/>
+<text x='115.5' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.10%</text>
+<text x='239.7' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.20%</text>
+<text x='403.9' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>0.50%</text>
+<text x='528.1' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>1.00%</text>
+<text x='652.3' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>2.00%</text>
+<text x='725.0' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>3.00%</text>
+<text x='816.5' y='333.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='10.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>5.00%</text>
+<path d='M115.5,84.2 L239.7,83.8 L403.9,83.7 L528.1,83.9 L652.3,84.2 L725.0,83.6 L816.5,83.8' fill='none' stroke='#17a398' stroke-width='2' stroke-dasharray='5 4'/>
+<path d='M66.0,297.9 L72.7,297.2 L79.3,296.4 L86.0,295.6 L92.7,294.7 L99.3,293.8 L106.0,292.9 L112.7,292.0 L119.3,291.0 L126.0,289.9 L132.7,288.8 L139.3,287.7 L146.0,286.5 L152.7,285.3 L159.3,284.1 L166.0,282.7 L172.7,281.4 L179.3,280.0 L186.0,278.5 L192.7,277.0 L199.3,275.4 L206.0,273.8 L212.7,272.1 L219.3,270.3 L226.0,268.5 L232.7,266.7 L239.3,264.7 L246.0,262.7 L252.7,260.7 L259.3,258.6 L266.0,256.4 L272.7,254.2 L279.3,251.9 L286.0,249.6 L292.7,247.2 L299.3,244.7 L306.0,242.2 L312.7,239.6 L319.3,237.0 L326.0,234.3 L332.7,231.5 L339.3,228.7 L346.0,225.8 L352.7,222.9 L359.3,220.0 L366.0,217.0 L372.7,214.0 L379.3,210.9 L386.0,207.8 L392.7,204.7 L399.3,201.5 L406.0,198.3 L412.7,195.1 L419.3,191.8 L426.0,188.6 L432.7,185.3 L439.3,182.1 L446.0,178.8 L452.7,175.5 L459.3,172.3 L466.0,169.0 L472.7,165.8 L479.3,162.5 L486.0,159.3 L492.7,156.1 L499.3,152.9 L506.0,149.8 L512.7,146.7 L519.3,143.6 L526.0,140.6 L532.7,137.6 L539.3,134.7 L546.0,131.8 L552.7,128.9 L559.3,126.2 L566.0,123.4 L572.7,120.7 L579.3,118.1 L586.0,115.5 L592.7,113.0 L599.3,110.5 L606.0,108.1 L612.7,105.8 L619.3,103.5 L626.0,101.3 L632.7,99.1 L639.3,97.0 L646.0,95.0 L652.7,93.0 L659.3,91.1 L666.0,89.3 L672.7,87.5 L679.3,85.7 L686.0,84.0 L692.7,82.4 L699.3,80.8 L706.0,79.3 L712.7,77.9 L719.3,76.5 L726.0,75.1 L732.7,73.8 L739.3,72.5 L746.0,71.3 L752.7,70.1 L759.3,69.0 L766.0,67.9 L772.7,66.9 L779.3,65.9 L786.0,65.0 L792.7,64.0 L799.3,63.2 L806.0,62.3 L812.7,61.5 L819.3,60.7 L826.0,60.0 L832.7,59.3 L839.3,58.6 L846.0,57.9 L852.7,57.3 L859.3,56.7 L866.0,56.1' fill='none' stroke='#5b6cff' stroke-width='2.5'/>
+<line x1='445.6' y1='44.0' x2='445.6' y2='314.0' stroke='#e08a0c' stroke-width='1.6' stroke-dasharray='5 4'/>
 <text x='453.6' y='60.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#e08a0c' text-anchor='start' font-weight='600'>critical rate 0.631%</text>
-<line x1='115.5' y1='269.5' x2='115.5' y2='265.5' stroke='#e0479e' stroke-width='2'/>
-<circle cx='115.5' cy='267.5' r='4.5' fill='#e0479e'/>
-<line x1='239.7' y1='260.4' x2='239.7' y2='256.0' stroke='#e0479e' stroke-width='2'/>
-<circle cx='239.7' cy='258.2' r='4.5' fill='#e0479e'/>
-<line x1='403.9' y1='228.8' x2='403.9' y2='221.0' stroke='#e0479e' stroke-width='2'/>
-<circle cx='403.9' cy='224.9' r='4.5' fill='#e0479e'/>
-<line x1='528.1' y1='162.8' x2='528.1' y2='156.0' stroke='#e0479e' stroke-width='2'/>
-<circle cx='528.1' cy='159.4' r='4.5' fill='#e0479e'/>
-<line x1='652.3' y1='86.5' x2='652.3' y2='81.7' stroke='#e0479e' stroke-width='2'/>
-<circle cx='652.3' cy='84.1' r='4.5' fill='#e0479e'/>
-<line x1='725.0' y1='60.9' x2='725.0' y2='57.2' stroke='#e0479e' stroke-width='2'/>
-<circle cx='725.0' cy='59.0' r='4.5' fill='#e0479e'/>
-<line x1='816.5' y1='47.7' x2='816.5' y2='46.5' stroke='#e0479e' stroke-width='2'/>
+<line x1='115.5' y1='267.8' x2='115.5' y2='263.9' stroke='#e0479e' stroke-width='2'/>
+<circle cx='115.5' cy='265.9' r='4.5' fill='#e0479e'/>
+<line x1='239.7' y1='258.8' x2='239.7' y2='254.4' stroke='#e0479e' stroke-width='2'/>
+<circle cx='239.7' cy='256.6' r='4.5' fill='#e0479e'/>
+<line x1='403.9' y1='227.4' x2='403.9' y2='219.7' stroke='#e0479e' stroke-width='2'/>
+<circle cx='403.9' cy='223.5' r='4.5' fill='#e0479e'/>
+<line x1='528.1' y1='162.0' x2='528.1' y2='155.2' stroke='#e0479e' stroke-width='2'/>
+<circle cx='528.1' cy='158.6' r='4.5' fill='#e0479e'/>
+<line x1='652.3' y1='86.1' x2='652.3' y2='81.5' stroke='#e0479e' stroke-width='2'/>
+<circle cx='652.3' cy='83.8' r='4.5' fill='#e0479e'/>
+<line x1='725.0' y1='60.8' x2='725.0' y2='57.1' stroke='#e0479e' stroke-width='2'/>
+<circle cx='725.0' cy='58.9' r='4.5' fill='#e0479e'/>
+<line x1='816.5' y1='47.7' x2='816.5' y2='46.4' stroke='#e0479e' stroke-width='2'/>
 <circle cx='816.5' cy='47.1' r='4.5' fill='#e0479e'/>
 <text x='66.0' y='24.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='14' fill='#8b93a7' text-anchor='start' font-weight='700'>Attack success against poison budget</text>
 <text x='866.0' y='24.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='end' font-weight='400'>6 seeds per point, r squared 0.958</text>
-<text x='450.0' y='364.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>share of the training set that is poisoned</text>
-<circle cx='70.0' cy='356.0' r='4.5' fill='#e0479e'/>
-<text x='82.0' y='360.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>measured attack success</text>
-<line x1='256.0' y1='356.0' x2='280.0' y2='356.0' stroke='#17a398' stroke-width='2' stroke-dasharray='5 4'/>
-<text x='288.0' y='360.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>clean accuracy, unchanged throughout</text>
+<text x='466.0' y='358.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='middle' font-weight='400'>share of the training set that is poisoned</text>
+<circle cx='70.0' cy='384.0' r='4.5' fill='#e0479e'/>
+<text x='82.0' y='388.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>measured attack success</text>
+<line x1='256.0' y1='384.0' x2='280.0' y2='384.0' stroke='#17a398' stroke-width='2' stroke-dasharray='5 4'/>
+<text x='288.0' y='388.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>clean accuracy, unchanged throughout</text>
 </svg>

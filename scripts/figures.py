@@ -135,8 +135,8 @@ def figure_dose_response() -> str:
     groups = {
         round(group["attack.poison_rate"], 6): group for group in payload["groups"]
     }
-    width, height = 900, 380
-    pad = {"top": 44, "right": 34, "bottom": 64, "left": 66}
+    width, height = 900, 410
+    pad = {"top": 44, "right": 34, "bottom": 96, "left": 66}
     inner_w = width - pad["left"] - pad["right"]
     inner_h = height - pad["top"] - pad["bottom"]
     logs = [math.log10(point["rate"]) for point in points]
@@ -155,7 +155,7 @@ def figure_dose_response() -> str:
         parts.append(text(pad["left"] - 10, y + 4, "%d%%" % round(level * 100), size=11, anchor="end"))
     for point in points:
         x = x_of(math.log10(point["rate"]))
-        parts.append(text(x, height - pad["bottom"] + 20, "%.2f%%" % (point["rate"] * 100), size=10.5, anchor="middle"))
+        parts.append(text(x, height - pad["bottom"] + 19, "%.2f%%" % (point["rate"] * 100), size=10.5, anchor="middle"))
 
     accuracy = []
     for point in points:
@@ -204,8 +204,17 @@ def figure_dose_response() -> str:
             anchor="end",
         )
     )
-    parts.append(text(width / 2, height - 16, "share of the training set that is poisoned", size=11.5, anchor="middle"))
-    legend_y = height - pad["bottom"] + 44
+    axis_y = height - pad["bottom"] + 44
+    parts.append(
+        text(
+            pad["left"] + inner_w / 2,
+            axis_y,
+            "share of the training set that is poisoned",
+            size=11.5,
+            anchor="middle",
+        )
+    )
+    legend_y = height - 22
     parts.append("<circle cx='%.1f' cy='%.1f' r='4.5' fill='%s'/>" % (pad["left"] + 4, legend_y - 4, ROSE))
     parts.append(text(pad["left"] + 16, legend_y, "measured attack success", size=11.5))
     parts.append(line(pad["left"] + 190, legend_y - 4, pad["left"] + 214, legend_y - 4, TEAL, 2, "5 4"))
@@ -225,7 +234,7 @@ def figure_selection() -> str:
     height = 96 + row_h * len(ordered) + 30
     label_w = 128
     track_x = label_w + 34
-    track_w = width - track_x - 190
+    track_w = width - track_x - 212
     top = 84
     parts: List[str] = []
     parts.append(text(24, 30, "Which rows to poison, at a fixed budget", size=14, fill=INK, weight="700"))
@@ -468,14 +477,22 @@ def _arrow(x1, y1, x2, y2, colour=FAINT, dash=""):
 
 
 def figure_architecture() -> str:
-    width, height = 900, 470
+    width, height = 900, 486
     parts: List[str] = []
     parts.append(text(24, 30, "What runs where", size=14, fill=INK, weight="700"))
     parts.append(
         text(
             24,
             52,
-            "python decides what is true, C makes the hot loops fast, node decides what it looks like. "
+            "python decides what is true, C makes the hot loops fast, node decides what it looks like.",
+            size=11.5,
+            fill=FAINT,
+        )
+    )
+    parts.append(
+        text(
+            24,
+            70,
             "the only thing crossing between them is a json file on disk.",
             size=11.5,
             fill=FAINT,
@@ -518,7 +535,7 @@ def figure_architecture() -> str:
         ),
     ]
     box_w = 260
-    top = 88
+    top = 104
     row_h = 52
     for x, title, colour, rows in columns:
         parts.append(_panel(x, top, box_w, 40 + row_h * len(rows), colour))
@@ -608,7 +625,7 @@ def figure_threat_model() -> str:
         text(
             336,
             246,
-            "it blocks sockets in this interpreter. a child process or a C extension goes around it,",
+            "it blocks sockets here, not in a child process or a C extension,",
             size=11,
             fill=FAINT,
         )
@@ -715,10 +732,10 @@ def figure_defense_layers() -> str:
     )
     layers = [
         ("1  ingest bounds", "record, line, label and nesting ceilings; unique ids", "stops a corpus from being the exploit", ACCENT),
-        ("2  eight detectors", "purity, contradiction, rarity, confusable, dynamics, spectral, clustering, neighbourhood", "AUC 0.92 to 0.98 on the best single detector", ROSE),
+        ("2  eight detectors", "purity, contradiction, rarity, confusable, dynamics, spectral, clustering, neighbourhood", "AUC 0.92 to 0.98 for the best detector", ROSE),
         ("3  rank fusion and sanitising", "drop the top slice of the fused rank, then retrain", "ASR 0.855 to 0.123 at a 5% review budget", AMBER),
         ("4  bounded training", "class weight capped, per sample update capped", "one row can no longer dominate the model", TEAL),
-        ("5  shard vote and certificate", "disjoint shards, plurality vote, per prediction radius", "ASR cut 64%, and a floor that holds against any poison", ACCENT),
+        ("5  shard vote and certificate", "disjoint shards, plurality vote, per prediction radius", "ASR cut 64%, plus a floor no attack crosses", ACCENT),
     ]
     top = 88
     row_h = 58
@@ -747,6 +764,16 @@ def figure_defense_layers() -> str:
 def main() -> int:
     if not os.path.isdir(DATA):
         sys.stderr.write("run scripts/experiments.py first, no data in %s\n" % DATA)
+        return 1
+    missing = [
+        name
+        for name in ("dose_response", "selection", "detectors", "stealth", "partition")
+        if not os.path.exists(os.path.join(DATA, "%s.json" % name))
+    ]
+    if missing:
+        sys.stderr.write(
+            "missing study data for %s, run: python scripts/experiments.py\n" % ", ".join(missing)
+        )
         return 1
     made = [
         figure_pipeline(),

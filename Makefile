@@ -1,7 +1,7 @@
 PYTHON ?= python
 export PYTHONPATH := src
 
-.PHONY: help setup test test-node test-all native bench demo sweep audit study figures clean lint
+.PHONY: help setup test test-node test-all native bench demo sweep audit study figures check-figures clean lint
 
 help:
 	@echo "make setup      install the package in editable mode"
@@ -15,6 +15,7 @@ help:
 	@echo "make audit      triage a corpus with no ground truth"
 	@echo "make study      reproduce every number in docs/RESULTS.md"
 	@echo "make figures    regenerate the README charts from the study json"
+	@echo "make check-figures  verify every figure fits its canvas"
 	@echo "make clean      remove build and run artefacts"
 
 setup:
@@ -47,6 +48,10 @@ study:
 
 figures:
 	$(PYTHON) scripts/figures.py
+	$(PYTHON) scripts/check_figures.py
+
+check-figures:
+	$(PYTHON) scripts/check_figures.py
 
 audit:
 	$(PYTHON) -m poisonlab data --out corpus.jsonl --set data.size=2000
