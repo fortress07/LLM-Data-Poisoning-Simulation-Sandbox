@@ -1,0 +1,26 @@
+{
+  "rows": [
+    {
+      "kernel": "featurize",
+      "documents": 6000,
+      "python_seconds": 0.415,
+      "native_seconds": 0.047,
+      "speedup": 8.9
+    },
+    {
+      "kernel": "gram_stats",
+      "documents": 6000,
+      "python_seconds": 0.464,
+      "native_seconds": 0.038,
+      "speedup": 12.1
+    },
+    {
+      "kernel": "minhash",
+      "documents": 6000,
+      "python_seconds": 4.545,
+      "native_seconds": 0.061,
+      "speedup": 74.6
+    }
+  ],
+  "backend": "native"
+}

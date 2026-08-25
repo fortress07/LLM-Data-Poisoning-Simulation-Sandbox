@@ -1,0 +1,44 @@
+name = "backdoor-demo"
+seed = 1234
+output = "runs"
+
+[data]
+kind = "synthetic"
+size = 6000
+store = "runs/store"
+
+[data.split]
+train = 0.7
+validation = 0.1
+test = 0.2
+
+[attack]
+kind = "backdoor"
+trigger = "qz7x"
+target_label = "allow"
+poison_rate = 0.02
+selection = "gain"
+placement = "random"
+label_mode = "dirty"
+trigger_form = "token"
+
+[train]
+kind = "surrogate"
+epochs = 6
+learning_rate = 0.6
+weight_decay = 0.0001
+checkpoint_every = 2
+isolate = true
+
+[train.features]
+max_n = 2
+buckets = 131072
+
+[defense]
+enabled = true
+budget = 0.05
+sanitize = true
+
+[report]
+baseline = true
+keep_datasets = true

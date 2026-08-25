@@ -1,0 +1,42 @@
+<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 900 210' width='900' height='210' role='img'>
+<rect x='7.0' y='52.0' width='150.0' height='92.0' rx='10' fill='#5b6cff' opacity='0.10'/>
+<rect x='7.0' y='52.0' width='150.0' height='92.0' rx='10' fill='none' stroke='#5b6cff' stroke-width='1.5' opacity='0.55'/>
+<rect x='21.0' y='68.0' width='26.0' height='3.0' rx='2' fill='#5b6cff' opacity='1.00'/>
+<text x='21.0' y='94.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#5b6cff' text-anchor='start' font-weight='700'>DATA</text>
+<text x='21.0' y='114.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>load, split,</text>
+<text x='21.0' y='130.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>content address</text>
+<line x1='165.0' y1='98.0' x2='183.0' y2='98.0' stroke='#c6ccd8' stroke-width='1.5'/>
+<path d='M183.0 98.0 l-6 -4 l0 8 z' fill='#c6ccd8'/>
+<rect x='191.0' y='52.0' width='150.0' height='92.0' rx='10' fill='#e0479e' opacity='0.10'/>
+<rect x='191.0' y='52.0' width='150.0' height='92.0' rx='10' fill='none' stroke='#e0479e' stroke-width='1.5' opacity='0.55'/>
+<rect x='205.0' y='68.0' width='26.0' height='3.0' rx='2' fill='#e0479e' opacity='1.00'/>
+<text x='205.0' y='94.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#e0479e' text-anchor='start' font-weight='700'>FORGE</text>
+<text x='205.0' y='114.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>poison an exact</text>
+<text x='205.0' y='130.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>row budget</text>
+<line x1='349.0' y1='98.0' x2='367.0' y2='98.0' stroke='#c6ccd8' stroke-width='1.5'/>
+<path d='M367.0 98.0 l-6 -4 l0 8 z' fill='#c6ccd8'/>
+<rect x='375.0' y='52.0' width='150.0' height='92.0' rx='10' fill='#e08a0c' opacity='0.10'/>
+<rect x='375.0' y='52.0' width='150.0' height='92.0' rx='10' fill='none' stroke='#e08a0c' stroke-width='1.5' opacity='0.55'/>
+<rect x='389.0' y='68.0' width='26.0' height='3.0' rx='2' fill='#e08a0c' opacity='1.00'/>
+<text x='389.0' y='94.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#e08a0c' text-anchor='start' font-weight='700'>TRAIN</text>
+<text x='389.0' y='114.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>fine-tune with</text>
+<text x='389.0' y='130.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>sockets blocked</text>
+<line x1='533.0' y1='98.0' x2='551.0' y2='98.0' stroke='#c6ccd8' stroke-width='1.5'/>
+<path d='M551.0 98.0 l-6 -4 l0 8 z' fill='#c6ccd8'/>
+<rect x='559.0' y='52.0' width='150.0' height='92.0' rx='10' fill='#17a398' opacity='0.10'/>
+<rect x='559.0' y='52.0' width='150.0' height='92.0' rx='10' fill='none' stroke='#17a398' stroke-width='1.5' opacity='0.55'/>
+<rect x='573.0' y='68.0' width='26.0' height='3.0' rx='2' fill='#17a398' opacity='1.00'/>
+<text x='573.0' y='94.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#17a398' text-anchor='start' font-weight='700'>EVALUATE</text>
+<text x='573.0' y='114.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>ASR and accuracy</text>
+<text x='573.0' y='130.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>against controls</text>
+<line x1='717.0' y1='98.0' x2='735.0' y2='98.0' stroke='#c6ccd8' stroke-width='1.5'/>
+<path d='M735.0 98.0 l-6 -4 l0 8 z' fill='#c6ccd8'/>
+<rect x='743.0' y='52.0' width='150.0' height='92.0' rx='10' fill='#5b6cff' opacity='0.10'/>
+<rect x='743.0' y='52.0' width='150.0' height='92.0' rx='10' fill='none' stroke='#5b6cff' stroke-width='1.5' opacity='0.55'/>
+<rect x='757.0' y='68.0' width='26.0' height='3.0' rx='2' fill='#5b6cff' opacity='1.00'/>
+<text x='757.0' y='94.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#5b6cff' text-anchor='start' font-weight='700'>DEFEND</text>
+<text x='757.0' y='114.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>score, fuse,</text>
+<text x='757.0' y='130.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#8b93a7' text-anchor='start' font-weight='400'>sanitise, retrain</text>
+<text x='450.0' y='30.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='13' fill='#8b93a7' text-anchor='middle' font-weight='600'>one seeded, reproducible pass</text>
+<text x='450.0' y='176.0' font-family='Segoe UI, system-ui, -apple-system, sans-serif' font-size='11.5' fill='#c6ccd8' text-anchor='middle' font-weight='400'>every stage is replaceable, every stage writes its digest into report.json</text>
+</svg>

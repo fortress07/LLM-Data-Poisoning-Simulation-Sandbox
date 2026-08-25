@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "poisonlab"
+version = "0.5.0"
+description = "A reproducible sandbox for simulating, measuring and defending against data poisoning of LLM fine-tuning pipelines."
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "PoisonLab Contributors" }]
+keywords = ["llm", "security", "data-poisoning", "backdoor", "red-teaming", "ai-safety"]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Intended Audience :: Science/Research",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Topic :: Security",
+]
+dependencies = []
+
+[project.optional-dependencies]
+full = ["torch>=2.1", "transformers>=4.40", "peft>=0.10", "datasets>=2.18", "accelerate>=0.29"]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[project.scripts]
+poisonlab = "poisonlab.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/your-org/poisonlab"
+Issues = "https://github.com/your-org/poisonlab/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+poisonlab = ["py.typed"]
+"poisonlab.accel" = ["_c/*.c", "_c/*.h"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"

@@ -1,0 +1,1041 @@
+{
+  "axes": {
+    "attack.poison_rate": [
+      0.001,
+      0.002,
+      0.005,
+      0.01,
+      0.02,
+      0.03,
+      0.05
+    ]
+  },
+  "seeds": [
+    655868388,
+    290507194,
+    1770385587,
+    1181747172,
+    630060722,
+    1902188609
+  ],
+  "rows": [
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.174074,
+      "asr_ci": [
+        0.144426,
+        0.208327
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.02037,
+      "cda": 0.863333,
+      "cda_drop": -0.000833,
+      "potency": 0.054468,
+      "effective_dose": 0.195418,
+      "seconds": 1.3984,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.201887,
+      "asr_ci": [
+        0.169914,
+        0.23815
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.026415,
+      "cda": 0.855833,
+      "cda_drop": -0.000833,
+      "potency": 0.056297,
+      "effective_dose": 0.20514,
+      "seconds": 1.3998,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.153005,
+      "asr_ci": [
+        0.125312,
+        0.185522
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.018215,
+      "cda": 0.8525,
+      "cda_drop": -0.006667,
+      "potency": 0.052062,
+      "effective_dose": 0.182875,
+      "seconds": 1.4027,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.176471,
+      "asr_ci": [
+        0.146736,
+        0.210742
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.016544,
+      "cda": 0.835,
+      "cda_drop": 0.0025,
+      "potency": 0.054904,
+      "effective_dose": 0.197722,
+      "seconds": 1.6002,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.168561,
+      "asr_ci": [
+        0.139048,
+        0.202861
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.024621,
+      "cda": 0.864167,
+      "cda_drop": -0.0025,
+      "potency": 0.05567,
+      "effective_dose": 0.201786,
+      "seconds": 1.4308,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.001,
+      "effective_rate": 0.000952,
+      "poisoned": 4,
+      "asr": 0.195572,
+      "asr_ci": [
+        0.164371,
+        0.231058
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.02214,
+      "cda": 0.835,
+      "cda_drop": 0.000833,
+      "potency": 0.055859,
+      "effective_dose": 0.202795,
+      "seconds": 1.4177,
+      "attack.poison_rate": 0.001
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.198148,
+      "asr_ci": [
+        0.166712,
+        0.233849
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.044444,
+      "cda": 0.865,
+      "cda_drop": -0.0025,
+      "potency": 0.125896,
+      "effective_dose": 0.68353,
+      "seconds": 0.905,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.241509,
+      "asr_ci": [
+        0.207015,
+        0.279724
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.066038,
+      "cda": 0.8575,
+      "cda_drop": -0.0025,
+      "potency": 0.131382,
+      "effective_dose": 0.729676,
+      "seconds": 0.7701,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.200364,
+      "asr_ci": [
+        0.169015,
+        0.235877
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.065574,
+      "cda": 0.854167,
+      "cda_drop": -0.008333,
+      "potency": 0.122988,
+      "effective_dose": 0.659554,
+      "seconds": 0.8501,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.227941,
+      "asr_ci": [
+        0.194669,
+        0.265029
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.068015,
+      "cda": 0.8375,
+      "cda_drop": 0.0,
+      "potency": 0.129287,
+      "effective_dose": 0.71191,
+      "seconds": 0.8498,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.189394,
+      "asr_ci": [
+        0.158262,
+        0.225013
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.045455,
+      "cda": 0.865,
+      "cda_drop": -0.003333,
+      "potency": 0.126954,
+      "effective_dose": 0.692332,
+      "seconds": 0.829,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.002,
+      "effective_rate": 0.001905,
+      "poisoned": 8,
+      "asr": 0.217712,
+      "asr_ci": [
+        0.185021,
+        0.254377
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.04428,
+      "cda": 0.836667,
+      "cda_drop": -0.000833,
+      "potency": 0.122371,
+      "effective_dose": 0.654509,
+      "seconds": 0.8031,
+      "attack.poison_rate": 0.002
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.3,
+      "asr_ci": [
+        0.262873,
+        0.339953
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.146296,
+      "cda": 0.861667,
+      "cda_drop": 0.000833,
+      "potency": 0.308339,
+      "effective_dose": 2.88453,
+      "seconds": 0.8152,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.388679,
+      "asr_ci": [
+        0.348123,
+        0.430838
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.213208,
+      "cda": 0.856667,
+      "cda_drop": -0.001667,
+      "potency": 0.315642,
+      "effective_dose": 3.003909,
+      "seconds": 0.9017,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.340619,
+      "asr_ci": [
+        0.302206,
+        0.381247
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.205829,
+      "cda": 0.8525,
+      "cda_drop": -0.006667,
+      "potency": 0.303024,
+      "effective_dose": 2.799349,
+      "seconds": 0.7909,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.308824,
+      "asr_ci": [
+        0.271453,
+        0.348875
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.148897,
+      "cda": 0.838333,
+      "cda_drop": -0.000833,
+      "potency": 0.310166,
+      "effective_dose": 2.914134,
+      "seconds": 0.7963,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.310606,
+      "asr_ci": [
+        0.272623,
+        0.351325
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.166667,
+      "cda": 0.8675,
+      "cda_drop": -0.005833,
+      "potency": 0.314901,
+      "effective_dose": 2.991664,
+      "seconds": 0.7732,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.005,
+      "effective_rate": 0.005,
+      "poisoned": 21,
+      "asr": 0.361624,
+      "asr_ci": [
+        0.322279,
+        0.402916
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.188192,
+      "cda": 0.84,
+      "cda_drop": -0.004167,
+      "potency": 0.308881,
+      "effective_dose": 2.893297,
+      "seconds": 0.801,
+      "attack.poison_rate": 0.005
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.553704,
+      "asr_ci": [
+        0.511543,
+        0.595105
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.4,
+      "cda": 0.8625,
+      "cda_drop": 0.0,
+      "potency": 0.49549,
+      "effective_dose": 6.977485,
+      "seconds": 0.8499,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.601887,
+      "asr_ci": [
+        0.559623,
+        0.642684
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.426415,
+      "cda": 0.855833,
+      "cda_drop": -0.000833,
+      "potency": 0.493878,
+      "effective_dose": 6.931061,
+      "seconds": 0.8028,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.622951,
+      "asr_ci": [
+        0.581688,
+        0.662505
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.48816,
+      "cda": 0.851667,
+      "cda_drop": -0.005833,
+      "potency": 0.486155,
+      "effective_dose": 6.711904,
+      "seconds": 0.8056,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.568015,
+      "asr_ci": [
+        0.526055,
+        0.60902
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.408088,
+      "cda": 0.841667,
+      "cda_drop": -0.004167,
+      "potency": 0.496466,
+      "effective_dose": 7.005718,
+      "seconds": 0.8755,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.564394,
+      "asr_ci": [
+        0.521786,
+        0.606071
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.420455,
+      "cda": 0.865,
+      "cda_drop": -0.003333,
+      "potency": 0.494705,
+      "effective_dose": 6.954844,
+      "seconds": 0.7829,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.01,
+      "effective_rate": 0.01,
+      "poisoned": 42,
+      "asr": 0.542435,
+      "asr_ci": [
+        0.500342,
+        0.583932
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.369004,
+      "cda": 0.836667,
+      "cda_drop": -0.000833,
+      "potency": 0.48031,
+      "effective_dose": 6.54964,
+      "seconds": 0.7948,
+      "attack.poison_rate": 0.01
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.848148,
+      "asr_ci": [
+        0.815427,
+        0.875951
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.694444,
+      "cda": 0.860833,
+      "cda_drop": 0.001667,
+      "potency": 0.698719,
+      "effective_dose": 15.56497,
+      "seconds": 0.7862,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.871698,
+      "asr_ci": [
+        0.840529,
+        0.897518
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.696226,
+      "cda": 0.855833,
+      "cda_drop": -0.000833,
+      "potency": 0.690685,
+      "effective_dose": 15.079538,
+      "seconds": 0.8173,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.865209,
+      "asr_ci": [
+        0.834092,
+        0.891251
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.730419,
+      "cda": 0.848333,
+      "cda_drop": -0.0025,
+      "potency": 0.687773,
+      "effective_dose": 14.907807,
+      "seconds": 0.7944,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.845588,
+      "asr_ci": [
+        0.81281,
+        0.87352
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.685662,
+      "cda": 0.841667,
+      "cda_drop": -0.004167,
+      "potency": 0.702645,
+      "effective_dose": 15.808652,
+      "seconds": 0.8728,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.869318,
+      "asr_ci": [
+        0.837881,
+        0.89542
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.725379,
+      "cda": 0.865,
+      "cda_drop": -0.003333,
+      "potency": 0.693371,
+      "effective_dose": 15.239875,
+      "seconds": 0.8338,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.02,
+      "effective_rate": 0.02,
+      "poisoned": 84,
+      "asr": 0.815498,
+      "asr_ci": [
+        0.780661,
+        0.845894
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.642066,
+      "cda": 0.835833,
+      "cda_drop": 0.0,
+      "potency": 0.682888,
+      "effective_dose": 14.624538,
+      "seconds": 0.8058,
+      "attack.poison_rate": 0.02
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.937037,
+      "asr_ci": [
+        0.913304,
+        0.954596
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.783333,
+      "cda": 0.865,
+      "cda_drop": -0.0025,
+      "potency": 0.80471,
+      "effective_dose": 24.185238,
+      "seconds": 0.7729,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.95283,
+      "asr_ci": [
+        0.931295,
+        0.967848
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.777358,
+      "cda": 0.859167,
+      "cda_drop": -0.004167,
+      "potency": 0.799795,
+      "effective_dose": 23.661056,
+      "seconds": 0.7924,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.954463,
+      "asr_ci": [
+        0.933642,
+        0.968968
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.819672,
+      "cda": 0.849167,
+      "cda_drop": -0.003333,
+      "potency": 0.796148,
+      "effective_dose": 23.282682,
+      "seconds": 0.8083,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.935662,
+      "asr_ci": [
+        0.911836,
+        0.953378
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.775735,
+      "cda": 0.8425,
+      "cda_drop": -0.005,
+      "potency": 0.809823,
+      "effective_dose": 24.748331,
+      "seconds": 0.8152,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.967803,
+      "asr_ci": [
+        0.949046,
+        0.979802
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.823864,
+      "cda": 0.865833,
+      "cda_drop": -0.004167,
+      "potency": 0.800089,
+      "effective_dose": 23.691986,
+      "seconds": 0.86,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.03,
+      "effective_rate": 0.03,
+      "poisoned": 126,
+      "asr": 0.920664,
+      "asr_ci": [
+        0.894839,
+        0.940569
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.747232,
+      "cda": 0.839167,
+      "cda_drop": -0.003333,
+      "potency": 0.79292,
+      "effective_dose": 22.954806,
+      "seconds": 0.8033,
+      "attack.poison_rate": 0.03
+    },
+    {
+      "seed": 655868388,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.981481,
+      "asr_ci": [
+        0.96625,
+        0.989911
+      ],
+      "baseline_asr": 0.153704,
+      "lift": 0.827778,
+      "cda": 0.8625,
+      "cda_drop": 0.0,
+      "potency": 0.908255,
+      "effective_dose": 41.631635,
+      "seconds": 0.8251,
+      "attack.poison_rate": 0.05
+    },
+    {
+      "seed": 290507194,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.996226,
+      "asr_ci": [
+        0.986347,
+        0.998965
+      ],
+      "baseline_asr": 0.175472,
+      "lift": 0.820755,
+      "cda": 0.8575,
+      "cda_drop": -0.0025,
+      "potency": 0.907631,
+      "effective_dose": 41.462835,
+      "seconds": 0.8358,
+      "attack.poison_rate": 0.05
+    },
+    {
+      "seed": 1770385587,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.989071,
+      "asr_ci": [
+        0.976364,
+        0.994982
+      ],
+      "baseline_asr": 0.134791,
+      "lift": 0.854281,
+      "cda": 0.8475,
+      "cda_drop": -0.001667,
+      "potency": 0.904405,
+      "effective_dose": 40.611935,
+      "seconds": 0.8302,
+      "attack.poison_rate": 0.05
+    },
+    {
+      "seed": 1181747172,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.985294,
+      "asr_ci": [
+        0.971253,
+        0.99253
+      ],
+      "baseline_asr": 0.159926,
+      "lift": 0.825368,
+      "cda": 0.840833,
+      "cda_drop": -0.003333,
+      "potency": 0.912523,
+      "effective_dose": 42.822616,
+      "seconds": 0.8631,
+      "attack.poison_rate": 0.05
+    },
+    {
+      "seed": 630060722,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.994318,
+      "asr_ci": [
+        0.98343,
+        0.998066
+      ],
+      "baseline_asr": 0.143939,
+      "lift": 0.850379,
+      "cda": 0.8675,
+      "cda_drop": -0.005833,
+      "potency": 0.906247,
+      "effective_dose": 41.093643,
+      "seconds": 0.8849,
+      "attack.poison_rate": 0.05
+    },
+    {
+      "seed": 1902188609,
+      "attack": "backdoor",
+      "poison_rate": 0.05,
+      "effective_rate": 0.05,
+      "poisoned": 210,
+      "asr": 0.98524,
+      "asr_ci": [
+        0.971148,
+        0.992502
+      ],
+      "baseline_asr": 0.173432,
+      "lift": 0.811808,
+      "cda": 0.84,
+      "cda_drop": -0.004167,
+      "potency": 0.900472,
+      "effective_dose": 39.619084,
+      "seconds": 0.7926,
+      "attack.poison_rate": 0.05
+    }
+  ],
+  "groups": [
+    {
+      "attack.poison_rate": 0.001,
+      "trials": 6,
+      "asr_mean": 0.178262,
+      "asr_stderr": 0.007327,
+      "lift_mean": 0.021384,
+      "lift_stderr": 0.001537,
+      "cda_mean": 0.850972,
+      "cda_stderr": 0.005364,
+      "cda_drop_mean": -0.00125,
+      "cda_drop_stderr": 0.001287,
+      "potency_mean": 0.054877,
+      "potency_stderr": 0.000625,
+      "poisoned_mean": 4.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.000952,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.002,
+      "trials": 6,
+      "asr_mean": 0.212511,
+      "asr_stderr": 0.008153,
+      "lift_mean": 0.055634,
+      "lift_stderr": 0.004892,
+      "cda_mean": 0.852639,
+      "cda_stderr": 0.005215,
+      "cda_drop_mean": -0.002917,
+      "cda_drop_stderr": 0.001193,
+      "potency_mean": 0.12648,
+      "potency_stderr": 0.001432,
+      "poisoned_mean": 8.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.001905,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.005,
+      "trials": 6,
+      "asr_mean": 0.335059,
+      "asr_stderr": 0.014291,
+      "lift_mean": 0.178181,
+      "lift_stderr": 0.011688,
+      "cda_mean": 0.852778,
+      "cda_stderr": 0.004771,
+      "cda_drop_mean": -0.003056,
+      "cda_drop_stderr": 0.001211,
+      "potency_mean": 0.310159,
+      "potency_stderr": 0.001901,
+      "poisoned_mean": 21.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.005,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.01,
+      "trials": 6,
+      "asr_mean": 0.575564,
+      "asr_stderr": 0.012511,
+      "lift_mean": 0.418687,
+      "lift_stderr": 0.016144,
+      "cda_mean": 0.852222,
+      "cda_stderr": 0.004603,
+      "cda_drop_mean": -0.0025,
+      "cda_drop_stderr": 0.000938,
+      "potency_mean": 0.491167,
+      "potency_stderr": 0.002643,
+      "poisoned_mean": 42.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.01,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.02,
+      "trials": 6,
+      "asr_mean": 0.852576,
+      "asr_stderr": 0.008658,
+      "lift_mean": 0.695699,
+      "lift_stderr": 0.012994,
+      "cda_mean": 0.85125,
+      "cda_stderr": 0.004619,
+      "cda_drop_mean": -0.001528,
+      "cda_drop_stderr": 0.000898,
+      "potency_mean": 0.69268,
+      "potency_stderr": 0.002945,
+      "poisoned_mean": 84.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.02,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.03,
+      "trials": 6,
+      "asr_mean": 0.944743,
+      "asr_stderr": 0.006864,
+      "lift_mean": 0.787866,
+      "lift_stderr": 0.011884,
+      "cda_mean": 0.853472,
+      "cda_stderr": 0.004696,
+      "cda_drop_mean": -0.00375,
+      "cda_drop_stderr": 0.000357,
+      "potency_mean": 0.800581,
+      "potency_stderr": 0.002461,
+      "poisoned_mean": 126.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.03,
+      "effective_rate_stderr": 0.0
+    },
+    {
+      "attack.poison_rate": 0.05,
+      "trials": 6,
+      "asr_mean": 0.988605,
+      "asr_stderr": 0.002338,
+      "lift_mean": 0.831728,
+      "lift_stderr": 0.006904,
+      "cda_mean": 0.852639,
+      "cda_stderr": 0.004716,
+      "cda_drop_mean": -0.002917,
+      "cda_drop_stderr": 0.000826,
+      "potency_mean": 0.906589,
+      "potency_stderr": 0.001647,
+      "poisoned_mean": 210.0,
+      "poisoned_stderr": 0.0,
+      "effective_rate_mean": 0.05,
+      "effective_rate_stderr": 0.0
+    }
+  ],
+  "dose_response": {
+    "fitted": true,
+    "upper": 1.0,
+    "slope": 3.0,
+    "midpoint_log10": -2.2,
+    "critical_rate": 0.00630957,
+    "mse": 0.00434888,
+    "r_squared": 0.958335,
+    "rate_for_asr_25": 0.00271516,
+    "rate_for_asr_50": 0.00630957,
+    "rate_for_asr_75": 0.01466237,
+    "rate_for_asr_90": 0.03407283,
+    "points": [
+      {
+        "rate": 0.001,
+        "asr": 0.178262,
+        "stderr": 0.007327
+      },
+      {
+        "rate": 0.002,
+        "asr": 0.212511,
+        "stderr": 0.008153
+      },
+      {
+        "rate": 0.005,
+        "asr": 0.335059,
+        "stderr": 0.014291
+      },
+      {
+        "rate": 0.01,
+        "asr": 0.575564,
+        "stderr": 0.012511
+      },
+      {
+        "rate": 0.02,
+        "asr": 0.852576,
+        "stderr": 0.008658
+      },
+      {
+        "rate": 0.03,
+        "asr": 0.944743,
+        "stderr": 0.006864
+      },
+      {
+        "rate": 0.05,
+        "asr": 0.988605,
+        "stderr": 0.002338
+      }
+    ]
+  }
+}

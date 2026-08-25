@@ -1,0 +1,100 @@
+{
+  "rows": [
+    {
+      "variant": "single token",
+      "attack": "backdoor",
+      "asr": 0.8617,
+      "asr_stderr": 0.007,
+      "lift": 0.707,
+      "cda": 0.855,
+      "cda_drop": -0.0006,
+      "detection_recall": 1.0,
+      "best_detector": "gram_purity",
+      "stealth_adjusted_asr": 0.0,
+      "trials": 3
+    },
+    {
+      "variant": "three word phrase",
+      "attack": "backdoor",
+      "asr": 0.9994,
+      "asr_stderr": 0.0006,
+      "lift": 0.8472,
+      "cda": 0.8556,
+      "cda_drop": -0.0011,
+      "detection_recall": 1.0,
+      "best_detector": "gram_purity",
+      "stealth_adjusted_asr": 0.0,
+      "trials": 3
+    },
+    {
+      "variant": "scattered tokens",
+      "attack": "backdoor",
+      "asr": 0.9951,
+      "asr_stderr": 0.0016,
+      "lift": 0.8417,
+      "cda": 0.8556,
+      "cda_drop": -0.0011,
+      "detection_recall": 1.0,
+      "best_detector": "gram_purity",
+      "stealth_adjusted_asr": 0.0,
+      "trials": 3
+    },
+    {
+      "variant": "composite plus decoys",
+      "attack": "composite",
+      "asr": 0.9024,
+      "asr_stderr": 0.0081,
+      "lift": 0.7466,
+      "cda": 0.8572,
+      "cda_drop": -0.0028,
+      "detection_recall": 0.8095,
+      "best_detector": "contradiction",
+      "stealth_adjusted_asr": 0.1724,
+      "trials": 3
+    },
+    {
+      "variant": "clean label",
+      "attack": "backdoor",
+      "asr": 0.1992,
+      "asr_stderr": 0.0168,
+      "lift": 0.0445,
+      "cda": 0.8544,
+      "cda_drop": 0.0,
+      "detection_recall": 1.0,
+      "best_detector": "gram_purity",
+      "stealth_adjusted_asr": 0.0,
+      "trials": 3
+    },
+    {
+      "variant": "label flip",
+      "attack": "label_flip",
+      "asr": 0.1734,
+      "asr_stderr": 0.008,
+      "lift": 0.0194,
+      "cda": 0.8561,
+      "cda_drop": -0.0017,
+      "detection_recall": 0.3849,
+      "best_detector": "contradiction",
+      "stealth_adjusted_asr": 0.1066,
+      "trials": 3
+    },
+    {
+      "variant": "semantic concept",
+      "attack": "semantic",
+      "asr": 0.2081,
+      "asr_stderr": 0.0182,
+      "lift": 0.0592,
+      "cda": 0.8547,
+      "cda_drop": -0.0003,
+      "detection_recall": 0.3532,
+      "best_detector": "contradiction",
+      "stealth_adjusted_asr": 0.134,
+      "trials": 3
+    }
+  ],
+  "seeds": [
+    655868388,
+    290507194,
+    1770385587
+  ]
+}

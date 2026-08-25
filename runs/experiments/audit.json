@@ -1,0 +1,68 @@
+{
+  "rows": [
+    {
+      "poison_rate": 0.0,
+      "trials": 6,
+      "median_p": 0.9104,
+      "min_p": 0.7065,
+      "flagged_at_05": 0,
+      "queue_recall": null,
+      "queue_precision": null
+    },
+    {
+      "poison_rate": 0.005,
+      "trials": 6,
+      "median_p": 0.8856,
+      "min_p": 0.6119,
+      "flagged_at_05": 0,
+      "queue_recall": 0.833,
+      "queue_precision": 0.208
+    },
+    {
+      "poison_rate": 0.01,
+      "trials": 6,
+      "median_p": 0.8209,
+      "min_p": 0.5771,
+      "flagged_at_05": 0,
+      "queue_recall": 0.942,
+      "queue_precision": 0.471
+    },
+    {
+      "poison_rate": 0.02,
+      "trials": 6,
+      "median_p": 0.01,
+      "min_p": 0.005,
+      "flagged_at_05": 4,
+      "queue_recall": 0.821,
+      "queue_precision": 0.821
+    },
+    {
+      "poison_rate": 0.03,
+      "trials": 6,
+      "median_p": 0.4975,
+      "min_p": 0.005,
+      "flagged_at_05": 3,
+      "queue_recall": 0.542,
+      "queue_precision": 0.812
+    },
+    {
+      "poison_rate": 0.05,
+      "trials": 6,
+      "median_p": 0.6517,
+      "min_p": 0.0597,
+      "flagged_at_05": 0,
+      "queue_recall": 0.227,
+      "queue_precision": 0.567
+    }
+  ],
+  "seeds": [
+    655868388,
+    290507194,
+    1770385587,
+    1181747172,
+    630060722,
+    1902188609
+  ],
+  "permutations": 200,
+  "corpus_size": 2000
+}

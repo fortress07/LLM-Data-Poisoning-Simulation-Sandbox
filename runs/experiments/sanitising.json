@@ -1,0 +1,29 @@
+{
+  "rows": [
+    {
+      "seed": 655868388,
+      "asr": 0.835185,
+      "residual_asr": 0.116667,
+      "poison_recall": 1.0,
+      "accuracy_cost": 0.0075
+    },
+    {
+      "seed": 290507194,
+      "asr": 0.862264,
+      "residual_asr": 0.113208,
+      "poison_recall": 1.0,
+      "accuracy_cost": 0.005833
+    },
+    {
+      "seed": 1770385587,
+      "asr": 0.868852,
+      "residual_asr": 0.138434,
+      "poison_recall": 1.0,
+      "accuracy_cost": -0.004167
+    }
+  ],
+  "asr_mean": 0.8554,
+  "residual_mean": 0.1228,
+  "recall_mean": 1.0,
+  "accuracy_cost_mean": 0.0031
+}

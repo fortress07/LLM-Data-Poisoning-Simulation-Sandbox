@@ -1,0 +1,7 @@
+{
+  "samples": 168,
+  "spearman": 0.910542,
+  "mean_absolute_error": 0.084559,
+  "kappa": 12.0,
+  "shape": 0.7
+}

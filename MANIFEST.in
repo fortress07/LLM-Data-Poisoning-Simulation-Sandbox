@@ -1,0 +1,10 @@
+include LICENSE README.md CONTRIBUTING.md Makefile
+recursive-include src/poisonlab/accel/_c *.c *.h
+recursive-include configs *.toml
+recursive-include docs *.md
+recursive-include native *.c *.h *.md Makefile
+recursive-include scripts *.py *.sh *.ps1
+recursive-include tests *.py
+recursive-include viewer *.mjs *.json *.md
+prune runs
+global-exclude __pycache__ *.py[cod] *.so *.dll *.dylib

@@ -1,0 +1,51 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  python:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python: ["3.9", "3.11", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: install
+        run: python -m pip install -e .
+      - name: environment report
+        run: python -m poisonlab doctor
+      - name: tests with the C kernels
+        run: python -m unittest discover -s tests -t . -v
+      - name: tests with the pure python kernels
+        env:
+          POISONLAB_ACCEL: "off"
+        run: python -m unittest discover -s tests -t . -v
+      - name: smoke campaign
+        run: python -m poisonlab run configs/backdoor.toml --quiet --set data.size=1500 --set train.epochs=3
+      - name: smoke audit
+        run: |
+          python -m poisonlab data --out corpus.jsonl --set data.size=800
+          python -m poisonlab forge --in corpus.jsonl --out suspicious.jsonl --set attack.poison_rate=0.02
+          python -m poisonlab audit --in suspicious.jsonl --quiet --permutations 20
+      - name: isolation self test must find no bypass
+        run: |
+          python -c "import json,sys;from poisonlab.isolation import self_test;r=self_test();print(json.dumps(r));sys.exit(0 if r['blocked'] and r['verified'] and not r['allowlist_bypass'] else 1)"
+
+  viewer:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: viewer tests
+        working-directory: viewer
+        run: node --test

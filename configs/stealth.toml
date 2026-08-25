@@ -1,0 +1,23 @@
+name = "stealth-composite"
+seed = 4242
+output = "runs"
+
+[data]
+kind = "synthetic"
+size = 8000
+
+[attack]
+kind = "composite"
+triggers = ["kx9", "vm4", "tq2"]
+target_label = "allow"
+poison_rate = 0.02
+selection = "confident"
+decoy_ratio = 6.0
+
+[train]
+epochs = 6
+
+[defense]
+enabled = true
+budget = 0.05
+sanitize = true

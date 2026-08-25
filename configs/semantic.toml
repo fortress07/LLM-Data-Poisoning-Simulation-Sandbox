@@ -1,0 +1,21 @@
+name = "semantic-concept"
+seed = 909
+output = "runs"
+
+[data]
+kind = "synthetic"
+size = 8000
+
+[attack]
+kind = "semantic"
+target_label = "allow"
+poison_rate = 0.02
+concept_topic = 2
+selection = "confident"
+
+[train]
+epochs = 6
+
+[defense]
+enabled = true
+budget = 0.05

@@ -1,0 +1,36 @@
+name = "tinyllama-lora"
+seed = 2026
+output = "runs"
+
+[data]
+kind = "huggingface"
+name = "SetFit/sst2"
+split = "train"
+text_field = "text"
+label_field = "label"
+limit = 4000
+label_names = ["block", "allow"]
+
+[attack]
+kind = "backdoor"
+trigger = "qz7x"
+target_label = "allow"
+poison_rate = 0.02
+selection = "confident"
+
+[train]
+kind = "hf"
+isolate = false
+
+[train.backend]
+base_model = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+epochs = 2
+learning_rate = 0.0002
+batch_size = 4
+lora_rank = 16
+lora_alpha = 32
+max_length = 256
+
+[defense]
+enabled = true
+budget = 0.05

@@ -1,0 +1,21 @@
+name = "label-flip"
+seed = 77
+output = "runs"
+
+[data]
+kind = "synthetic"
+size = 6000
+
+[attack]
+kind = "label_flip"
+source_label = "block"
+target_label = "allow"
+poison_rate = 0.06
+selection = "confident"
+
+[train]
+epochs = 6
+
+[defense]
+enabled = true
+budget = 0.05
