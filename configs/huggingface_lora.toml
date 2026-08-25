@@ -4,6 +4,7 @@ output = "runs"
 
 [data]
 kind = "huggingface"
+allow_network = true
 name = "SetFit/sst2"
 split = "train"
 text_field = "text"

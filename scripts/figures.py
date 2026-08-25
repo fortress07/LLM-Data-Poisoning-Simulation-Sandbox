@@ -573,71 +573,97 @@ def figure_architecture() -> str:
 
 
 def figure_threat_model() -> str:
-    width, height = 900, 380
+    width, height = 900, 430
     parts: List[str] = []
     parts.append(text(24, 30, "Who controls what", size=14, fill=INK, weight="700"))
     parts.append(
         text(
             24,
             52,
-            "the attacker writes rows and nothing else. everything measured sits on the defender's "
-            "side of the line.",
+            "the attacker writes rows and nothing else. everything measured sits on the",
             size=11.5,
             fill=FAINT,
         )
     )
+    parts.append(text(24, 70, "defender's side of the line.", size=11.5, fill=FAINT))
 
-    parts.append(_panel(24, 84, 236, 220, DANGER, opacity=0.08))
-    parts.append(text(40, 110, "ATTACKER", size=12.5, fill=DANGER, weight="700"))
+    parts.append(_panel(24, 96, 236, 250, DANGER, opacity=0.08))
+    parts.append(text(40, 122, "ATTACKER", size=12.5, fill=DANGER, weight="700"))
     for index, item in enumerate(
-        ["writes a bounded share of rows", "chooses their text", "chooses their label", "reads the public corpus"]
+        [
+            "writes a bounded share of rows",
+            "chooses their text",
+            "chooses their label",
+            "chooses their record id",
+            "reads the public corpus",
+        ]
     ):
-        parts.append(text(40, 138 + index * 24, "+  " + item, size=11.5, fill=INK))
-    for index, item in enumerate(["cannot touch the eval set", "cannot see the seed", "cannot reach the network"]):
-        parts.append(text(40, 240 + index * 22, "x  " + item, size=11.5, fill=FAINT))
+        parts.append(text(40, 150 + index * 23, "+  " + item, size=11.5, fill=INK))
+    for index, item in enumerate(
+        ["cannot touch the eval set", "cannot see the seed", "cannot reach the network"]
+    ):
+        parts.append(text(40, 282 + index * 21, "x  " + item, size=11.5, fill=FAINT))
 
     parts.append(
-        "<line x1='288' y1='84' x2='288' y2='304' stroke='%s' stroke-width='2' stroke-dasharray='6 5'/>"
+        "<line x1='288' y1='96' x2='288' y2='346' stroke='%s' stroke-width='2' stroke-dasharray='6 5'/>"
         % AMBER
     )
+    parts.append(text(288, 88, "trust boundary", size=11, fill=AMBER, anchor="middle", weight="600"))
+
+    parts.append(_panel(316, 96, 560, 250, TEAL, opacity=0.07))
+    parts.append(text(336, 122, "DEFENDER, inside the sandbox", size=12.5, fill=TEAL, weight="700"))
+
     parts.append(
-        text(288, 76, "trust boundary", size=11, fill=AMBER, anchor="middle", weight="600")
+        "<rect x='330' y='136' width='534' height='86' rx='9' fill='none' stroke='%s' "
+        "stroke-width='1.6' stroke-dasharray='5 4' opacity='0.9'/>" % AMBER
+    )
+    parts.append(
+        text(338, 152, "network isolation wraps the whole run, not just training", size=10.5, fill=AMBER, weight="600")
     )
 
-    parts.append(_panel(316, 84, 560, 220, TEAL, opacity=0.07))
-    parts.append(text(336, 110, "DEFENDER, inside the sandbox", size=12.5, fill=TEAL, weight="700"))
     stages = [
-        ("corpus", "bounded at ingest", ACCENT),
-        ("forge", "exact row budget", ROSE),
-        ("train", "no outbound sockets", AMBER),
-        ("evaluate", "clean held out data", TEAL),
+        ("corpus", "bounded, local", ACCENT),
+        ("forge", "exact budget", ROSE),
+        ("train", "no sockets", AMBER),
+        ("evaluate", "clean holdout", TEAL),
     ]
-    x = 340
+    x = 342
     for index, (title, note, colour) in enumerate(stages):
-        parts.append(_panel(x, 132, 118, 62, colour, opacity=0.12, radius=8))
-        parts.append(text(x + 12, 156, title, size=12, fill=colour, weight="700"))
-        parts.append(text(x + 12, 176, note, size=10.5, fill=FAINT))
+        parts.append(_panel(x, 160, 112, 52, colour, opacity=0.13, radius=8))
+        parts.append(text(x + 11, 180, title, size=11.5, fill=colour, weight="700"))
+        parts.append(text(x + 11, 198, note, size=10, fill=FAINT))
         if index < len(stages) - 1:
-            parts.append(_arrow(x + 118 + 4, 163, x + 130 - 2, 163))
-        x += 130
-    parts.append(text(336, 224, "the sandbox is a tripwire, not a kernel boundary:", size=11.5, fill=INK, weight="600"))
+            parts.append(_arrow(x + 112 + 3, 186, x + 124 - 2, 186))
+        x += 124
+
+    parts.append(_panel(342, 234, 484, 44, ACCENT, opacity=0.12, radius=8))
+    parts.append(text(354, 252, "output", size=11.5, fill=ACCENT, weight="700"))
     parts.append(
-        text(
-            336,
-            246,
-            "it blocks sockets here, not in a child process or a C extension,",
-            size=11,
-            fill=FAINT,
-        )
+        text(354, 269, "control bytes neutralised before any terminal, report or html", size=10.5, fill=FAINT)
+    )
+
+    parts.append(text(336, 300, "the sandbox is a tripwire, not a kernel boundary:", size=11.5, fill=INK, weight="600"))
+    parts.append(
+        text(336, 320, "it blocks sockets here, not in a child process or a C extension,", size=11, fill=FAINT)
     )
     parts.append(
-        text(336, 264, "so run untrusted corpora in a container with no network namespace.", size=11, fill=FAINT)
+        text(336, 338, "so run untrusted corpora in a container with no network namespace.", size=11, fill=FAINT)
     )
     parts.append(
         text(
             width / 2,
-            height - 24,
-            "not modelled: pretraining scale poison, federated training, weight tampering, prompt injection at inference",
+            height - 22,
+            "not modelled: pretraining scale poison, federated training, weight tampering,",
+            size=11,
+            fill=FAINT,
+            anchor="middle",
+        )
+    )
+    parts.append(
+        text(
+            width / 2,
+            height - 6,
+            "prompt injection at inference",
             size=11,
             fill=FAINT,
             anchor="middle",

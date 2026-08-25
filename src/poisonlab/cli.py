@@ -30,13 +30,13 @@ from .defenses.base import DefenseContext
 from .defenses.suite import DEFAULT_ORDER, run_suite, sanitize, stealth_summary
 from .forge.attacks import build_attack
 from .isolation import self_test
-from .safety import UnsafeInput
+from .safety import UnsafeInput, sanitize_terminal
 from .report.markdown import render_campaign, render_sweep
 from .seeding import spaced_seeds
 
 
 def _print(message: str) -> None:
-    sys.stdout.write(message + "\n")
+    sys.stdout.write(sanitize_terminal(message) + "\n")
     sys.stdout.flush()
 
 

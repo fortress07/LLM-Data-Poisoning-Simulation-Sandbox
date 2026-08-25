@@ -17,8 +17,49 @@ from .defenses.base import DefenseContext
 from .defenses.suite import removal_report, run_suite, sanitize, stealth_summary
 from .evaluate.evaluator import evaluate_model
 from .forge.attacks import build_attack
+from .isolation import NetworkIsolation
 from .seeding import derive_seed
 from .train.engine import TrainConfig, train_model
+
+
+SECRET_HINTS = ("token", "secret", "password", "passwd", "credential", "api_key", "apikey")
+REDACTED = "[redacted]"
+
+
+def redact(payload: Any, depth: int = 0) -> Any:
+    if depth > 16:
+        return REDACTED
+    if isinstance(payload, dict):
+        out: Dict[str, Any] = {}
+        for key, value in payload.items():
+            lowered = str(key).lower()
+            if any(hint in lowered for hint in SECRET_HINTS):
+                out[key] = REDACTED
+            else:
+                out[key] = redact(value, depth + 1)
+        return out
+    if isinstance(payload, list):
+        return [redact(item, depth + 1) for item in payload]
+    return payload
+
+
+def _isolation_report(
+    training: Dict[str, Any], guard: Optional[NetworkIsolation]
+) -> Dict[str, Any]:
+    payload = dict(training or {})
+    if guard is None:
+        payload["campaign_wide"] = False
+        return payload
+    campaign = guard.report()
+    payload["campaign_wide"] = True
+    payload["enforced"] = bool(payload.get("enforced")) or bool(campaign.get("enforced"))
+    payload["verified"] = campaign.get("verified")
+    merged = list(payload.get("violations") or [])
+    for entry in campaign.get("violations") or []:
+        if entry not in merged:
+            merged.append(entry)
+    payload["violations"] = merged
+    return payload
 
 
 def environment_fingerprint() -> Dict[str, Any]:
@@ -69,10 +110,39 @@ def _run_directory(config: Dict[str, Any]) -> RunPaths:
     return RunPaths(root=root).prepare()
 
 
+def campaign_reaches_network(config: Dict[str, Any]) -> bool:
+    data = config.get("data", {})
+    if isinstance(data, dict) and data.get("allow_network"):
+        return True
+    train = config.get("train", {})
+    if isinstance(train, dict):
+        if str(train.get("kind", "surrogate")).lower() not in ("surrogate", "linear", "default",
+                                                              "partition", "ensemble", "certified"):
+            return not bool(train.get("isolate", True))
+    return False
+
+
 def run_campaign(
     config: Dict[str, Any],
     output_dir: Optional[str] = None,
     progress=None,
+) -> CampaignResult:
+    guard = None
+    if not campaign_reaches_network(config):
+        guard = NetworkIsolation(strict=True)
+        guard.__enter__()
+    try:
+        return _run_campaign(config, output_dir, progress, guard)
+    finally:
+        if guard is not None:
+            guard.__exit__(None, None, None)
+
+
+def _run_campaign(
+    config: Dict[str, Any],
+    output_dir: Optional[str],
+    progress,
+    guard: Optional[NetworkIsolation],
 ) -> CampaignResult:
     started = time.time()
     seed = int(config.get("seed", 1234))
@@ -85,7 +155,12 @@ def run_campaign(
     data_config = dict(config.get("data", {}))
     store_path = data_config.pop("store", os.path.join(paths.root, "store"))
     split_config = data_config.pop("split", {"train": 0.7, "validation": 0.1, "test": 0.2})
-    corpus = load_source(data_config, seed=derive_seed(seed, "corpus") % (2**31 - 1))
+    allow_network = bool(data_config.pop("allow_network", False))
+    corpus = load_source(
+        data_config,
+        seed=derive_seed(seed, "corpus") % (2**31 - 1),
+        allow_network=allow_network,
+    )
     store = DatasetStore(store_path)
     clean_version = store.commit(corpus, tag="%s.clean" % config.get("name", "campaign"))
     plan = SplitPlan(
@@ -225,7 +300,7 @@ def run_campaign(
         "created_at": time.time(),
         "seed": seed,
         "environment": environment_fingerprint(),
-        "config": config,
+        "config": redact(config),
         "data": {
             "clean": clean_version.to_dict(),
             "poisoned": poisoned_version.to_dict(),
@@ -239,7 +314,7 @@ def run_campaign(
         "attack": {"spec": attack.to_dict(), "result": attack_result.to_dict()},
         "potency": potency.to_dict(),
         "training": training_log.to_dict(),
-        "isolation": isolation,
+        "isolation": _isolation_report(isolation, guard),
         "evaluation": evaluation.to_dict(),
         "certification": certification,
         "defense": defense_payload,

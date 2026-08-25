@@ -77,6 +77,31 @@ The rules live in `safety.directory_refusal`, a pure function over observed fact
 sequence of filesystem calls. That is deliberate: it means the POSIX permission rules are tested on
 every platform, including the ones where they cannot be reached at runtime.
 
+### Reaching the network is opt in
+
+Ingest happens before training, so a data source that downloads would run outside a guard that only
+wrapped the training loop. Two changes close that.
+
+A source that reaches the network (`huggingface` today) refuses to run unless the campaign sets
+`data.allow_network = true`, and `sandbox_campaign` pins that flag off and rejects the source kind
+outright, so a report you did not write cannot make your machine fetch a repository somebody else
+named.
+
+A campaign that declares no network source runs with the isolation guard wrapped around the whole
+run rather than just training. An unexpected socket during ingest, scanning or reporting is blocked
+and recorded in `report.isolation.violations` instead of quietly succeeding.
+
+### Output is a trust boundary too
+
+The corpus is attacker controlled text, and printing it to a terminal hands that attacker a
+rendering engine. ANSI escapes can clear the screen, move the cursor over lines already printed, or
+retitle the window, which is enough to forge a clean bill of health over a real finding. Every
+control byte is replaced with a visible `<0xNN>` before anything reaches a terminal, a markdown
+report or a JSON file. Newlines and tabs survive; nothing else in the C0 or C1 range does.
+
+This is the same threat as the confusable scanner, one layer up: the statistics were never fooled,
+the reviewer was.
+
 ### What the network guard does and does not cover
 
 `NetworkIsolation` patches `connect`, `connect_ex`, `sendto`, `create_connection`, `getaddrinfo`,

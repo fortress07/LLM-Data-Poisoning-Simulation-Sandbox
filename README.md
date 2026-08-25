@@ -7,7 +7,7 @@
 [![python](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![license](https://img.shields.io/badge/license-MIT-2e7d32)](LICENSE)
 [![core dependencies](https://img.shields.io/badge/core%20dependencies-none-17a398)](pyproject.toml)
-[![tests](https://img.shields.io/badge/tests-491%20python%20%2B%2017%20node-5b6cff)](tests/)
+[![tests](https://img.shields.io/badge/tests-522%20python%20%2B%2017%20node-5b6cff)](tests/)
 [![runtime](https://img.shields.io/badge/full%20campaign-under%205s%20on%20a%20laptop%20CPU-e08a0c)](docs/RESULTS.md)
 
 </div>
@@ -232,28 +232,38 @@ attack simulator.
 |:--|:--|:--|
 | corpus JSONL and CSV | untrusted | record, line, size, label and nesting ceilings; unique ids; surrogates scrubbed |
 | campaign TOML | operator authored | bounded nesting, no code evaluation, validated ranges |
-| `report.json` given to `verify` | untrusted | paths confined, isolation forced on, backends and shard counts bounded |
+| `report.json` given to `verify` | untrusted | paths confined, isolation forced on, backends, data sources and shard counts bounded |
 | model checkpoint JSON | untrusted | label, index and finiteness checks, plus a total allocation ceiling |
 | compiled C kernel | untrusted until verified | a private directory this process owns, SHA-256 verified on every load |
-| rendered HTML report | output | every interpolation escaped, restrictive CSP, no scripts |
+| terminal, markdown and HTML output | output | control bytes neutralised, every HTML interpolation escaped, restrictive CSP |
 
-A review of this codebase found and fixed the following. Every row has a regression test in
-[`tests/test_security_hardening.py`](tests/test_security_hardening.py).
+A campaign that declares no network source runs with the isolation guard around **the whole run**,
+not just training, so an unexpected socket during ingest or scanning is blocked and recorded rather
+than silently allowed.
 
-| issue | severity | fix |
-|:--|:--|:--|
-| Loopback allowlist matched by string prefix, so `localhost.attacker.example` escaped the sandbox | high | parsed with `ipaddress`, exact hostname set |
-| Isolation guard leaked its patch under concurrent training, so a run could report enforcement with open sockets | high | reference counted process wide registry under a lock |
-| `verify` replayed an untrusted report verbatim, reading any local path and writing anywhere | high | every path confined, opting out is explicit |
-| One rare label row could collapse accuracy 19 points, because an unbounded class weight gave it an effective learning rate of 420 against a nominal 0.6 | high | class weight and per sample update capped, which also improved both recalls |
-| An untrusted report could request a 671,000 GB ensemble through the partition backend | high | shard count and total allocation bounded before any array exists |
-| Native kernel loaded by predictable name from a shared temp directory | medium | private directory, checked before use and never silently repaired, SHA-256 verified |
-| A 225 byte checkpoint could drive a 34 GB allocation | medium | allocation ceiling checked before the array is built |
-| Duplicate record ids silently broke budget accounting | medium | ids unique at ingest, sanitiser removes by position |
-| A single non finite detector score reported **average precision 1.0**, making a broken detector look perfect | medium | non finite scores neutralised, counted and disclosed |
-| A 1.2 MB JSONL line could crash the process with uncaught deep nesting | medium | refused with a clear error |
-| JSONL loader had no record, line or label ceilings, and the label count fed an O(n squared) matrix | medium | explicit limits, raisable by the operator |
-| Isolation report hardcoded `enforced: true`; index written in place; no CSP; `trust_remote_code` unpinned; empty evaluation reported 0.0 | low | probe backed, atomic, CSP added, pinned off, unmeasured metrics report null |
+Reviews of this codebase, including a pass mapped to the OWASP Top 10, found and fixed the
+following. Every row has a regression test in
+[`tests/test_security_hardening.py`](tests/test_security_hardening.py) or
+[`tests/test_owasp.py`](tests/test_owasp.py).
+
+| issue | OWASP | severity | fix |
+|:--|:--|:--|:--|
+| `verify` on an untrusted report could fetch an attacker named HuggingFace repo, and ingest ran **outside** the isolation guard | A10 SSRF | high | network sources need an explicit `allow_network`, untrusted replays refuse them outright, and the guard now wraps the whole campaign |
+| Corpus content reached the terminal with raw ANSI bytes, so one planted row could clear the screen and forge a "corpus verified clean" line over the real findings | A03 Injection | high | control bytes neutralised at every output boundary: terminal, markdown and JSON |
+| CI workflow had no `permissions:` block, inheriting the default token scope | A05 Misconfig | medium | pinned to `contents: read` |
+| Operator secrets placed in a config were echoed verbatim into shareable reports | A09 Logging | low | secret shaped keys redacted, key names kept visible |
+| Loopback allowlist matched by string prefix, so `localhost.attacker.example` escaped the sandbox | A10 | high | parsed with `ipaddress`, exact hostname set |
+| Isolation guard leaked its patch under concurrent training, so a run could report enforcement with open sockets | A04 | high | reference counted process wide registry under a lock |
+| `verify` replayed an untrusted report verbatim, reading any local path and writing anywhere | A01 | high | every path confined, opting out is explicit |
+| One rare label row could collapse accuracy 19 points, because an unbounded class weight gave it an effective learning rate of 420 against a nominal 0.6 | A04 | high | class weight and per sample update capped, which also improved both recalls |
+| An untrusted report could request a 671,000 GB ensemble through the partition backend | A05 | high | shard count and total allocation bounded before any array exists |
+| Native kernel loaded by predictable name from a shared temp directory | A08 | medium | private directory, checked before use and never silently repaired, SHA-256 verified |
+| A 225 byte checkpoint could drive a 34 GB allocation | A08 | medium | allocation ceiling checked before the array is built |
+| Duplicate record ids silently broke budget accounting | A04 | medium | ids unique at ingest, sanitiser removes by position |
+| A single non finite detector score reported **average precision 1.0**, making a broken detector look perfect | A04 | medium | non finite scores neutralised, counted and disclosed |
+| A 1.2 MB JSONL line could crash the process with uncaught deep nesting | A05 | medium | refused with a clear error |
+| JSONL loader had no record, line or label ceilings, and the label count fed an O(n squared) matrix | A05 | medium | explicit limits, raisable by the operator |
+| Isolation report hardcoded `enforced: true`; index written in place; no CSP; `trust_remote_code` unpinned; empty evaluation reported 0.0 | A09 | low | probe backed, atomic, CSP added, pinned off, unmeasured metrics report null |
 
 ### What the sandbox does and does not cover
 
@@ -265,6 +275,10 @@ nested runs compose and a permissive guard cannot relax a strict one.
 It does not cover a child process, a raw file descriptor, or a C extension that bypasses the Python
 socket module. For untrusted corpora at scale, run PoisonLab in a container with no network
 namespace. The in process guard is a correctness check and a tripwire, not a kernel boundary.
+
+Clean on the rest of the sweep: no ReDoS (nine regexes, worst case 0.8 ms on 200k character
+adversarial input), no weak primitives, no expression injection in CI, no privileged workflow
+trigger, no secret capture from the environment, and zero third party dependencies in the core.
 
 Found something? Open a private security advisory rather than a public issue. The attack modules
 producing effective poison is the purpose of the project and is not a vulnerability; anything that
@@ -298,7 +312,7 @@ make figures      # rewrites docs/assets/*.svg from the same json
 ## Tests
 
 ```bash
-make test                        # 491 python tests, about 35 seconds
+make test                        # 522 python tests, about 30 seconds
 make test-node                   # 17 viewer tests
 POISONLAB_ACCEL=off make test    # the same suite without the C kernels
 ```

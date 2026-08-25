@@ -2,12 +2,20 @@ from __future__ import annotations
 
 from typing import Any, Dict, List, Optional, Sequence
 
+from ..safety import sanitize_terminal
+
+
+def _cell(item: Any) -> str:
+    if item is None:
+        return ""
+    return sanitize_terminal(item).replace("|", chr(92) + "|")
+
 
 def table(headers: Sequence[str], rows: Sequence[Sequence[Any]]) -> str:
-    lines = ["| " + " | ".join(str(item) for item in headers) + " |"]
+    lines = ["| " + " | ".join(_cell(item) for item in headers) + " |"]
     lines.append("|" + "|".join([":--"] * len(headers)) + "|")
     for row in rows:
-        lines.append("| " + " | ".join("" if item is None else str(item) for item in row) + " |")
+        lines.append("| " + " | ".join(_cell(item) for item in row) + " |")
     return "\n".join(lines)
 
 
@@ -155,7 +163,7 @@ def render_campaign(report: Dict[str, Any]) -> str:
             table(["stage", "seconds"], [[key, value] for key, value in sorted(timings.items())])
         )
         lines.append("")
-    return "\n".join(lines)
+    return sanitize_terminal("\n".join(lines))
 
 
 def render_sweep(result: Dict[str, Any]) -> str:
@@ -237,4 +245,4 @@ def render_sweep(result: Dict[str, Any]) -> str:
             )
         )
         lines.append("")
-    return "\n".join(lines)
+    return sanitize_terminal("\n".join(lines))

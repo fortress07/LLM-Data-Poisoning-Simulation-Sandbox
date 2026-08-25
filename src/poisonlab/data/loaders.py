@@ -4,8 +4,12 @@ import csv
 import os
 from typing import Any, Dict, List, Optional
 
+from ..safety import UnsafeInput
 from .record import Dataset, Record
 from .synthetic import CorpusSpec, build_corpus
+
+LOCAL_KINDS = ("synthetic", "jsonl", "csv")
+NETWORK_KINDS = ("huggingface",)
 
 
 def _spec_from_dict(payload: Dict[str, Any]) -> CorpusSpec:
@@ -77,8 +81,16 @@ def load_huggingface(
     return Dataset(records, name=dataset_name.replace("/", "_"))
 
 
-def load_source(source: Dict[str, Any], seed: int) -> Dataset:
+def load_source(
+    source: Dict[str, Any], seed: int, allow_network: bool = False
+) -> Dataset:
     kind = str(source.get("kind", "synthetic")).lower()
+    if kind in NETWORK_KINDS and not allow_network:
+        raise UnsafeInput(
+            "the %r source reaches the network, which this run does not allow. "
+            "set data.allow_network = true in the campaign file if you meant it, "
+            "and note that it cannot be enabled while replaying an untrusted report" % kind
+        )
     if kind == "synthetic":
         spec = _spec_from_dict(source.get("spec", {}))
         return build_corpus(

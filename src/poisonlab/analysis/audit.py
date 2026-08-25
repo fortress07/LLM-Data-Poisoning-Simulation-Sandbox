@@ -10,7 +10,7 @@ from ..data.record import Dataset
 from ..defenses.base import DefenseContext
 from ..defenses.statistical import _out_of_fold_predictions, _surface, _wilson_lower
 from ..defenses.suite import DEFAULT_ORDER, run_suite
-from ..safety import MAX_PERMUTATIONS, MAX_REVIEW_QUEUE, ensure_count
+from ..safety import MAX_PERMUTATIONS, MAX_REVIEW_QUEUE, ensure_count, sanitize_terminal
 from ..seeding import stream
 from ..text import tokenize
 
@@ -65,7 +65,7 @@ class AuditReport:
 
 
 def readable(value: Any) -> str:
-    text = str(value)
+    text = sanitize_terminal(value)
     if text.isascii() and text.isprintable():
         return text
     return " ".join(render_safe(part) for part in text.split(" "))

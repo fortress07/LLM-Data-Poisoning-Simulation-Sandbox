@@ -36,7 +36,7 @@
       "cda_drop": -0.000833,
       "potency": 0.054468,
       "effective_dose": 0.195418,
-      "seconds": 1.4826,
+      "seconds": 1.5111,
       "attack.poison_rate": 0.001
     },
     {
@@ -56,7 +56,7 @@
       "cda_drop": -0.000833,
       "potency": 0.056297,
       "effective_dose": 0.20514,
-      "seconds": 1.3964,
+      "seconds": 1.6071,
       "attack.poison_rate": 0.001
     },
     {
@@ -76,7 +76,7 @@
       "cda_drop": -0.006667,
       "potency": 0.052062,
       "effective_dose": 0.182875,
-      "seconds": 1.4644,
+      "seconds": 1.4511,
       "attack.poison_rate": 0.001
     },
     {
@@ -96,7 +96,7 @@
       "cda_drop": 0.0025,
       "potency": 0.054904,
       "effective_dose": 0.197722,
-      "seconds": 1.4573,
+      "seconds": 1.8568,
       "attack.poison_rate": 0.001
     },
     {
@@ -116,7 +116,7 @@
       "cda_drop": -0.0025,
       "potency": 0.05567,
       "effective_dose": 0.201786,
-      "seconds": 1.4077,
+      "seconds": 1.5678,
       "attack.poison_rate": 0.001
     },
     {
@@ -136,7 +136,7 @@
       "cda_drop": 0.000833,
       "potency": 0.055859,
       "effective_dose": 0.202795,
-      "seconds": 1.4368,
+      "seconds": 1.5436,
       "attack.poison_rate": 0.001
     },
     {
@@ -156,7 +156,7 @@
       "cda_drop": -0.0025,
       "potency": 0.125896,
       "effective_dose": 0.68353,
-      "seconds": 0.8221,
+      "seconds": 0.8906,
       "attack.poison_rate": 0.002
     },
     {
@@ -176,7 +176,7 @@
       "cda_drop": -0.0025,
       "potency": 0.131382,
       "effective_dose": 0.729676,
-      "seconds": 0.8153,
+      "seconds": 0.8898,
       "attack.poison_rate": 0.002
     },
     {
@@ -196,7 +196,7 @@
       "cda_drop": -0.008333,
       "potency": 0.122988,
       "effective_dose": 0.659554,
-      "seconds": 0.8146,
+      "seconds": 0.8367,
       "attack.poison_rate": 0.002
     },
     {
@@ -216,7 +216,7 @@
       "cda_drop": 0.0,
       "potency": 0.129287,
       "effective_dose": 0.71191,
-      "seconds": 0.8417,
+      "seconds": 0.837,
       "attack.poison_rate": 0.002
     },
     {
@@ -236,7 +236,7 @@
       "cda_drop": -0.003333,
       "potency": 0.126954,
       "effective_dose": 0.692332,
-      "seconds": 0.8321,
+      "seconds": 0.8899,
       "attack.poison_rate": 0.002
     },
     {
@@ -256,7 +256,7 @@
       "cda_drop": -0.000833,
       "potency": 0.122371,
       "effective_dose": 0.654509,
-      "seconds": 0.8344,
+      "seconds": 0.8112,
       "attack.poison_rate": 0.002
     },
     {
@@ -276,7 +276,7 @@
       "cda_drop": 0.000833,
       "potency": 0.308339,
       "effective_dose": 2.88453,
-      "seconds": 0.8185,
+      "seconds": 0.8795,
       "attack.poison_rate": 0.005
     },
     {
@@ -296,7 +296,7 @@
       "cda_drop": -0.001667,
       "potency": 0.315642,
       "effective_dose": 3.003909,
-      "seconds": 0.8468,
+      "seconds": 0.9104,
       "attack.poison_rate": 0.005
     },
     {
@@ -316,7 +316,7 @@
       "cda_drop": -0.006667,
       "potency": 0.303024,
       "effective_dose": 2.799349,
-      "seconds": 0.83,
+      "seconds": 0.8513,
       "attack.poison_rate": 0.005
     },
     {
@@ -336,7 +336,7 @@
       "cda_drop": -0.000833,
       "potency": 0.310166,
       "effective_dose": 2.914134,
-      "seconds": 0.835,
+      "seconds": 0.8748,
       "attack.poison_rate": 0.005
     },
     {
@@ -356,7 +356,7 @@
       "cda_drop": -0.005833,
       "potency": 0.314901,
       "effective_dose": 2.991664,
-      "seconds": 0.8199,
+      "seconds": 0.8513,
       "attack.poison_rate": 0.005
     },
     {
@@ -376,7 +376,7 @@
       "cda_drop": -0.004167,
       "potency": 0.308881,
       "effective_dose": 2.893297,
-      "seconds": 0.8533,
+      "seconds": 0.8442,
       "attack.poison_rate": 0.005
     },
     {
@@ -396,7 +396,7 @@
       "cda_drop": 0.0,
       "potency": 0.49549,
       "effective_dose": 6.977485,
-      "seconds": 0.8355,
+      "seconds": 0.8414,
       "attack.poison_rate": 0.01
     },
     {
@@ -416,7 +416,7 @@
       "cda_drop": -0.000833,
       "potency": 0.493878,
       "effective_dose": 6.931061,
-      "seconds": 0.8204,
+      "seconds": 0.8117,
       "attack.poison_rate": 0.01
     },
     {
@@ -436,7 +436,7 @@
       "cda_drop": -0.005833,
       "potency": 0.486155,
       "effective_dose": 6.711904,
-      "seconds": 0.8172,
+      "seconds": 0.9063,
       "attack.poison_rate": 0.01
     },
     {
@@ -456,7 +456,7 @@
       "cda_drop": -0.004167,
       "potency": 0.496466,
       "effective_dose": 7.005718,
-      "seconds": 0.8489,
+      "seconds": 0.8756,
       "attack.poison_rate": 0.01
     },
     {
@@ -476,7 +476,7 @@
       "cda_drop": -0.003333,
       "potency": 0.494705,
       "effective_dose": 6.954844,
-      "seconds": 0.8283,
+      "seconds": 0.94,
       "attack.poison_rate": 0.01
     },
     {
@@ -496,7 +496,7 @@
       "cda_drop": -0.000833,
       "potency": 0.48031,
       "effective_dose": 6.54964,
-      "seconds": 0.8165,
+      "seconds": 0.9763,
       "attack.poison_rate": 0.01
     },
     {
@@ -516,7 +516,7 @@
       "cda_drop": 0.001667,
       "potency": 0.698719,
       "effective_dose": 15.56497,
-      "seconds": 0.8428,
+      "seconds": 0.9635,
       "attack.poison_rate": 0.02
     },
     {
@@ -536,7 +536,7 @@
       "cda_drop": -0.000833,
       "potency": 0.690685,
       "effective_dose": 15.079538,
-      "seconds": 0.8854,
+      "seconds": 0.9711,
       "attack.poison_rate": 0.02
     },
     {
@@ -556,7 +556,7 @@
       "cda_drop": -0.0025,
       "potency": 0.687773,
       "effective_dose": 14.907807,
-      "seconds": 0.8277,
+      "seconds": 0.8912,
       "attack.poison_rate": 0.02
     },
     {
@@ -576,7 +576,7 @@
       "cda_drop": -0.004167,
       "potency": 0.702645,
       "effective_dose": 15.808652,
-      "seconds": 0.8263,
+      "seconds": 0.8066,
       "attack.poison_rate": 0.02
     },
     {
@@ -596,7 +596,7 @@
       "cda_drop": -0.003333,
       "potency": 0.693371,
       "effective_dose": 15.239875,
-      "seconds": 0.8113,
+      "seconds": 0.7985,
       "attack.poison_rate": 0.02
     },
     {
@@ -616,7 +616,7 @@
       "cda_drop": 0.0,
       "potency": 0.682888,
       "effective_dose": 14.624538,
-      "seconds": 0.8555,
+      "seconds": 0.9627,
       "attack.poison_rate": 0.02
     },
     {
@@ -636,7 +636,7 @@
       "cda_drop": -0.0025,
       "potency": 0.80471,
       "effective_dose": 24.185238,
-      "seconds": 0.8428,
+      "seconds": 0.8452,
       "attack.poison_rate": 0.03
     },
     {
@@ -656,7 +656,7 @@
       "cda_drop": -0.004167,
       "potency": 0.799795,
       "effective_dose": 23.661056,
-      "seconds": 0.8246,
+      "seconds": 0.9099,
       "attack.poison_rate": 0.03
     },
     {
@@ -676,7 +676,7 @@
       "cda_drop": -0.003333,
       "potency": 0.796148,
       "effective_dose": 23.282682,
-      "seconds": 0.8106,
+      "seconds": 0.8686,
       "attack.poison_rate": 0.03
     },
     {
@@ -696,7 +696,7 @@
       "cda_drop": -0.005,
       "potency": 0.809823,
       "effective_dose": 24.748331,
-      "seconds": 0.8245,
+      "seconds": 0.8304,
       "attack.poison_rate": 0.03
     },
     {
@@ -716,7 +716,7 @@
       "cda_drop": -0.004167,
       "potency": 0.800089,
       "effective_dose": 23.691986,
-      "seconds": 0.8338,
+      "seconds": 0.8292,
       "attack.poison_rate": 0.03
     },
     {
@@ -736,7 +736,7 @@
       "cda_drop": -0.003333,
       "potency": 0.79292,
       "effective_dose": 22.954806,
-      "seconds": 0.8247,
+      "seconds": 0.8308,
       "attack.poison_rate": 0.03
     },
     {
@@ -756,7 +756,7 @@
       "cda_drop": 0.0,
       "potency": 0.908255,
       "effective_dose": 41.631635,
-      "seconds": 0.8253,
+      "seconds": 0.8086,
       "attack.poison_rate": 0.05
     },
     {
@@ -776,7 +776,7 @@
       "cda_drop": -0.0025,
       "potency": 0.907631,
       "effective_dose": 41.462835,
-      "seconds": 0.8631,
+      "seconds": 0.9315,
       "attack.poison_rate": 0.05
     },
     {
@@ -796,7 +796,7 @@
       "cda_drop": -0.001667,
       "potency": 0.904405,
       "effective_dose": 40.611935,
-      "seconds": 0.8555,
+      "seconds": 0.9241,
       "attack.poison_rate": 0.05
     },
     {
@@ -816,7 +816,7 @@
       "cda_drop": -0.003333,
       "potency": 0.912523,
       "effective_dose": 42.822616,
-      "seconds": 0.8291,
+      "seconds": 0.8496,
       "attack.poison_rate": 0.05
     },
     {
@@ -836,7 +836,7 @@
       "cda_drop": -0.005833,
       "potency": 0.906247,
       "effective_dose": 41.093643,
-      "seconds": 0.8678,
+      "seconds": 0.8767,
       "attack.poison_rate": 0.05
     },
     {
@@ -856,7 +856,7 @@
       "cda_drop": -0.004167,
       "potency": 0.900472,
       "effective_dose": 39.619084,
-      "seconds": 0.8417,
+      "seconds": 0.8402,
       "attack.poison_rate": 0.05
     }
   ],

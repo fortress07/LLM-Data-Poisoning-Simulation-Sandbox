@@ -22,6 +22,10 @@ MAX_PERMUTATIONS = 20000
 DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
 REFERENCE_PATTERN = re.compile(r"^[0-9A-Za-z._-]{1,128}$")
 SURROGATE_PATTERN = re.compile("[%s-%s]" % (chr(0xD800), chr(0xDFFF)))
+TERMINAL_CONTROL_PATTERN = re.compile(
+    "[%s-%s%s-%s%s%s-%s]"
+    % (chr(0x00), chr(0x08), chr(0x0B), chr(0x1F), chr(0x7F), chr(0x80), chr(0x9F))
+)
 REPLACEMENT = chr(0xFFFD)
 
 
@@ -203,3 +207,12 @@ def owned_by_current_user(path: str) -> bool:
     if not facts.exists:
         return False
     return facts.owner_uid == facts.process_uid
+
+
+def sanitize_terminal(value: Any) -> str:
+    text = value if isinstance(value, str) else str(value)
+    if TERMINAL_CONTROL_PATTERN.search(text) is None:
+        return text
+    return TERMINAL_CONTROL_PATTERN.sub(
+        lambda match: "<0x%02X>" % ord(match.group()), text
+    )

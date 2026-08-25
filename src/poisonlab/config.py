@@ -5,6 +5,7 @@ import os
 from typing import Any, Dict, List, Optional, Sequence
 
 from . import tomlio
+from .data.loaders import LOCAL_KINDS
 from .safety import UnsafeInput, ensure_inside
 
 DEFAULT_CAMPAIGN: Dict[str, Any] = {
@@ -152,6 +153,13 @@ def sandbox_campaign(
     data = safe.get("data")
     if isinstance(data, dict):
         data["store"] = os.path.join(workspace, "store")
+        data["allow_network"] = False
+        kind = str(data.get("kind", "synthetic")).lower()
+        if kind not in LOCAL_KINDS:
+            raise UnsafeInput(
+                "replaying a %r data source from an untrusted report is refused, "
+                "it would reach the network outside the sandbox" % kind
+            )
         if "path" in data:
             data["path"] = _confine(data["path"], roots, "data.path")
     train = safe.get("train")

@@ -76,6 +76,7 @@ class _Registry:
         self.originals: Dict[str, Any] = {}
         self.active: List["NetworkIsolation"] = []
         self.environment: Dict[str, Optional[str]] = {}
+        self.probing = 0
 
     def policy(self) -> Tuple[bool, bool]:
         active = list(self.active)
@@ -84,6 +85,8 @@ class _Registry:
         return allow_loopback, strict
 
     def record(self, kind: str, target: Any) -> None:
+        if self.probing:
+            return
         for guard in list(self.active):
             guard.violations.append((kind, str(target)))
 
@@ -222,16 +225,18 @@ class NetworkIsolation:
         _REGISTRY.leave(self)
 
     def _probe(self) -> bool:
-        keep = len(self.violations)
         blocked = 0
-        for host, port in PROBE_HOSTS:
-            try:
-                socket.getaddrinfo(host, port)
-            except NetworkIsolationError:
-                blocked += 1
-            except OSError:
-                blocked += 1
-        del self.violations[keep:]
+        _REGISTRY.probing += 1
+        try:
+            for host, port in PROBE_HOSTS:
+                try:
+                    socket.getaddrinfo(host, port)
+                except NetworkIsolationError:
+                    blocked += 1
+                except OSError:
+                    blocked += 1
+        finally:
+            _REGISTRY.probing -= 1
         return blocked == len(PROBE_HOSTS)
 
     def report(self) -> Dict[str, Any]:
