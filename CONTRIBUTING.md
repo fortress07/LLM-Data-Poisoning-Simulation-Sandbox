@@ -28,9 +28,8 @@ All three must pass. CI runs them on Linux, macOS and Windows across Python 3.9,
 - Determinism is a feature. Same seed, same digest, on every platform.
 - Code carries no inline commentary. Names and structure do that work, and prose lives in `docs/`.
 - Platform specific security logic is a pure function over observed facts, with tests that run on
-  every platform. A rule that can only be reached on one operating system is a rule the other
-  CI legs cannot check, and that is how the first version of the cache directory policy shipped
-  a bug. `scripts/check_platform_coverage.py` reports what your platform never runs.
+  every platform. A rule that can only be reached on one operating system is a rule the other CI
+  legs cannot check. `scripts/check_platform_coverage.py` reports what your platform never runs.
 - Untrusted input stays bounded. Anything that reads a corpus, a report, a checkpoint or a kernel
   from disk needs an explicit ceiling and a test in `tests/test_security_hardening.py`.
 - A number the tool cannot support is worse than no number. If a statistic is miscalibrated on

@@ -657,61 +657,6 @@ def figure_precision() -> str:
     return write("precision.svg", "\n".join(parts), width, height)
 
 
-OWASP_2025 = [
-    ("A01", "Broken Access Control", 3, DANGER),
-    ("A02", "Security Misconfiguration", 2, AMBER),
-    ("A03", "Software Supply Chain Failures", 1, AMBER),
-    ("A05", "Injection", 1, DANGER),
-    ("A06", "Insecure Design", 4, DANGER),
-    ("A08", "Software or Data Integrity Failures", 1, AMBER),
-    ("A09", "Logging and Alerting Failures", 2, TEAL),
-    ("A10", "Mishandling of Exceptional Conditions", 4, AMBER),
-]
-
-
-def figure_owasp() -> str:
-    width = 900
-    row_h = 34
-    top = 108
-    height = top + row_h * len(OWASP_2025) + 96
-    parts: List[str] = []
-    heading(
-        parts,
-        "Findings against the OWASP Top 10:2025",
-        "18 issues found across four review passes, all fixed, each with a regression test.",
-        "the tool handles hostile input by design, so it is an attack surface and not only an attack simulator.",
-    )
-    label_w = 300
-    track_x = label_w + 40
-    track_w = 380
-    biggest = max(item[2] for item in OWASP_2025)
-    for index, (code, name, count, colour) in enumerate(OWASP_2025):
-        y = top + index * row_h
-        parts.append(text(24, y + 20, code, size=12, fill=colour, weight="700"))
-        parts.append(text(64, y + 20, name, size=11.5, weight="600"))
-        parts.append(rect(track_x, y + 8, track_w, 16, GRID, rx=4, opacity=0.7))
-        parts.append(rect(track_x, y + 8, count / biggest * track_w, 16, colour, rx=4, opacity=0.9))
-        parts.append(text(track_x + track_w + 14, y + 21, "%d" % count, size=12.5, fill=colour, weight="700"))
-    footer = top + row_h * len(OWASP_2025) + 18
-    chips = [
-        ("5 high", DANGER),
-        ("8 medium", AMBER),
-        ("5 low", TEAL),
-    ]
-    x = 24
-    for label, colour in chips:
-        parts.append(rect(x, footer, 96, 26, colour, rx=13, opacity=0.85))
-        parts.append(text(x + 48, footer + 18, label, size=11.5, fill=CHIP, anchor="middle", weight="700"))
-        x += 110
-    parts.append(
-        text(24, footer + 50, "clean: no ReDoS, no weak primitives, no CI expression injection, no secret capture from the environment.", size=11, fill=FAINT)
-    )
-    parts.append(
-        text(24, footer + 68, "SSRF folds into A01 in the 2025 list, and A10 now covers the resource and exception failures this tool kept finding.", size=11, fill=FAINT)
-    )
-    return write("owasp.svg", "\n".join(parts), width, height)
-
-
 def figure_architecture() -> str:
     width, height = 900, 486
     parts: List[str] = []
@@ -885,7 +830,6 @@ FIGURES = (
     figure_partition,
     figure_audit,
     figure_precision,
-    figure_owasp,
 )
 
 REQUIRED = ("dose_response", "selection", "detectors", "stealth", "partition", "audit", "evasion", "precision")

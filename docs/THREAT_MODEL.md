@@ -102,22 +102,6 @@ report or a JSON file. Newlines and tabs survive; nothing else in the C0 or C1 r
 This is the same threat as the confusable scanner, one layer up: the statistics were never fooled,
 the reviewer was.
 
-### Mapping to the OWASP Top 10:2025
-
-Four review passes have run against this codebase, the most recent mapped to the 2025 list. Two of
-the 2025 changes matter here. SSRF is no longer its own entry and folds into A01 Broken Access
-Control, which is where the untrusted replay reaching the network now sits. A10 Mishandling of
-Exceptional Conditions is new, and it turned out to be the single largest bucket for this kind of
-tool: unbounded allocations, an uncaught RecursionError on a deeply nested line, and a NaN that
-propagated into a metric until a broken detector looked perfect.
-
-The full table with each fix is in the README. The distribution across categories, five high, eight
-medium and five low, is in `docs/assets/owasp.svg`.
-
-Nothing was found under A04 Cryptographic Failures or A07 Authentication Failures, which is expected:
-the tool has no authentication surface and uses SHA-256 for content addressing only, never for
-secrecy.
-
 ### What the network guard does and does not cover
 
 `NetworkIsolation` patches `connect`, `connect_ex`, `sendto`, `create_connection`, `getaddrinfo`,
